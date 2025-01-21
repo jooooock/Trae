@@ -15305,7 +15305,6 @@ var dd,
 
       oy = class extends N {
         constructor(t, e, i, s) {
-          debugger;
           super();
           this.h = t;
           this.j = e;
@@ -15374,7 +15373,6 @@ var dd,
       fd = class extends N {
         constructor(e, i, s, r) {
           super();
-          debugger;
           this.a = this.B(new oy(i.stateResource, e, s, r));
         }
 
@@ -37052,131 +37050,151 @@ var nS,
   });
 
 var Xa,
-  mu,
+  OAuthLocalServer,
   lS = v({
     "out-build/vs/code/electron-main/oauth/oauthLocalServer.js"() {
       "use strict";
-      ge(),
-        T(),
-        WF(),
-        de(),
-        bc(),
-        cS(),
-        ri(),
-        (function (t) {
-          (t.LOGIN_CONFIRM = "/login-confirm"), (t.LOGIN_SUCCESS = "/login-success"), (t.AUTHORIZE = "/authorize");
-        })(Xa || (Xa = {})),
-        (mu = class Ku extends N {
-          static {
-            this.TIMEOUT_MS = 30 * 60 * 1e3;
-          }
-          static {
-            this.AUTHORIZATION_TIMEOUT_MS = 5 * 60 * 1e3;
-          }
+      ge();
+      T();
+      WF();
+      de();
+      bc();
+      cS();
+      ri();
+      (function (t) {
+        t.LOGIN_CONFIRM = "/login-confirm";
+        t.LOGIN_SUCCESS = "/login-success";
+        t.AUTHORIZE = "/authorize";
+      })(Xa || (Xa = {}));
+      OAuthLocalServer = class Ku extends N {
+        static {
+          this.TIMEOUT_MS = 30 * 60 * 1000;
+        }
+        static {
+          this.AUTHORIZATION_TIMEOUT_MS = 5 * 60 * 1000;
+        }
 
-          constructor(e, i, s, r) {
-            super(), (this.r = e), (this.s = i), (this.t = s), (this.u = r), (this.n = ""), (this.m = new ib(r));
-          }
+        constructor(e, i, s, r) {
+          super();
+          this.r = e;
+          this.s = i;
+          this.t = s;
+          this.u = r;
+          this.n = "";
+          this.m = new ib(r);
+        }
 
-          async getServer() {
-            return this.j || (this.j = new di()), this.a || (this.a = await this.z()), this.a;
-          }
+        async getServer() {
+          this.j || (this.j = new di());
+          this.a || (this.a = await this.z());
+          return this.a;
+        }
 
-          async getPort() {
-            return await this.j?.p;
-          }
+        async getPort() {
+          return await this.j?.p;
+        }
 
-          setAuthCodeHandler(e, i) {
-            (this.c = e), (this.n = Qt()), i && this.w();
-          }
+        setAuthCodeHandler(e, i) {
+          this.c = e;
+          this.n = Qt();
+          i && this.w();
+        }
 
-          setAuthorizationTimeoutHandler(e) {
-            this.f = e;
-          }
+        setAuthorizationTimeoutHandler(e) {
+          this.f = e;
+        }
 
-          w() {
-            this.y(), (this.g = setTimeout(this.dispose.bind(this), Ku.TIMEOUT_MS)), this.r.info(`OAuthLocalServer#Oauth2 server timeout after ${Ku.TIMEOUT_MS} milliseconds.`);
-          }
+        w() {
+          this.y();
+          this.g = setTimeout(this.dispose.bind(this), Ku.TIMEOUT_MS);
+          this.r.info(`OAuthLocalServer#Oauth2 server timeout after ${Ku.TIMEOUT_MS} milliseconds.`);
+        }
 
-          y() {
-            this.g && (clearTimeout(this.g), (this.g = void 0)), this.h && clearTimeout(this.h);
-          }
+        y() {
+          this.g && (clearTimeout(this.g), (this.g = void 0));
+          this.h && clearTimeout(this.h);
+        }
 
-          async z() {
-            return new Promise((e, i) => {
-              const s = createServer(async (r, n) => {
-                try {
-                  await this.C(r, n);
-                } catch (o) {
-                  this.r.error(`OAuthLocalServer#Error handling request: ${o}`), (n.statusCode = 500), n.end("Internal Server Error");
-                }
-              });
-              s.listen(0, "127.0.0.1", () => {
-                try {
-                  const r = s.address();
-                  this.j?.complete(r?.port), this.r.info(`OAuthLocalServer#[Server] Listening on port ${r?.port}.`), e(s);
-                } catch (r) {
-                  i(r);
-                }
-              });
+        async z() {
+          return new Promise((resolve, reject) => {
+            const server = createServer(async (req, res) => {
+              try {
+                await this.C(req, res);
+              } catch (o) {
+                this.r.error(`OAuthLocalServer#Error handling request: ${o}`);
+                res.statusCode = 500;
+                res.end("Internal Server Error");
+              }
             });
-          }
-
-          async C(e, i) {
-            const { url: s } = e;
-            if (
-              (this.r.info(`OAuthLocalServer#[Server] Received url request: ${s?.split("?")[0]}. ${this.t.argvResource}`),
-              i.setHeader("Access-Control-Allow-Origin", "*"),
-              i.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS"),
-              i.setHeader("Access-Control-Allow-Headers", "x-jwt-token"),
-              i.setHeader("Content-Type", "text/html"),
-              i.setHeader("Content-Type", "charset=UTF-8"),
-              e.method === "OPTIONS")
-            )
-              (i.statusCode = 200), i.end();
-            else if (e.url?.includes(Xa.LOGIN_CONFIRM)) {
-              this.h ||
-                (this.h = setTimeout(() => {
-                  this.y(), this.dispose(), this.f?.();
-                }, Ku.AUTHORIZATION_TIMEOUT_MS));
-              const { query: r } = L.parse(e.url || ""),
-                n = await import("qs"),
-                { IDEUserToken: o } = n.parse(r);
-              o && (this.b = o), (i.statusCode = 200);
-              let a = {};
+            server.listen(0, "127.0.0.1", () => {
               try {
-                const l = (await this.u.readFile(this.t.argvResource)).value.toString();
-                a = JSON.parse(wc(l));
-              } catch {}
-              i.end(Z9(this.s.urlProtocol, Ku.AUTHORIZATION_TIMEOUT_MS, a.locale || "zh-cn", await this.m.getCssCode("Dark"), this.s.provider));
-            } else if (e.url?.includes(Xa.LOGIN_SUCCESS))
-              try {
-                await this.D(this.b), (i.statusCode = 200), i.end();
-              } catch (r) {
-                r.message.includes("GetAiRegionError:NotAllowed") ? (i.statusCode = 401) : r.message.includes("CloudIDETokenError:LinkExpired") ? (i.statusCode = 402) : (i.statusCode = 500), i.end();
+                const r = server.address();
+                this.j?.complete(r?.port);
+                this.r.info(`OAuthLocalServer#[Server] Listening on port ${r?.port}.`);
+                resolve(server);
+              } catch (err) {
+                reject(err);
               }
-            else if (e.url?.includes(Xa.AUTHORIZE)) {
-              const r = e.url.split("?")[1];
-              this.D(r, i);
+            });
+          });
+        }
+
+        async C(req, res) {
+          const { url } = req;
+          this.r.info(`OAuthLocalServer#[Server] Received url request: ${url?.split("?")[0]}. ${this.t.argvResource}`);
+          res.setHeader("Access-Control-Allow-Origin", "*");
+          res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+          res.setHeader("Access-Control-Allow-Headers", "x-jwt-token");
+          res.setHeader("Content-Type", "text/html");
+          res.setHeader("Content-Type", "charset=UTF-8");
+          if (req.method === "OPTIONS") {
+            res.statusCode = 200;
+            res.end();
+          } else if (req.url?.includes(Xa.LOGIN_CONFIRM)) {
+            this.h ||
+              (this.h = setTimeout(() => {
+                this.y(), this.dispose(), this.f?.();
+              }, Ku.AUTHORIZATION_TIMEOUT_MS));
+            const { query: r } = L.parse(req.url || ""),
+              n = await import("qs"),
+              { IDEUserToken: o } = n.parse(r);
+            o && (this.b = o), (res.statusCode = 200);
+            let a = {};
+            try {
+              const l = (await this.u.readFile(this.t.argvResource)).value.toString();
+              a = JSON.parse(wc(l));
+            } catch {}
+            res.end(Z9(this.s.urlProtocol, Ku.AUTHORIZATION_TIMEOUT_MS, a.locale || "zh-cn", await this.m.getCssCode("Dark"), this.s.provider));
+          } else if (req.url?.includes(Xa.LOGIN_SUCCESS))
+            try {
+              await this.D(this.b), (res.statusCode = 200), res.end();
+            } catch (r) {
+              r.message.includes("GetAiRegionError:NotAllowed") ? (res.statusCode = 401) : r.message.includes("CloudIDETokenError:LinkExpired") ? (res.statusCode = 402) : (res.statusCode = 500), res.end();
             }
+          else if (req.url?.includes(Xa.AUTHORIZE)) {
+            const r = req.url.split("?")[1];
+            this.D(r, res);
           }
+        }
 
-          async D(e, i) {
-            const s = this.n;
-            if (this.c) {
-              try {
-                await this.c(e, i), this.r.info("OAuthLocalServer#Received oauth2 jwt success");
-              } catch (r) {
-                throw (this.r.error(`OAuthLocalServer#Err occurred during auth code handler: ${r}.`), r);
-              }
-              s === this.n && (this.r.info("OAuthLocalServer#last auth code handler, dispose local server"), this.dispose());
-            } else this.r.error("OAuthLocalServer#[Server] can't find authCodeHandler.");
-          }
+        async D(e, i) {
+          const s = this.n;
+          if (this.c) {
+            try {
+              await this.c(e, i);
+              this.r.info("OAuthLocalServer#Received oauth2 jwt success");
+            } catch (r) {
+              this.r.error(`OAuthLocalServer#Err occurred during auth code handler: ${r}.`);
+              throw r;
+            }
+            s === this.n && (this.r.info("OAuthLocalServer#last auth code handler, dispose local server"), this.dispose());
+          } else this.r.error("OAuthLocalServer#[Server] can't find authCodeHandler.");
+        }
 
-          dispose() {
-            this.a?.close(), this.y(), (this.a = void 0), (this.b = void 0), (this.j = void 0), this.r.info("OAuthLocalServer#Authenticator server closed");
-          }
-        });
+        dispose() {
+          this.a?.close(), this.y(), (this.a = void 0), (this.b = void 0), (this.j = void 0), this.r.info("OAuthLocalServer#Authenticator server closed");
+        }
+      };
     },
   });
 
@@ -37202,58 +37220,76 @@ var uS,
 
 var pS,
   gS,
-  rb,
+  CommonRequest,
   mS = v({
     "out-build/vs/code/electron-main/oauth/common/request.js"() {
       "use strict";
       Yf();
       pS = dns.promises;
       gS = ["ENOTFOUND", "ENETUNREACH", "ECONNREFUSED", "ETIMEDOUT", "ECONNABORTED", "ERR_NETWORK"];
-      rb = class {
+      CommonRequest = class {
         constructor(t, e) {
-          (this.e = t), (this.f = e), (this.a = new https.Agent({ family: 6 })), (this.b = new https.Agent({ family: 4 })), (this.c = new http.Agent({ family: 6 })), (this.d = new http.Agent({ family: 4 }));
+          this.e = t;
+          this.f = e;
+          this.a = new https.Agent({ family: 6 });
+          this.b = new https.Agent({ family: 4 });
+          this.c = new http.Agent({ family: 6 });
+          this.d = new http.Agent({ family: 4 });
         }
 
-        async request(t) {
-          const e = axios.create({});
+        async request(options) {
+          const instance = axios.create({});
           let i;
-          const s = this.f.getValue("login.env.ppe"),
-            r = {};
-          s && ((r["x-tt-env"] = s), (r["x-use-ppe"] = "1")), (t.headers = { ...(t.headers || {}), ...r }), this.e.info("[Request start]", wr(t));
+          const s = this.f.getValue("login.env.ppe");
+          const customHeader = {};
+          if (s) {
+            customHeader["x-tt-env"] = s;
+            customHeader["x-use-ppe"] = "1";
+          }
+          options.headers = {
+            ...(options.headers || {}),
+            ...customHeader,
+          };
+          // options.proxy = {
+          //   protocol: "http",
+          //   host: "127.0.0.1",
+          //   port: "1091",
+          // };
+          this.e.info("[Request start]", wr(options));
           try {
-            i = await e.request(t);
-          } catch (n) {
+            i = await instance.request(options);
+          } catch (err) {
             if (
-              (this.e.error("[Request Error]", n, n.code, n.response?.data, n.response?.headers, n.stack, wr(t)),
-              this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", n?.request?.socket?.localAddress, n?.request?.socket?.localPort),
-              t.url)
+              (this.e.error("[Request Error]", err, err.code, err.response?.data, err.response?.headers, err.stack, wr(options)),
+              this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", err?.request?.socket?.localAddress, err?.request?.socket?.localPort),
+              options.url)
             ) {
-              const o = new URL(t.url),
+              const o = new URL(options.url),
                 a = await pS.lookup(o.hostname).catch((c) => {
                   this.e.error("[Request Error]", "get address from dns error", c);
                 });
               this.e.info("[Request]", "get address from dns", a);
             }
-            if (t.tryAgent && n.code && gS.includes(n.code)) {
-              this.e.info("[Request]", "try http agent for v4 and v6", t);
+            if (options.tryAgent && err.code && gS.includes(err.code)) {
+              this.e.info("[Request]", "try http agent for v4 and v6", options);
               const o = axios.create({ httpsAgent: this.a, httpAgent: this.c }),
                 a = axios.create({ httpsAgent: this.b, httpAgent: this.d }),
                 c = { v4: new AbortController(), v6: new AbortController() };
               i = await Promise.any([
                 o
-                  .request({ ...t, signal: c.v6.signal })
+                  .request({ ...options, signal: c.v6.signal })
                   .then((l) => (c.v4.abort(), l))
                   .catch((l) => {
                     throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
                   }),
                 a
-                  .request({ ...t, signal: c.v4.signal })
+                  .request({ ...options, signal: c.v4.signal })
                   .then((l) => (c.v6.abort(), l))
                   .catch((l) => {
                     throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
                   }),
               ]);
-            } else throw n;
+            } else throw err;
           }
           return this.e.info("[Request Success]", "Header: ", i?.headers), this.e.info("[Request Success Network]", "local address: ", i?.request?.socket?.localAddress, i?.request?.socket?.localPort), i?.data;
         }
@@ -37261,211 +37297,281 @@ var pS,
     },
   });
 
-var nb,
+var errCodes,
   wu,
-  wS,
+  MarsCodeOAuthService,
   mj = v({
     "out-build/vs/code/electron-main/oauth/marscode/oauthService.js"() {
       "use strict";
-      T(),
-        lS(),
-        Pn(),
-        de(),
-        q9(),
-        is(),
-        mS(),
-        Yf(),
-        (nb = ["20324", "20101"]),
-        (function (t) {
-          (t[(t.NO_UserInfo = 1)] = "NO_UserInfo"),
-            (t[(t.Handle_Login_Error = 2)] = "Handle_Login_Error"),
-            (t[(t.No_RefreshToken_Or_LoginHost = 3)] = "No_RefreshToken_Or_LoginHost"),
-            (t[(t.NO_isRedirect = 4)] = "NO_isRedirect"),
-            (t[(t.Handle_Login_NetworkError = 10002)] = "Handle_Login_NetworkError"),
-            (t[(t.Handle_Login_TimeoutError = 10001)] = "Handle_Login_TimeoutError");
-        })(wu || (wu = {})),
-        (wS = class extends N {
-          constructor(t, e, i, s, r, n, o, a) {
-            super(),
-              (this.j = t),
-              (this.m = e),
-              (this.n = i),
-              (this.r = s),
-              (this.s = r),
-              (this.t = n),
-              (this.u = o),
-              (this.w = a),
-              (this.c = new mu(this.j, this.m, this.n, this.r)),
-              (this.f = Jm.get(this.m.provider)?.domain || "www.marscode.cn"),
-              (this.g = Jm.get(this.m.provider)?.authFrom || "marscode"),
-              (this.h = new rb(this.j, this.u));
-          }
+      T();
+      lS();
+      Pn();
+      de();
+      q9();
+      is();
+      mS();
+      Yf();
+      errCodes = ["20324", "20101"];
+      (function (t) {
+        t[(t.NO_UserInfo = 1)] = "NO_UserInfo";
+        t[(t.Handle_Login_Error = 2)] = "Handle_Login_Error";
+        t[(t.No_RefreshToken_Or_LoginHost = 3)] = "No_RefreshToken_Or_LoginHost";
+        t[(t.NO_isRedirect = 4)] = "NO_isRedirect";
+        t[(t.Handle_Login_NetworkError = 10002)] = "Handle_Login_NetworkError";
+        t[(t.Handle_Login_TimeoutError = 10001)] = "Handle_Login_TimeoutError";
+      })(wu || (wu = {}));
+      MarsCodeOAuthService = class extends N {
+        constructor(t, e, i, s, r, n, o, a) {
+          debugger;
+          super();
+          this.j = t;
+          this.m = e;
+          this.n = i;
+          this.r = s;
+          this.s = r;
+          this.t = n;
+          this.u = o;
+          this.w = a;
+          this.c = new OAuthLocalServer(this.j, this.m, this.n, this.r);
+          this.f = Jm.get(this.m.provider)?.domain || "www.marscode.cn";
+          this.g = Jm.get(this.m.provider)?.authFrom || "marscode";
+          this.h = new CommonRequest(this.j, this.u);
+        }
 
-          async login() {
-            this.a || (this.a = new di()),
-              this.j.info("OAuthenticator#start a server to listen for oauth result"),
-              await this.c.getServer(),
-              this.c.setAuthCodeHandler(this.z.bind(this)),
-              this.j.info("OAuthenticator#open oauth url", this.m.provider),
-              this.H(await this.c.getPort());
-            const t = await this.a.p;
-            return (this.a = void 0), t;
-          }
+        // 获取登录链接
+        async login() {
+          this.a || (this.a = new di());
+          this.j.info("OAuthenticator#start a server to listen for oauth result");
+          await this.c.getServer();
+          this.c.setAuthCodeHandler(this.z.bind(this));
+          this.j.info("OAuthenticator#open oauth url", this.m.provider);
+          this.H(await this.c.getPort());
+          const t = await this.a.p;
+          this.a = void 0;
+          return t;
+        }
 
-          async refreshToken(t, e, i) {
-            if (!t) throw new Error("RefreshTokenError:TokenNullError");
-            return this.j.info("[refreshToken]", e), await this.C(t, e, i);
+        async refreshToken(refreshToken, region, host) {
+          debugger;
+          if (!refreshToken) {
+            throw new Error("RefreshTokenError:TokenNullError");
           }
+          this.j.info("[refreshToken]", region);
+          return await this.C(refreshToken, region, host);
+        }
 
-          y(t) {
-            if (this.m.provider === Jt.YINLI) return oi.CN;
-            for (let [e, i] of Yl) if (i.region === t) return e;
-            return oi.CN;
-          }
+        y(region) {
+          debugger;
+          if (this.m.provider === Jt.YINLI) return oi.CN;
+          for (let [e, i] of Yl) if (i.region === region) return e;
+          return oi.CN;
+        }
 
-          async z(t, e) {
-            const i = qs.parse(t || "");
-            this.j.info("[updateLocalCredential]", wr(i));
-            const s = async (r, n) => {
-              if (e) {
-                const o = this.G(await this.c.getPort(), 1, r, n);
-                e.writeHead(307, { Location: o }), e.end();
-              }
-            };
-            if (!this.a) {
-              const r = this.m.provider === Jt.YINLI ? "MarsCode" : "Trae";
-              s(wu.Handle_Login_TimeoutError, `Sorry, the login authorization has timed out. Please reopen ${r} IDE to login.`);
-              return;
+        // updateLocalCredential
+        async z(req, res) {
+          debugger;
+          const i = qs.parse(req || "");
+          this.j.info("[updateLocalCredential]", wr(i));
+          const s = async (code, msg) => {
+            if (res) {
+              const redirectLoc = this.G(await this.c.getPort(), 1, code, msg);
+              res.writeHead(307, { Location: redirectLoc });
+              res.end();
             }
-            if (!i?.isRedirect || !i?.refreshToken) {
-              s(wu.Handle_Login_Error, ""), this.j.info("[updateLocalCredential]", "Login Error", i), this.a?.error(new Error("Login Error" + i?.isRedirect + i?.refreshToken + i?.userRegion)), (this.a = void 0);
-              return;
-            }
-            try {
-              const r = this.y(i.userRegion),
-                n = await this.C(i.refreshToken, r, i.host);
-              this.j.info("OAuthenticator#write ide_credential file to local path"), this.a?.complete(n), s();
-            } catch (r) {
-              this.j.info("[updateLocalCredential]", "Login Error", r.message, r.stack),
-                this.a?.error(r),
-                (this.a = void 0),
-                s(wu.Handle_Login_NetworkError, "Network connection failed. Please check your network settings and retry after ensuring a normal connection.");
-            }
+          };
+          if (!this.a) {
+            const product = this.m.provider === Jt.YINLI ? "MarsCode" : "Trae";
+            s(wu.Handle_Login_TimeoutError, `Sorry, the login authorization has timed out. Please reopen ${product} IDE to login.`);
+            return;
+          }
+          if (!i?.isRedirect || !i?.refreshToken) {
+            s(wu.Handle_Login_Error, "");
+            this.j.info("[updateLocalCredential]", "Login Error", i);
+            this.a?.error(new Error("Login Error" + i?.isRedirect + i?.refreshToken + i?.userRegion));
+            this.a = void 0;
+            return;
           }
 
-          async refreshUserInfo(t, e, i) {
-            const s = await this.F(t, e, i);
-            return {
-              username: s.ScreenName,
-              iss: "",
-              iat: 0,
-              organization: "",
-              work_country: "",
-              email: "",
-              avatar_url: s.AvatarUrl,
-              description: s.Description,
-              scope: wi.MARSCODE,
-            };
+          try {
+            const region = this.y(i.userRegion),
+              n = await this.C(i.refreshToken, region, i.host);
+            this.j.info("OAuthenticator#write ide_credential file to local path");
+            this.a?.complete(n);
+            s();
+          } catch (err) {
+            this.j.info("[updateLocalCredential]", "Login Error", err.message, err.stack);
+            this.a?.error(err);
+            this.a = void 0;
+            s(wu.Handle_Login_NetworkError, "Network connection failed. Please check your network settings and retry after ensuring a normal connection.");
+          }
+        }
+
+        async refreshUserInfo(token, region, host) {
+          debugger;
+          const s = await this.F(token, region, host);
+          return {
+            username: s.ScreenName,
+            iss: "",
+            iat: 0,
+            organization: "",
+            work_country: "",
+            email: "",
+            avatar_url: s.AvatarUrl,
+            description: s.Description,
+            scope: wi.MARSCODE,
+          };
+        }
+
+        async C(refreshToken, region = oi.CN, host) {
+          debugger;
+          const { Token, RefreshToken, TokenExpireAt, RefreshExpireAt } = await this.D(refreshToken, region, host);
+          const a = await this.F(Token, region, host);
+          const account = {
+            username: a.ScreenName,
+            iss: "",
+            iat: 0,
+            organization: "",
+            work_country: "",
+            email: "",
+            avatar_url: a.AvatarUrl,
+            description: a.Description,
+            scope: wi.MARSCODE,
+          };
+          return {
+            token: Token,
+            refreshToken: RefreshToken,
+            expiredAt: new Date(TokenExpireAt).toISOString(),
+            refreshExpiredAt: new Date(RefreshExpireAt).toISOString(),
+            userId: a.UserID,
+            aiRegion: a.AIRegion,
+            region: region,
+            host: host,
+            account: account,
+          };
+        }
+
+        // getJwtToken
+        async D(refreshToken, region, host) {
+          debugger;
+          const s = Yl.get(region);
+          if (!s) {
+            throw new Error(`failed:!regionInfo, regionInfo:${s}`);
           }
 
-          async C(t, e = oi.CN, i) {
-            const { Token: s, RefreshToken: r, TokenExpireAt: n, RefreshExpireAt: o } = await this.D(t, e, i),
-              a = await this.F(s, e, i),
-              c = {
-                username: a.ScreenName,
-                iss: "",
-                iat: 0,
-                organization: "",
-                work_country: "",
-                email: "",
-                avatar_url: a.AvatarUrl,
-                description: a.Description,
-                scope: wi.MARSCODE,
-              };
-            return {
-              token: s,
-              refreshToken: r,
-              expiredAt: new Date(n).toISOString(),
-              refreshExpiredAt: new Date(o).toISOString(),
-              userId: a.UserID,
-              aiRegion: a.AIRegion,
-              region: e,
-              host: i,
-              account: c,
-            };
-          }
-
-          async D(t, e, i) {
-            const s = Yl.get(e);
-            if (!s) throw new Error(`failed:!regionInfo, regionInfo:${s}`);
-            const r = `${i || `https://${s.url}`}/cloudide/api/v3/${s.path}/oauth/ExchangeToken`,
-              n = { ClientID: s.clientId, RefreshToken: t, ClientSecret: "-", UserID: "" },
-              o = { headers: { "Content-Type": "application/json" } };
-            this.j.info("[getJwtToken]", "request", r, wr(n));
-            const a = await this.h.request({ method: "POST", url: r, data: n, timeout: 3e4, ...o }).catch((c) => {
-              this.j.info("[getJwtToken]", "request error", c.message, c.stack, wr(c.response?.data));
-              const l = c.response?.data?.ResponseMetadata?.Error?.Code;
-              throw nb.includes(l) ? new Error(Sf.RefreshTokenInvalid) : c;
+          const url = `${host || `https://${s.url}`}/cloudide/api/v3/${s.path}/oauth/ExchangeToken`,
+            data = { ClientID: s.clientId, RefreshToken: refreshToken, ClientSecret: "-", UserID: "" },
+            options = { headers: { "Content-Type": "application/json" } };
+          this.j.info("[getJwtToken]", "request", url, wr(data));
+          const resp = await this.h
+            .request({
+              method: "POST",
+              url: url,
+              data: data,
+              timeout: 30_000,
+              ...options,
+            })
+            .catch((err) => {
+              this.j.info("[getJwtToken]", "request error", err.message, err.stack, wr(err.response?.data));
+              const code = err.response?.data?.ResponseMetadata?.Error?.Code;
+              throw errCodes.includes(code) ? new Error(Sf.RefreshTokenInvalid) : err;
             });
-            if (!a) throw (this.j.info("[getJwtToken]", "response error", "no response"), new Error("[getJwtToken]no response"));
-            return this.j.info("[getJwtToken]", "response success", wr(a)), a.Result;
+          if (!resp) {
+            this.j.info("[getJwtToken]", "response error", "no response");
+            throw new Error("[getJwtToken]no response");
+          }
+          this.j.info("[getJwtToken]", "response success", wr(resp));
+          return resp.Result;
+        }
+
+        // getUserInfo
+        async F(token, region, host) {
+          debugger;
+          const s = Yl.get(region);
+          if (!s) {
+            throw new Error(`failed:!providerInfo, region:${region}`);
           }
 
-          async F(t, e, i) {
-            const s = Yl.get(e);
-            if (!s) throw new Error(`failed:!providerInfo, region:${e}`);
-            const r = `${i || `https://${s.url}`}/cloudide/api/v3/${s.path}/GetUserInfo`,
-              n = {},
-              o = { headers: { "Content-Type": "application/json", "x-cloudide-token": t } };
-            this.j.info("[getUserInfo]", "request", wr(o), r, n);
-            const a = await this.h.request({ method: "POST", url: r, data: n, timeout: 3e4, ...o }).catch((c) => {
-              throw (this.j.info("[getUserInfo]", "request error", c.message, c.stack, c.response?.data), c);
+          const url = `${host || `https://${s.url}`}/cloudide/api/v3/${s.path}/GetUserInfo`;
+          const data = {};
+          const options = {
+            headers: {
+              "Content-Type": "application/json",
+              "x-cloudide-token": token,
+            },
+          };
+          this.j.info("[getUserInfo]", "request", wr(options), url, data);
+          const resp = await this.h
+            .request({
+              method: "POST",
+              url: url,
+              data: data,
+              timeout: 30_000,
+              ...options,
+            })
+            .catch((err) => {
+              this.j.info("[getUserInfo]", "request error", err.message, err.stack, err.response?.data);
+              throw err;
             });
-            if (!a) throw (this.j.info("[getUserInfo]", "response error", "no response"), new Error("[getUserInfo]no response"));
-            return this.j.info("[getUserInfo]", "response success", a), a.Result;
+          if (!resp) {
+            this.j.info("[getUserInfo]", "response error", "no response");
+            throw new Error("[getUserInfo]no response");
+          }
+          this.j.info("[getUserInfo]", "response success", resp);
+          return resp.Result;
+        }
+
+        G(port, redirect, code, msg) {
+          debugger;
+          const callbackUrl = "http://127.0.0.1:" + port + "/authorize",
+            clientId = z9.get(this.f),
+            a = this.m.tronBuildVersion || "local",
+            uuid = crypto.randomUUID(),
+            l = this.w?.getCommonParams(),
+            machineId = l?.machine_id || "",
+            deviceId = l?.device_id || "";
+          let url = `https://${this.f}/authorization?auth_from=${this.g}&login_channel=native_ide&plugin_version=${a}&auth_type=local&client_id=${clientId}&redirect=${redirect || 0}&login_trace_id=${uuid}&auth_callback_url=${callbackUrl}&machine_id=${machineId}&device_id=${deviceId}`;
+          code && (url += `&error_code=${code}`);
+          msg && (url += `&error_msg=${msg}`);
+          return url;
+        }
+
+        H(port) {
+          debugger;
+          const e = this.G(port);
+          if (!this.s) {
+            this.j.error("OAuthenticator# this.nativeHostMainService is undefined");
+            return;
+          }
+          this.s.openExternal(void 0, e);
+          this.b && clearTimeout(this.b);
+          this.b = setTimeout(() => {
+            this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError"));
+            this.a = void 0;
+          }, OAuthLocalServer.TIMEOUT_MS);
+        }
+
+        async checkToken(token, region, host) {
+          debugger;
+          const s = Yl.get(region);
+          if (!s) {
+            throw new Error(`failed:!providerInfo, region:${region}`);
           }
 
-          G(t, e, i, s) {
-            const n = "http://" + "127.0.0.1" + ":" + t + "/authorize",
-              o = z9.get(this.f),
-              a = this.m.tronBuildVersion || "local",
-              c = crypto.randomUUID(),
-              l = this.w?.getCommonParams(),
-              h = l?.machine_id || "",
-              d = l?.device_id || "";
-            let p = `https://${this.f}/authorization?auth_from=${this.g}&login_channel=native_ide&plugin_version=${a}&auth_type=local&client_id=${o}&redirect=${e || 0}&login_trace_id=${c}&auth_callback_url=${n}&machine_id=${h}&device_id=${d}`;
-            return i && (p += `&error_code=${i}`), s && (p += `&error_msg=${s}`), p;
-          }
-
-          H(t) {
-            const e = this.G(t);
-            if (!this.s) {
-              this.j.error("OAuthenticator# this.nativeHostMainService is undefined");
-              return;
+          const url = `${host || `https://${s.url}`}/cloudide/api/v3/${s.path}/CheckLogin`;
+          const data = {};
+          const options = { headers: { "Content-Type": "application/json", "x-cloudide-token": token } };
+          try {
+            await this.h.request({ method: "POST", url: url, data: data, timeout: 30_000, ...options });
+          } catch (err) {
+            this.j.info("[checkToken]", "request error", err.message, err.stack, err.response?.data);
+            const code = err.response?.data?.ResponseMetadata?.Error?.Code;
+            if (errCodes.includes(code)) {
+              return false;
             }
-            this.s.openExternal(void 0, e),
-              this.b && clearTimeout(this.b),
-              (this.b = setTimeout(() => {
-                this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
-              }, mu.TIMEOUT_MS));
           }
-
-          async checkToken(t, e, i) {
-            const s = Yl.get(e);
-            if (!s) throw new Error(`failed:!providerInfo, region:${e}`);
-            const r = `${i || `https://${s.url}`}/cloudide/api/v3/${s.path}/CheckLogin`,
-              n = {},
-              o = { headers: { "Content-Type": "application/json", "x-cloudide-token": t } };
-            try {
-              await this.h.request({ method: "POST", url: r, data: n, timeout: 3e4, ...o });
-            } catch (a) {
-              this.j.info("[checkToken]", "request error", a.message, a.stack, a.response?.data);
-              const c = a.response?.data?.ResponseMetadata?.Error?.Code;
-              if (nb.includes(c)) return !1;
-            }
-            return !0;
-          }
-        });
+          return true;
+        }
+      };
     },
   }),
   ByteDanceOAuthService,
@@ -37490,8 +37596,8 @@ var nb,
             (this.s = n),
             (this.t = o),
             (this.u = a),
-            (this.c = new mu(this.h, this.j, this.m, this.n)),
-            (this.f = new rb(this.h, this.t)),
+            (this.c = new OAuthLocalServer(this.h, this.j, this.m, this.n)),
+            (this.f = new CommonRequest(this.h, this.t)),
             (this.g = this.j.provider === Jt.YINLI ? "ide.byted.org" : "ide-us.tiktok-row.org");
         }
 
@@ -37608,11 +37714,11 @@ var nb,
             this.b && clearTimeout(this.b),
             (this.b = setTimeout(() => {
               this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
-            }, mu.TIMEOUT_MS));
+            }, OAuthLocalServer.TIMEOUT_MS));
         }
 
         async checkToken() {
-          return !0;
+          return true;
         }
       };
     },
@@ -37774,7 +37880,9 @@ var ob,
         }
 
         Q() {
-          this.g && (this.f.set(wi.BYTEDANCE, new ByteDanceOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)), this.f.set(wi.MARSCODE, new wS(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)));
+          this.g &&
+            (this.f.set(wi.BYTEDANCE, new ByteDanceOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)),
+            this.f.set(wi.MARSCODE, new MarsCodeOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)));
         }
 
         async initialize(e) {
@@ -46734,8 +46842,6 @@ var Ab,
     "out-build/vs/platform/iCubeDeviceRegister/electron-main/iCubeDeviceRegisterMainService.js"() {
       "use strict";
 
-      debugger;
-
       H();
       Ht();
       ut();
@@ -46756,7 +46862,7 @@ var Ab,
       cc = jE;
       _p = class extends UE {
         constructor(e, i, s, r, n) {
-          debugger;
+          // debugger;
 
           super();
           this.D = e;
@@ -46827,7 +46933,7 @@ var Ab,
 
         // init
         async O() {
-          debugger;
+          // debugger;
           this.D.info(`[MainICubeDeviceRegisterService] (init) start init, retryCount: ${this.y}`);
           try {
             const { deviceId, installId, isActiveSuccess } = await this.u.registryAndActive();
