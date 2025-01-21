@@ -646,60 +646,12 @@ var F1,
     },
   });
 
-import * as $os_1 from "os";
-import * as $os_2 from "os";
-import * as $os_3 from "os";
-import * as $os_4 from "os";
-import * as $os_5 from "os";
-import * as $os_6 from "os";
-import * as $os_7 from "os";
-import * as $os_8 from "os";
-import * as $os_9 from "os";
-import * as $os_10 from "os";
-import * as $os_11 from "os";
-import {
-  arch as VP,
-  arch as sF,
-  arch as uU,
-  cpus as qP,
-  freemem as GP,
-  homedir as RI,
-  hostname as cU,
-  hostname as qH,
-  loadavg as JP,
-  networkInterfaces as vP,
-  platform as YP,
-  release as KP,
-  release as rF,
-  release as tU,
-  release as lU,
-  release as GH,
-  tmpdir as I$,
-  tmpdir as TI,
-  tmpdir as jj,
-  tmpdir as iz,
-  totalmem as ZP,
-  type as QP,
-  type as nF,
-  userInfo as wL,
-} from "os";
-import lj from "path";
-import EH from "path";
-import ZE from "path";
+import * as $os from "os";
 import * as $path from "path";
-import { dirname as GW, relative as iF, resolve as JW } from "path";
 import * as $fs from "fs";
-import Fb from "fs";
-import { promises as u7, promises as lP, promises as xn, promises as TD, realpath as _j, unlinkSync as rV, unwatchFile as rP, watch as cP, watch as Oj, watchFile as sP, writeFileSync as tz } from "fs";
-import { promisify as Ah, promisify as p9 } from "util";
-import * as Rj from "crypto";
-import _b, * as UD from "crypto";
-import * as VD from "crypto";
-import { createHash as hI, createHash as M0, createHash as bA, createHash as iU, randomUUID as pj } from "crypto";
-import * as n9 from "net";
-import * as PH from "net";
-import * as Pz from "net";
-import { createConnection as fI, createServer as dI, createServer as SA } from "net";
+import { promisify } from "util";
+import * as crypto from "crypto";
+import * as $net from "net";
 import "os";
 import "zlib";
 import electron from "electron";
@@ -757,10 +709,10 @@ function zC(t, e) {
       }
       break;
     case "darwin":
-      s = $path.join($os_1.homedir(), "Library", "Application Support");
+      s = $path.join($os.homedir(), "Library", "Application Support");
       break;
     case "linux":
-      s = process.env.XDG_CONFIG_HOME || $path.join($os_1.homedir(), ".config");
+      s = process.env.XDG_CONFIG_HOME || $path.join($os.homedir(), ".config");
       break;
     default:
       throw new Error("Platform not supported");
@@ -1032,7 +984,7 @@ function L4(t) {
 }
 
 function YC() {
-  const t = $os_2.networkInterfaces();
+  const t = $os.networkInterfaces();
   for (const e in t) {
     const i = t[e];
     if (i) {
@@ -1043,7 +995,7 @@ function YC() {
 }
 
 function P4() {
-  const t = $os_2.networkInterfaces();
+  const t = $os.networkInterfaces();
   let e;
   const i = _4[process.platform] || [];
   for (const s of i) {
@@ -7351,7 +7303,7 @@ async function Q2(t, e = so.UNLINK, i) {
   return e === so.UNLINK ? _g(t) : A$(t, i);
 }
 
-async function A$(t, e = Jc(I$())) {
+async function A$(t, e = Jc($os.tmpdir())) {
   try {
     try {
       await $fs.promises.rename(t, e);
@@ -7599,19 +7551,19 @@ var so,
           }
 
           get fdatasync() {
-            return Ah($fs.fdatasync);
+            return promisify($fs.fdatasync);
           }
 
           get open() {
-            return Ah($fs.open);
+            return promisify($fs.open);
           }
 
           get close() {
-            return Ah($fs.close);
+            return promisify($fs.close);
           }
 
           get realpath() {
-            return Ah($fs.realpath);
+            return promisify($fs.realpath);
           }
 
           async exists(t) {
@@ -9663,7 +9615,7 @@ var g5,
   });
 
 function pI(t, e, i) {
-  const r = hI("sha256").update(t).digest("hex").substr(0, 8);
+  const r = crypto.createHash("sha256").update(t).digest("hex").substr(0, 8);
   if (process.platform === "win32") return `\\\\.\\pipe\\${r}-${i}-${e}-sock`;
   const n = i.substr(0, 4),
     o = e.substr(0, 6);
@@ -9678,7 +9630,7 @@ function gI(t) {
 
 function mI(t) {
   return new Promise((e, i) => {
-    const s = dI();
+    const s = $net.createServer();
     s.on("error", i),
       s.listen(t, () => {
         s.removeListener("error", i), e(new L5(s));
@@ -9688,7 +9640,7 @@ function mI(t) {
 
 function wI(t, e) {
   return new Promise((i, s) => {
-    const r = fI(t, () => {
+    const r = $net.createConnection(t, () => {
       r.removeListener("error", s), i(y5.fromSocket(new rl(r, `ipc-client${e}`), e));
     });
     r.once("error", s);
@@ -10611,7 +10563,7 @@ var Y5,
         M1(),
         (Y5 = class extends je {
           constructor(t, e) {
-            super(t, { homeDir: RI(), tmpDir: TI(), userDataDir: O1(t, e.nameShort) }, e);
+            super(t, { homeDir: $os.homedir(), tmpDir: $os.tmpdir(), userDataDir: O1(t, e.nameShort) }, e);
           }
         });
     },
@@ -16774,7 +16726,7 @@ var mA = v({
 function go(t) {
   function e() {
     let i = t.scheme === O.file ? Qi(t) : t.toString();
-    return Oe || (i = i.toLowerCase()), M0("md5").update(i).digest("hex");
+    return Oe || (i = i.toLowerCase()), crypto.createHash("md5").update(i).digest("hex");
   }
 
   return { id: e(), configPath: t };
@@ -16782,12 +16734,13 @@ function go(t) {
 
 function R0(t, e) {
   function i() {
-    if (t.scheme !== O.file) return M0("md5").update(t.toString()).digest("hex");
+    if (t.scheme !== O.file) return crypto.createHash("md5").update(t.toString()).digest("hex");
     if (!e) return;
     let r;
     return (
       Oe ? (r = e.ino) : q ? (r = e.birthtime.getTime()) : J && (typeof e.birthtimeMs == "number" ? (r = Math.floor(e.birthtimeMs)) : (r = e.birthtime.getTime())),
-      M0("md5")
+      crypto
+        .createHash("md5")
         .update(t.fsPath)
         .update(r ? String(r) : "")
         .digest("hex")
@@ -17011,7 +16964,7 @@ var Cd,
           D(e) {
             const i = e.folderUri;
             let s;
-            return i.scheme === O.file ? (s = Oe ? i.fsPath : i.fsPath.toLowerCase()) : (s = i.toString().toLowerCase()), bA("md5").update(s).digest("hex");
+            return i.scheme === O.file ? (s = Oe ? i.fsPath : i.fsPath.toLowerCase()) : (s = i.toString().toLowerCase()), crypto.createHash("md5").update(s).digest("hex");
           }
         }),
         (xd = Cd = __decorate([__param(0, ct), __param(1, st), __param(2, K), __param(3, Ot)], xd));
@@ -17354,7 +17307,7 @@ var Py,
             if (!n) return { success: !0 };
             const o = n.webContents.debugger;
             let a = o.isAttached() ? 1 / 0 : 0;
-            const c = SA((l) => {
+            const c = $net.createServer((l) => {
               a++ === 0 && o.attach();
               let h = !1;
               const d = (m) => {
@@ -19792,7 +19745,7 @@ async function r7({ findPreview: t } = {}) {
 }
 
 function dL() {
-  const t = R($os_3.homedir(), ".dotnet", "tools", "pwsh.exe");
+  const t = R($os.homedir(), ".dotnet", "tools", "pwsh.exe");
   return new Pl(t, ".NET Core PowerShell Global Tool");
 }
 
@@ -19920,9 +19873,9 @@ var em,
               if (await he.exists(a)) {
                 let c;
                 try {
-                  c = await u7.stat(a);
+                  c = await $fs.promises.stat(a);
                 } catch (l) {
-                  l.message.startsWith("EACCES") && (c = await u7.lstat(a));
+                  l.message.startsWith("EACCES") && (c = await $fs.promises.lstat(a));
                 }
                 return c ? !c.isDirectory() : !1;
               }
@@ -19955,7 +19908,7 @@ function bL(t, e) {
     else {
       if (((i = e.SHELL), !i))
         try {
-          i = wL().shell;
+          i = $os.userInfo().shell;
         } catch {}
       i || (i = "sh"), i === "/bin/false" && (i = "/bin/bash");
     }
@@ -21572,7 +21525,7 @@ var H7,
             };
             this.P(`starting fs.watchFile() on ${t.path} (correlationId: ${t.correlationId})`);
             try {
-              sP(t.path, { persistent: !1, interval: this.r }, s);
+              $fs.watchFile(t.path, { persistent: !1, interval: this.r }, s);
             } catch (r) {
               this.Q(`fs.watchFile() failed with error ${r} on path ${t.path} (correlationId: ${t.correlationId})`);
             }
@@ -21580,7 +21533,7 @@ var H7,
               Pe(() => {
                 this.P(`stopping fs.watchFile() on ${t.path} (correlationId: ${t.correlationId})`);
                 try {
-                  rP(t.path, s);
+                  $fs.unwatchFile(t.path, s);
                 } catch (r) {
                   this.Q(`fs.unwatchFile() failed with error ${r} on path ${t.path} (correlationId: ${t.correlationId})`);
                 }
@@ -21730,7 +21683,7 @@ var q7,
             try {
               const e = await this.F(this.s);
               if (this.m.token.isCancellationRequested) return;
-              const i = await lP.stat(e);
+              const i = await $fs.promises.stat(e);
               if (this.m.token.isCancellationRequested) return;
               this.B(await this.G(e, i.isDirectory()));
             } catch (e) {
@@ -21792,7 +21745,7 @@ var q7,
             try {
               const o = L.file(this.s.path),
                 a = Ke(e),
-                c = cP(e);
+                c = $fs.watch(e);
               n.add(
                 Pe(() => {
                   c.removeAllListeners(), c.close();
@@ -22179,7 +22132,7 @@ var qd,
             try {
               i?.atomic && (this.S(`[Disk FileSystemProvider]: atomic read operation started (${this.J(e)})`), (s = await this.R(e)));
               const r = this.J(e);
-              return await xn.readFile(r);
+              return await $fs.promises.readFile(r);
             } catch (r) {
               throw this.ib(r);
             } finally {
@@ -22260,7 +22213,7 @@ var qd,
               if (ul(i) && i.unlock)
                 try {
                   const { stat: c } = await pi.stat(r);
-                  c.mode & 128 || (await xn.chmod(r, c.mode | 128));
+                  c.mode & 128 || (await $fs.promises.chmod(r, c.mode | 128));
                 } catch (c) {
                   c.code !== "ENOENT" && this.a.trace(c);
                 }
@@ -22268,7 +22221,7 @@ var qd,
               if (ul(i)) {
                 if (J)
                   try {
-                    await xn.truncate(r, 0), (a = "r+");
+                    await $fs.promises.truncate(r, 0), (a = "r+");
                   } catch (c) {
                     c.code !== "ENOENT" && this.a.trace(c);
                   }
@@ -22348,7 +22301,7 @@ var qd,
 
           async mkdir(e) {
             try {
-              await xn.mkdir(this.J(e));
+              await $fs.promises.mkdir(this.J(e));
             } catch (i) {
               throw this.ib(i);
             }
@@ -22362,7 +22315,7 @@ var qd,
                 i?.atomic !== !1 && i.atomic.postfix && (r = R(Zt(s), `${Ke(s)}${i.atomic.postfix}`)), await he.rm(s, so.MOVE, r);
               } else
                 try {
-                  await xn.unlink(s);
+                  await $fs.promises.unlink(s);
                 } catch (r) {
                   if (r.code === "EPERM" || r.code === "EISDIR") {
                     let n = !1;
@@ -22370,7 +22323,7 @@ var qd,
                       const { stat: o, symbolicLink: a } = await pi.stat(s);
                       n = o.isDirectory() && !a;
                     } catch {}
-                    if (n) await xn.rmdir(s);
+                    if (n) await $fs.promises.rmdir(s);
                     else throw r;
                   } else throw r;
                 }
@@ -22429,7 +22382,7 @@ var qd,
             if (Eh(r, n, !o)) return;
             const a = new Ne();
             try {
-              a.add(await this.R(e)), a.add(await this.R(i)), s && (await xn.mkdir(Zt(n), { recursive: !0 })), await xn.copyFile(r, n);
+              a.add(await this.R(e)), a.add(await this.R(i)), s && (await $fs.promises.mkdir(Zt(n), { recursive: !0 })), await $fs.promises.copyFile(r, n);
             } catch (c) {
               if (c.code === "ENOENT" && !s) return this.fb(e, i, !0);
               throw this.ib(c);
@@ -22935,7 +22888,7 @@ var Jd,
             if (this.b === void 0) {
               let t = 0,
                 e = 0;
-              const i = vP();
+              const i = $os.networkInterfaces();
               for (const s in i) {
                 const r = i[s];
                 if (r) for (const { mac: n, internal: o } of r) o || ((e += 1), this.c(n.toUpperCase()) && (t += 1));
@@ -22963,7 +22916,7 @@ function o9(t, e, i, s = 1) {
 
 function Dm(t, e, i, s) {
   if (e === 0) return s(0);
-  const r = new n9.Socket();
+  const r = new $net.Socket();
   r.once("connect", () => (a9(r), Dm(t + i, e - 1, i, s))), r.once("data", () => {}), r.once("error", (n) => (a9(r), n.code !== "ECONNREFUSED" ? Dm(t + i, e - 1, i, s) : s(t))), r.connect(t, "127.0.0.1");
 }
 
@@ -22971,7 +22924,7 @@ function EP(t, e, i, s = "127.0.0.1") {
   let r = !1,
     n,
     o = 1;
-  const a = n9.createServer({ pauseOnConnect: !0 });
+  const a = $net.createServer({ pauseOnConnect: !0 });
 
   function c(l, h) {
     r || ((r = !0), a.removeAllListeners(), a.close(), n && clearTimeout(n), h(l));
@@ -23119,7 +23072,7 @@ async function AP() {
 }
 
 function LP() {
-  const t = /(\d+)\.(\d+)\.(\d+)/g.exec($os_4.release());
+  const t = /(\d+)\.(\d+)\.(\d+)/g.exec($os.release());
   if (t) return parseInt(t[3]);
 }
 
@@ -23671,7 +23624,7 @@ var fr,
               if (n === 1) throw new Fi();
               try {
                 const o = `osascript -e "do shell script \\"mkdir -p /usr/local/bin && ln -sf '${s}' '${i}'\\" with administrator privileges"`;
-                await p9(f9)(o);
+                await promisify(f9)(o);
               } catch {
                 throw new Error(u(2074, null, i));
               }
@@ -23693,7 +23646,7 @@ var fr,
                   if (r === 1) throw new Fi();
                   try {
                     const n = `osascript -e "do shell script \\"rm '${i}'\\" with administrator privileges"`;
-                    await p9(f9)(n);
+                    await promisify(f9)(n);
                   } catch {
                     throw new Error(u(2078, null, i));
                   }
@@ -23871,11 +23824,11 @@ var fr,
           }
 
           async getOSStatistics() {
-            return { totalmem: ZP(), freemem: GP(), loadavg: JP() };
+            return { totalmem: $os.totalmem(), freemem: $os.freemem(), loadavg: $os.loadavg() };
           }
 
           async getOSProperties() {
-            return { arch: VP(), platform: YP(), release: KP(), type: QP(), cpus: qP() };
+            return { arch: $os.arch(), platform: $os.platform(), release: $os.release(), type: $os.type(), cpus: $os.cpus() };
           }
 
           async getOSVirtualMachineHint() {
@@ -24249,7 +24202,7 @@ var jl,
                 a.on("close", () => {
                   const c = r
                     .flat()
-                    .map((l) => iF(o, l).replace(/\\/g, "/"))
+                    .map((l) => $path.relative(o, l).replace(/\\/g, "/"))
                     .filter(Boolean)
                     .sort();
                   i(c), this.c.info(`[CSS_DEV] DONE, ${c.length} css modules (${Math.round(s.elapsed())}ms)`);
@@ -24317,7 +24270,7 @@ var Fm,
                   userEnv: this.d,
                   data: e,
                   disableExtensions: !!this.e.disableExtensions,
-                  os: { type: nF(), arch: sF(), release: rF() },
+                  os: { type: $os.type(), arch: $os.arch(), release: $os.release() },
                   product: as,
                   nls: { messages: kc(), language: Vo() },
                   cssModules: this.k.isEnabled ? await this.k.getCssModules() : void 0,
@@ -36959,7 +36912,7 @@ var nS,
         }),
         (aS = class extends iS {
           getICubeThemeExtension() {
-            const t = L.parse(lj.join(It.asFileUri(A2).fsPath, "theme-defaults"));
+            const t = L.parse($path.join(It.asFileUri(A2).fsPath, "theme-defaults"));
             return {
               description: {
                 id: "icube.icube-themes",
@@ -37222,7 +37175,7 @@ var pS,
             } catch (n) {
               if (
                 (this.e.error("[Request Error]", n, n.code, n.response?.data, n.response?.headers, n.stack, wr(t)),
-                this.e.error("[Request Error Network]", "network: ", $os_5.networkInterfaces(), "address: ", n?.request?.socket?.localAddress, n?.request?.socket?.localPort),
+                this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", n?.request?.socket?.localAddress, n?.request?.socket?.localPort),
                 t.url)
               ) {
                 const o = new URL(t.url),
@@ -37426,7 +37379,7 @@ var nb,
             const n = "http://" + "127.0.0.1" + ":" + t + "/authorize",
               o = z9.get(this.f),
               a = this.m.tronBuildVersion || "local",
-              c = pj(),
+              c = crypto.randomUUID(),
               l = this.w?.getCommonParams(),
               h = l?.machine_id || "",
               d = l?.device_id || "";
@@ -38619,7 +38572,7 @@ var Qf,
         (Xf = class extends Qf {
           constructor(e, i, s, r, n, o) {
             super(s, r, n), (this.m = e), (this.o = i), (this.p = o);
-            const a = Oj(Zt(this.m)),
+            const a = $fs.watch(Zt(this.m)),
               c = I.fromNodeEventEmitter(a, "change", (p, g) => g),
               l = I.filter(c, (p) => p === "current"),
               d = I.debounce(l, (p, g) => g, 2e3)(() => this.checkForUpdates(!1));
@@ -38650,7 +38603,7 @@ var Qf,
           }
 
           async t() {
-            const e = await new Promise((s, r) => _j(`${Zt(this.m)}/current`, (n, o) => (n ? r(n) : s(o)))),
+            const e = await new Promise((s, r) => $fs.realpath(`${Zt(this.m)}/current`, (n, o) => (n ? r(n) : s(o)))),
               i = Ke(e);
             return this.o !== i;
           }
@@ -38669,7 +38622,7 @@ async function Nj(t, e) {
   if (
     (await new Promise((r, n) => {
       const o = $fs.createReadStream(t),
-        a = Rj.createHash("sha256");
+        a = crypto.createHash("sha256");
       o.pipe(a);
       const c = ch((l, h) => {
         o.removeAllListeners(), a.removeAllListeners(), l ? n(l) : r(h);
@@ -38722,7 +38675,7 @@ var tp,
         (tp = void 0),
         (vu = class extends Wa {
           get cachePath() {
-            const e = R(jj(), `vscode-${this.j.quality}-${this.j.target}-${process.arch}`);
+            const e = R($os.tmpdir(), `vscode-${this.j.quality}-${this.j.target}-${process.arch}`);
             return $fs.promises.mkdir(e, { recursive: !0 }).then(() => e);
           }
 
@@ -39248,7 +39201,7 @@ var IS,
               this.B(I.fromNodeEventEmitter(this.m, "enter-full-screen")(() => this.g.fire())),
               this.B(I.fromNodeEventEmitter(this.m, "leave-full-screen")(() => this.h.fire()));
             const s = !ka(this.r, i?.titleBarStyle === "hidden" ? "custom" : void 0);
-            if ((q && s && e.setSheetOffset(KC(tU()) ? 28 : 22), s && (F0(this.r) || q))) {
+            if ((q && s && e.setSheetOffset(KC($os.release()) ? 28 : 22), s && (F0(this.r) || q))) {
               const r = this.s.getItem(AC.D);
               r ? this.updateWindowControls({ height: r }) : this.updateWindowControls({ height: wy });
             }
@@ -39785,7 +39738,7 @@ var IS,
               i.isReload || (this.getRepresentedFilename() && this.setRepresentedFilename(""), this.m.setTitle(this.rb.nameLong));
             const s = await this.ub.getAuthUserInfo({ forceLogin: !1 }),
               r = e.workspace?.configPath?.path || e.workspace?.uri?.fsPath,
-              n = r ? iU("md5").update(r).digest("hex") : "",
+              n = r ? crypto.createHash("md5").update(r).digest("hex") : "",
               { name: o } = G2(r || ""),
               a = {
                 id: n,
@@ -41151,7 +41104,7 @@ var hp,
               product: as,
               isInitialStartup: e.initialStartup,
               perfMarks: _1(),
-              os: { release: lU(), hostname: cU(), arch: uU() },
+              os: { release: $os.release(), hostname: $os.hostname(), arch: $os.arch() },
               autoDetectHighContrast: i?.autoDetectHighContrast ?? !0,
               autoDetectColorScheme: i?.autoDetectColorScheme ?? !1,
               accessibilitySupport: app.accessibilitySupportEnabled,
@@ -44848,7 +44801,7 @@ var gE,
   });
 
 function HW() {
-  const t = /(\d+)\.(\d+)\.(\d+)/g.exec($os_6.release());
+  const t = /(\d+)\.(\d+)\.(\d+)/g.exec($os.release());
   let e = 0;
   return t && t.length === 4 && (e = parseInt(t[3])), e;
 }
@@ -45052,8 +45005,8 @@ async function XW() {
   const t = new Set(),
     e = await vE("git.exe");
   if (e) {
-    const r = GW(e);
-    t.add(JW(r, "../.."));
+    const r = $path.dirname(e);
+    t.add($path.resolve(r, "../.."));
   }
 
   function i(r, n) {
@@ -45802,15 +45755,15 @@ ${c.output}`),
 
 function xE() {
   const t = {
-      release: $os_7.release(),
-      hostname: $os_7.hostname(),
-      memory: $os_7.totalmem(),
-      cpu: $os_7.cpus().map((d) => d.model),
+      release: $os.release(),
+      hostname: $os.hostname(),
+      memory: $os.totalmem(),
+      cpu: $os.cpus().map((d) => d.model),
     },
-    e = $os_7.totalmem(),
-    i = $os_7.freemem(),
+    e = $os.totalmem(),
+    i = $os.freemem(),
     r = `${((e - i) / e) * 100}%`,
-    n = $os_7.cpus(),
+    n = $os.cpus(),
     o = n.reduce((d, p) => d + p.times.idle, 0),
     a = n.reduce((d, p) => d + Object.values(p.times).reduce((g, m) => g + m, 0), 0),
     c = o / n.length,
@@ -46076,14 +46029,14 @@ var ME,
               [vi.Mac]: "/Applications/Visual Studio Code.app",
               [vi.Windows]: "",
             },
-            userDir: { [vi.Mac]: `${$os_8.homedir()}/Library/Application Support/Code/User`, [vi.Windows]: "" },
-            extensionsDir: { [vi.Mac]: `${$os_8.homedir()}/.vscode/extensions`, [vi.Windows]: "" },
+            userDir: { [vi.Mac]: `${$os.homedir()}/Library/Application Support/Code/User`, [vi.Windows]: "" },
+            extensionsDir: { [vi.Mac]: `${$os.homedir()}/.vscode/extensions`, [vi.Windows]: "" },
             resultKey: "iCubeVSImportResult",
           },
           [Ss.Cursor]: {
             dir: { [vi.Mac]: "/Applications/Cursor.app", [vi.Windows]: "" },
-            userDir: { [vi.Mac]: `${$os_8.homedir()}/Library/Application Support/Cursor/User`, [vi.Windows]: "" },
-            extensionsDir: { [vi.Mac]: `${$os_8.homedir()}/.cursor/extensions`, [vi.Windows]: "" },
+            userDir: { [vi.Mac]: `${$os.homedir()}/Library/Application Support/Cursor/User`, [vi.Windows]: "" },
+            extensionsDir: { [vi.Mac]: `${$os.homedir()}/.cursor/extensions`, [vi.Windows]: "" },
             resultKey: "iCubeCursorImportResult",
           },
         }),
@@ -46196,7 +46149,7 @@ var ME,
           }
 
           async exportUserData(e, i, s, r) {
-            const n = Jc(R($os_8.tmpdir(), "trae", "export_user_data"));
+            const n = Jc(R($os.tmpdir(), "trae", "export_user_data"));
             try {
               await $fs.promises.mkdir(n, { recursive: !0 }), await Promise.all([this.s(s, r, n), this.p(n), this.q(n), this.r(n)]);
               const o = await import("archiver"),
@@ -46794,7 +46747,7 @@ var Ab,
             if (J) e = `\\Software\\Bytedance\\${this.s.name}\\Test\\Common`;
             else if (Oe) {
               const i = this.H.userDataPath;
-              e = EH.resolve(i, "User/globalStorage/common");
+              e = $path.resolve(i, "User/globalStorage/common");
             }
             return {
               cachePath: e,
@@ -46918,7 +46871,7 @@ var Op,
 
 function GE(t, e = !1) {
   return new Promise((i, s) => {
-    const r = PH.createServer();
+    const r = $net.createServer();
     r.once("error", s),
       r.listen(0, t, () => {
         r.close(), i(e);
@@ -47403,9 +47356,9 @@ var Up,
                 }),
               ));
             const l = this.u.userDataPath,
-              h = ZE.join(l, "Local Storage");
-            Fb.existsSync(h) || Fb.mkdirSync(h, { recursive: !0 }),
-              (this.g = ZE.join(h, "config.db")),
+              h = $path.join(l, "Local Storage");
+            $fs.existsSync(h) || $fs.mkdirSync(h, { recursive: !0 }),
+              (this.g = $path.join(h, "config.db")),
               this.L("[initialize]", {
                 machineId: e,
                 endpoint: this.h,
@@ -47484,11 +47437,11 @@ var Up,
 
           async H(e) {
             try {
-              const i = _b.randomBytes(16),
-                s = _b.createHash("md5").update(this.t.nameShort).digest("hex"),
-                r = _b.createCipheriv("aes-256-cbc", Buffer.from(s), i);
+              const i = crypto.randomBytes(16),
+                s = crypto.createHash("md5").update(this.t.nameShort).digest("hex"),
+                r = crypto.createCipheriv("aes-256-cbc", Buffer.from(s), i);
               let n = r.update(JSON.stringify(e));
-              (n = Buffer.concat([n, r.final()])), Fb.writeFileSync(this.g, Buffer.concat([i, n])), this.z.publicLog2("DynamicConfig:saveConfig", { success: !0 });
+              (n = Buffer.concat([n, r.final()])), $fs.writeFileSync(this.g, Buffer.concat([i, n])), this.z.publicLog2("DynamicConfig:saveConfig", { success: !0 });
             } catch (i) {
               this.L("[saveDynamicConfig:fail]", i),
                 this.z.publicLog2("DynamicConfig:saveConfig", {
@@ -48355,7 +48308,7 @@ var Mb,
                 C = Rh(r.then((tt) => tt.getChannel("telemetryAppender"))),
                 F = new N9(C),
                 { memory: z, cpu: X, memoryUsagePercentage: ne, usage: B } = xE(),
-                pe = SF(GH(), qH(), process.arch, this.F.commit, this.F.version, e, i, s, x, void 0, this.F.tronBuildVersion, JSON.stringify(z), JSON.stringify(X), ne, B, this.F.quality, o.n),
+                pe = SF($os.release(), $os.hostname(), process.arch, this.F.commit, this.F.version, e, i, s, x, void 0, this.F.tronBuildVersion, JSON.stringify(z), JSON.stringify(X), ne, B, this.F.quality, o.n),
                 Be = CF(this.w),
                 te = { appenders: [F], commonProperties: pe, piiPaths: Be, sendErrorTelemetry: !0 };
               n.set(St, new ke(gf, [te], !1));
@@ -49887,11 +49840,11 @@ function Nb(t) {
 
 function QH() {
   const t = {
-      os: `${$os_9.type()} ${$os_9.arch()} ${$os_9.release()}`,
-      memory: `${($os_9.totalmem() / lo.GB).toFixed(2)}GB (${($os_9.freemem() / lo.GB).toFixed(2)}GB free)`,
+      os: `${$os.type()} ${$os.arch()} ${$os.release()}`,
+      memory: `${($os.totalmem() / lo.GB).toFixed(2)}GB (${($os.freemem() / lo.GB).toFixed(2)}GB free)`,
       vmHint: `${Math.round(Jd.value() * 100)}%`,
     },
-    e = $os_9.cpus();
+    e = $os.cpus();
   return e && e.length > 0 && (t.cpus = `${e[0].model} (${e.length} x ${e[0].speed})`), t;
 }
 
@@ -49953,14 +49906,14 @@ var Bb,
 
           g(e) {
             const i = [];
-            i.push(`Version:          ${this.d.nameShort} ${this.d.version} (${this.d.commit || "Commit unknown"}, ${this.d.date || "Date unknown"})`), i.push(`OS Version:       ${$os_9.type()} ${$os_9.arch()} ${$os_9.release()}`);
-            const s = $os_9.cpus();
+            i.push(`Version:          ${this.d.nameShort} ${this.d.version} (${this.d.commit || "Commit unknown"}, ${this.d.date || "Date unknown"})`), i.push(`OS Version:       ${$os.type()} ${$os.arch()} ${$os.release()}`);
+            const s = $os.cpus();
             return (
               s && s.length > 0 && i.push(`CPUs:             ${s[0].model} (${s.length} x ${s[0].speed})`),
-              i.push(`Memory (System):  ${($os_9.totalmem() / lo.GB).toFixed(2)}GB (${($os_9.freemem() / lo.GB).toFixed(2)}GB free)`),
+              i.push(`Memory (System):  ${($os.totalmem() / lo.GB).toFixed(2)}GB (${($os.freemem() / lo.GB).toFixed(2)}GB free)`),
               J ||
                 i.push(
-                  `Load (avg):       ${$os_9
+                  `Load (avg):       ${$os
                     .loadavg()
                     .map((r) => Math.round(r))
                     .join(", ")}`,
@@ -50022,7 +49975,7 @@ ${this.m(e, a.processes)}`),
               };
             return (
               J ||
-                (a.load = `${$os_9
+                (a.load = `${$os
                   .loadavg()
                   .map((c) => Math.round(c))
                   .join(", ")}`),
@@ -50165,7 +50118,7 @@ ${n.errorMessage}`);
             const o = n === 0;
             let a;
             o ? (a = r.pid === e ? `${this.d.applicationName} main` : "remote agent") : i.has(r.pid) ? (a = i.get(r.pid)) : (a = `${"  ".repeat(n)} ${r.name}`);
-            const c = process.platform === "win32" ? r.mem : $os_9.totalmem() * (r.mem / 100);
+            const c = process.platform === "win32" ? r.mem : $os.totalmem() * (r.mem / 100);
             s.push(`${r.load.toFixed(0).padStart(5, " ")}	${(c / lo.MB).toFixed(0).padStart(6, " ")}	${r.pid.toFixed(0).padStart(6, " ")}	${a}`), Array.isArray(r.children) && r.children.forEach((l) => this.n(e, i, s, l, n + 1));
           }
 
@@ -50229,9 +50182,9 @@ ${n.errorMessage}`);
   });
 
 function sz(t) {
-  const e = Jc(iz());
+  const e = Jc($os.tmpdir());
   try {
-    return tz(e, ""), t && console.log(`Marker file for --wait created: ${e}`), e;
+    return $fs.writeFileSync(e, ""), t && console.log(`Marker file for --wait created: ${e}`), e;
   } catch (i) {
     t && console.error(`Failed to create marker file for --wait: ${i}`);
     return;
@@ -52683,7 +52636,7 @@ var DD,
               (this.privacy = Zp.Private),
               (this.j = new Map()),
               (this.a = t),
-              (this.b = Pz.createServer()),
+              (this.b = $net.createServer()),
               (this.c = new Xc()),
               (this.f = () => this.c.open()),
               this.b.on("listening", this.f),
@@ -52765,7 +52718,7 @@ var DD,
           }
 
           isPortPrivileged(e) {
-            return fz(e, this.t, rs, $os_10.release());
+            return fz(e, this.t, rs, $os.release());
           }
 
           F(e, i, s, r, n, o, a, c) {
@@ -53640,7 +53593,7 @@ var ND,
                       s.dispose(),
                       m.join(
                         "instanceLockfile",
-                        TD.unlink(i.mainLockfile).catch(() => {}),
+                        $fs.promises.unlink(i.mainLockfile).catch(() => {}),
                       );
                   }),
                   t.createInstance(zp, g, e).startup()
@@ -53713,7 +53666,7 @@ var ND,
                   t.workspaceStorageHome.with({ scheme: O.file }).fsPath,
                   t.localHistoryHome.with({ scheme: O.file }).fsPath,
                   t.backupHome,
-                ].map((n) => (n ? TD.mkdir(n, { recursive: !0 }) : void 0)),
+                ].map((n) => (n ? $fs.promises.mkdir(n, { recursive: !0 }) : void 0)),
               ),
               s.init(),
               i.initialize(),
@@ -53741,7 +53694,7 @@ var ND,
               } catch (p) {
                 if (!n || J || p.code !== "ECONNREFUSED") throw (p.code === "EPERM" && this.h(u(159, null, r.nameShort), u(160, null), r), p);
                 try {
-                  rV(e.mainIPCHandle);
+                  $fs.unlinkSync(e.mainIPCHandle);
                 } catch (g) {
                   throw (t.warn("Could not delete obsolete instance handle", g), g);
                 }
@@ -54265,8 +54218,8 @@ function mergeConfig() {
   const s = $fs.readFileSync(i),
     r = s.slice(0, 16),
     n = s.slice(16),
-    o = UD.createHash("md5").update(t).digest("hex"),
-    a = UD.createDecipheriv("aes-256-cbc", Buffer.from(o), r);
+    o = crypto.createHash("md5").update(t).digest("hex"),
+    a = crypto.createDecipheriv("aes-256-cbc", Buffer.from(o), r);
   let c = a.update(n);
   c = Buffer.concat([c, a.final()]);
   const l = JSON.parse(c.toString());
@@ -54458,7 +54411,7 @@ var Un;
 function _V(t) {
   try {
     const e = P4();
-    return VD.createHash("sha256").update(e, "utf8").digest("hex");
+    return crypto.createHash("sha256").update(e, "utf8").digest("hex");
   } catch (e) {
     t?.(e);
     return;
@@ -54482,7 +54435,7 @@ function MV(t, e, i) {
           r = OV(s) || {};
         r && r[e] && typeof r[e] == "string" && (Un = r[e]);
       }
-      Un || ((Un = _V() || VD.randomUUID()), Un && ($fs.existsSync(t) || $fs.mkdirSync($path.dirname(t), { recursive: !0 }), $fs.writeFileSync(t, JSON.stringify({ [e]: Un }), "utf8")));
+      Un || ((Un = _V() || crypto.randomUUID()), Un && ($fs.existsSync(t) || $fs.mkdirSync($path.dirname(t), { recursive: !0 }), $fs.writeFileSync(t, JSON.stringify({ [e]: Un }), "utf8")));
     } catch (s) {
       i?.(s), (Un = void 0);
     }
@@ -54681,7 +54634,7 @@ function WV() {
   const t = process.env.VSCODE_PORTABLE;
   if (t) return $path.join(t, "argv.json");
   let e = Tt.dataFolderName;
-  return process.env.VSCODE_DEV && (e = `${e}-local`), $path.join($os_11.homedir(), e, "argv.json");
+  return process.env.VSCODE_DEV && (e = `${e}-local`), $path.join($os.homedir(), e, "argv.json");
 }
 
 function HV() {
