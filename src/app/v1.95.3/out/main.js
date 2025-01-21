@@ -54442,7 +54442,7 @@ function MV(t, e, i) {
   return Un;
 }
 
-var h1 = $path.dirname(fileURLToPath(import.meta.url)),
+var nlsMetadataPath = $path.dirname(fileURLToPath(import.meta.url)),
   a4 = createRequire(import.meta.url);
 if (!process.env.VSCODE_DEV) {
   process.env.ELECTRON_FORCE_IS_PACKAGED = "true";
@@ -54460,7 +54460,7 @@ function TV() {
     const t = a4("../product.desktop.json");
     u1(Tt, t);
   }
-  if (jn.existsSync($path.join(h1, "../product.desktop.local.json"))) {
+  if (jn.existsSync($path.join(nlsMetadataPath, "../product.desktop.local.json"))) {
     const t = a4("../product.desktop.local.json");
     u1(Tt, t);
   }
@@ -54481,21 +54481,21 @@ zs.sandbox && !zs["disable-chromium-sandbox"] && !d1["disable-chromium-sandbox"]
   : app.commandLine.hasSwitch("no-sandbox") && !app.commandLine.hasSwitch("disable-gpu-sandbox")
     ? app.commandLine.appendSwitch("disable-gpu-sandbox")
     : (app.commandLine.appendSwitch("no-sandbox"), app.commandLine.appendSwitch("disable-gpu-sandbox"));
-var yr = O1(zs, Tt.nameShort ?? "marscode-local");
+var userDataPath = O1(zs, Tt.nameShort ?? "marscode-local");
 if (process.env.VSCODE_DEV) {
-  yr = $path.resolve($path.dirname(yr), `${$path.basename(yr)} - Local`);
+  userDataPath = $path.resolve($path.dirname(userDataPath), `${$path.basename(userDataPath)} - Local`);
 }
 if (process.platform === "win32") {
-  const t = I4(yr);
+  const t = I4(userDataPath);
   t && vc(t);
 }
-app.setPath("userData", yr);
+app.setPath("userData", userDataPath);
 var GD = GV();
 Menu.setApplicationMenu(null);
 qe("code/willStartCrashReporter");
 (zs["crash-reporter-directory"] || (d1["enable-crash-reporter"] && !zs["disable-crash-reporter"])) && HV();
 qe("code/didStartCrashReporter");
-qD && qD.isPortable && app.setAppLogsPath($path.join(yr, "logs"));
+qD && qD.isPortable && app.setAppLogsPath($path.join(userDataPath, "logs"));
 protocol.registerSchemesAsPrivileged([
   {
     scheme: "vscode-webview",
@@ -54516,20 +54516,20 @@ protocol.registerSchemesAsPrivileged([
 qV();
 process.env.ENABLE_MARSCODE_NLS = "1";
 var c4 = void 0,
-  l4 = YD((app.getPreferredSystemLanguages()?.[0] ?? "en").toLowerCase()),
-  Uu = KV(d1);
-if (Uu) {
+  osLocale = YD((app.getPreferredSystemLanguages()?.[0] ?? "en").toLowerCase()),
+  userLocale = KV(d1);
+if (userLocale) {
   c4 = zD({
-    userLocale: Uu,
-    osLocale: l4,
+    userLocale: userLocale,
+    osLocale: osLocale,
     commit: Tt.commit,
-    userDataPath: yr,
-    nlsMetadataPath: h1,
+    userDataPath: userDataPath,
+    nlsMetadataPath: nlsMetadataPath,
   });
 }
 if (process.platform === "win32" || process.platform === "linux") {
-  const t = !Uu || Uu === "qps-ploc" ? "en" : Uu;
-  app.commandLine.appendSwitch("lang", t);
+  const lang = !userLocale || userLocale === "qps-ploc" ? "en" : userLocale;
+  app.commandLine.appendSwitch("lang", lang);
 }
 app.once("ready", function () {
   if (zs.trace) {
@@ -54538,7 +54538,9 @@ app.once("ready", function () {
       traceOptions: zs["trace-options"] || "record-until-full,enable-sampling",
     };
     contentTracing.startRecording(t).finally(() => JD());
-  } else JD();
+  } else {
+    JD();
+  }
 });
 
 async function JD() {
@@ -54687,7 +54689,7 @@ function HV() {
   const i = (Tt.crashReporter ? Tt.crashReporter.productName : void 0) || Tt.nameShort,
     s = (Tt.crashReporter ? Tt.crashReporter.companyName : void 0) || "Microsoft",
     r = !!(!process.env.VSCODE_DEV && e),
-    n = MV($path.resolve(yr, "User/globalStorage/storage.json"), "telemetry.machineId", console.error.bind(console));
+    n = MV($path.resolve(userDataPath, "User/globalStorage/storage.json"), "telemetry.machineId", console.error.bind(console));
   crashReporter.start({
     companyName: s,
     productName: process.env.VSCODE_DEV ? `${i} Dev` : i,
@@ -54739,7 +54741,7 @@ function qV() {
 function GV() {
   if (process.argv.indexOf("--no-cached-data") > 0 || process.env.VSCODE_DEV) return;
   const t = Tt.commit;
-  if (t) return $path.join(yr, "CachedData", t);
+  if (t) return $path.join(userDataPath, "CachedData", t);
 }
 
 async function JV(t) {
@@ -54765,16 +54767,16 @@ async function YV() {
     ? ((e = YD(e.toLowerCase())),
       zD({
         userLocale: e,
-        osLocale: l4,
+        osLocale: osLocale,
         commit: Tt.commit,
-        userDataPath: yr,
-        nlsMetadataPath: h1,
+        userDataPath: userDataPath,
+        nlsMetadataPath: nlsMetadataPath,
       }))
     : {
         userLocale: "en",
-        osLocale: l4,
+        osLocale: osLocale,
         resolvedLanguage: "en",
-        defaultMessagesFile: $path.join(h1, "nls.messages.json"),
+        defaultMessagesFile: $path.join(nlsMetadataPath, "nls.messages.json"),
         locale: "en",
         availableLanguages: {},
       };
