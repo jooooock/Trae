@@ -1,0 +1,18 @@
+{
+  "name": "trae",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jock",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron src/app/v1.95.3",
+    "debug": "electron --inspect-brk=9090 src/app/v1.95.3"
+  },
+  "dependencies": {
+    "@electron/remote": "2.0.11",
+    "electron": "^33.3.1"
+  },
+  "devDependencies": {
+    "@electron/asar": "^3.2.8"
+  }
+}

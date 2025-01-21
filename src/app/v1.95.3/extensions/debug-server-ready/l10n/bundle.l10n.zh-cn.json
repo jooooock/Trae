@@ -1,0 +1,1 @@
+{"Format uri ('{0}') must contain exactly one substitution placeholder.":"格式 uri (\"{0}\") 只能包含一个替换占位符。","Format uri ('{0}') uses a substitution placeholder but pattern did not capture anything.":"格式 uri (\"{0}\") 使用替换占位符, 但模式没有捕获任何内容。"}

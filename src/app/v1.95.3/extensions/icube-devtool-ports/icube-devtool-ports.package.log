@@ -1,0 +1,287 @@
+Invoking: yes | vsce package --no-dependencies --out ../../output/
+Executing prepublish script 'npm run vscode:prepublish'...
+
+> icube-devtool-ports@0.0.119 vscode:prepublish
+> pnpm build
+
+
+> icube-devtool-ports@0.0.119 build /opt/tiger/compile_path/src/code.byted.org/ide/icube-mono/extensions/icube-devtool-ports
+> npx cross-env NODE_ENV=production ts-node --files ./build
+
+(node:7120) [DEP_WEBPACK_TEMPLATE_PATH_PLUGIN_REPLACE_PATH_VARIABLES_HASH] DeprecationWarning: [hash] is now [fullhash] (also consider using [chunkhash] or [contenthash], see documentation for details)
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ WARNING  Compiled with 1 warnings4:47:34 PM
+
+ warning  in ../../common/temp/node_modules/.pnpm/express@4.19.2/node_modules/express/lib/view.js
+
+Critical dependency: the request of a dependency is an expression
+
+
+Upload sourcemaps
+> Uploading source maps
+Upload Destination: http://apm-open.bytedance.net/api_v2/browser/jserr/upload_sourcemap
+
+logid for debugging:
+
+You did not specify release.
+Source Map Upload Report
+
+Start deleting Sourcemap files!
+All Sourcemap files had been successfully deleted!
+ WARNING  Compiled with 3 warnings4:47:40 PM
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.dcb430e065e3da255331.js (2.62 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (2.62 MiB)
+      index.dcb430e065e3da255331.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+
+Upload sourcemaps
+> Uploading source maps
+Upload Destination: http://apm-open.bytedance.net/api_v2/browser/jserr/upload_sourcemap
+
+logid for debugging:
+
+You did not specify release.
+Source Map Upload Report
+
+Start deleting Sourcemap files!
+All Sourcemap files had been successfully deleted!
+ WARNING  Compiled with 3 warnings4:47:41 PM
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.b38f7971e39d11db8177.js (2.62 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (2.62 MiB)
+      index.b38f7971e39d11db8177.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+
+Upload sourcemaps
+> Uploading source maps
+Upload Destination: http://apm-open.bytedance.net/api_v2/browser/jserr/upload_sourcemap
+
+logid for debugging:
+
+You did not specify release.
+Source Map Upload Report
+
+Start deleting Sourcemap files!
+All Sourcemap files had been successfully deleted!
+ WARNING  Compiled with 3 warnings4:47:41 PM
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.b38f7971e39d11db8177.js (2.62 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (2.62 MiB)
+      index.b38f7971e39d11db8177.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+asset extension.js 1.46 MiB [emitted] [minimized] (name: main)
+orphan modules 266 KiB [orphan] 59 modules
+runtime modules 1.04 KiB 5 modules
+modules by path ../../common/temp/node_modules/.pnpm/ 2.26 MiB
+  javascript modules 2 MiB 302 modules
+  json modules 262 KiB
+    modules by path ../../common/temp/node_modules/.pnpm/iconv-lite@0.4.24/node_modules/iconv-lite/ 86.7 KiB 8 modules
+    + 3 modules
+modules by path ../../packages/ 407 KiB 44 modules
+modules by path ./ 156 KiB 27 modules
++ 25 modules
+
+WARNING in ../../common/temp/node_modules/.pnpm/express@4.19.2/node_modules/express/lib/view.js 81:13-25
+Critical dependency: the request of a dependency is an expression
+ @ ../../common/temp/node_modules/.pnpm/express@4.19.2/node_modules/express/lib/application.js 22:11-28
+ @ ../../common/temp/node_modules/.pnpm/express@4.19.2/node_modules/express/lib/express.js 18:12-36
+ @ ../../common/temp/node_modules/.pnpm/express@4.19.2/node_modules/express/index.js 11:0-41
+ @ ./src/socketServer/index.ts 34:34-52
+ @ ./src/iCubeDevtoolPortsModule.ts 35:23-48
+ @ ./src/extension.ts 32:34-70
+
+1 warning has detailed information that is not shown.
+Use 'stats.errorDetails: true' resp. '--stats-error-details' to show it.
+
+webpack 5.97.1 compiled with 1 warning in 30070 ms
+
+assets by path *.html 2.72 KiB
+  asset index.html 1.39 KiB [emitted]
+  asset template.html 1.33 KiB [emitted] [from: assets/template.html] [copied]
+asset index.dcb430e065e3da255331.js 2.62 MiB [emitted] [immutable] [minimized] [big] (name: index)
+asset icon.png 18.4 KiB [emitted] [from: assets/icon.png] [copied]
+asset reset.css 278 bytes [emitted] [from: assets/reset.css] [copied]
+orphan modules 1.06 MiB [orphan] 293 modules
+runtime modules 1.57 KiB 7 modules
+cacheable modules 3.7 MiB
+  modules by path ../../common/temp/node_modules/.pnpm/ 2.87 MiB 216 modules
+  modules by path ../../packages/ 447 KiB 41 modules
+  modules by path ./ 315 KiB
+    modules by path ./src/webview/component/ 302 KiB 17 modules
+    modules by path ./src/*.ts 4.11 KiB
+      ./src/utils.ts 2.05 KiB [built] [code generated]
+      ./src/type.ts 2.06 KiB [built] [code generated]
+    + 6 modules
+  data:font/ttf;base64,AAEAAAALAIAAAwAw.. 92.9 KiB [built] [code generated]
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.dcb430e065e3da255331.js (2.62 MiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (2.62 MiB)
+      index.dcb430e065e3da255331.js
+
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.97.1 compiled with 3 warnings in 35647 ms
+
+assets by path *.html 2.72 KiB
+  asset index.html 1.39 KiB [emitted]
+  asset template.html 1.33 KiB [emitted] [from: assets/template.html] [copied]
+asset index.b38f7971e39d11db8177.js 2.62 MiB [emitted] [immutable] [minimized] [big] (name: index)
+asset icon.png 18.4 KiB [emitted] [from: assets/icon.png] [copied]
+asset reset.css 278 bytes [emitted] [from: assets/reset.css] [copied]
+orphan modules 1.06 MiB [orphan] 293 modules
+runtime modules 1.57 KiB 7 modules
+cacheable modules 3.7 MiB
+  modules by path ../../common/temp/node_modules/.pnpm/ 2.87 MiB 216 modules
+  modules by path ../../packages/ 447 KiB 41 modules
+  modules by path ./ 315 KiB
+    modules by path ./src/webview/component/ 302 KiB 17 modules
+    modules by path ./src/*.ts 4.11 KiB
+      ./src/utils.ts 2.05 KiB [built] [code generated]
+      ./src/type.ts 2.06 KiB [built] [code generated]
+    + 6 modules
+  data:font/ttf;base64,AAEAAAALAIAAAwAw.. 92.9 KiB [built] [code generated]
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.b38f7971e39d11db8177.js (2.62 MiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (2.62 MiB)
+      index.b38f7971e39d11db8177.js
+
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.97.1 compiled with 3 warnings in 36826 ms
+
+assets by path *.html 2.72 KiB
+  asset index.html 1.39 KiB [emitted]
+  asset template.html 1.33 KiB [emitted] [from: assets/template.html] [copied]
+asset index.b38f7971e39d11db8177.js 2.62 MiB [emitted] [immutable] [minimized] [big] (name: index)
+asset icon.png 18.4 KiB [emitted] [from: assets/icon.png] [copied]
+asset reset.css 278 bytes [emitted] [from: assets/reset.css] [copied]
+orphan modules 1.06 MiB [orphan] 293 modules
+runtime modules 1.57 KiB 7 modules
+cacheable modules 3.7 MiB
+  modules by path ../../common/temp/node_modules/.pnpm/ 2.87 MiB 216 modules
+  modules by path ../../packages/ 447 KiB 41 modules
+  modules by path ./ 315 KiB
+    modules by path ./src/webview/component/ 302 KiB 17 modules
+    modules by path ./src/*.ts 4.11 KiB
+      ./src/utils.ts 2.05 KiB [built] [code generated]
+      ./src/type.ts 2.06 KiB [built] [code generated]
+    + 6 modules
+  data:font/ttf;base64,AAEAAAALAIAAAwAw.. 92.9 KiB [built] [code generated]
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.b38f7971e39d11db8177.js (2.62 MiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (2.62 MiB)
+      index.b38f7971e39d11db8177.js
+
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.97.1 compiled with 3 warnings in 36281 ms
+ WARNING  Using '*' activation is usually a bad idea as it impacts performance.
+More info: https://code.visualstudio.com/api/references/activation-events#Start-up
+Use --allow-star-activation to bypass.
+ WARNING  LICENSE, LICENSE.md, or LICENSE.txt not found
+ INFO  Files included in the VSIX:
+icube-devtool-ports-0.0.119.vsix
+├─ [Content_Types].xml 
+├─ extension.vsixmanifest 
+└─ extension/
+   ├─ README.md [0.52 KB]
+   ├─ icube-devtool-ports.package.error.log [0.52 KB]
+   ├─ icube-devtool-ports.package.log [10.07 KB]
+   ├─ index.d.ts [0.02 KB]
+   ├─ package.json [6.48 KB]
+   ├─ package.nls.json [0.04 KB]
+   ├─ package.nls.zh-cn.json [0.04 KB]
+   ├─ tsconfig.json [0.46 KB]
+   ├─ tsconfig.package.json [0.78 KB]
+   ├─ assets/
+   │  ├─ icon.png [18.38 KB]
+   │  ├─ reset.css [0.27 KB]
+   │  └─ template.html [1.33 KB]
+   ├─ dist/
+   │  └─ extension.js [1.46 MB]
+   └─ public/
+      ├─ cn/ (5 files) [2.64 MB]
+      ├─ sg/ (5 files) [2.64 MB]
+      └─ va/ (5 files) [2.64 MB]
+
+=> Run vsce ls --tree to see all included files.
+

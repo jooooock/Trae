@@ -1,0 +1,91 @@
+{
+  "name": "ai",
+  "displayName": "Trae: AI Assistant",
+  "private": true,
+  "icon": "resource/images/logo.png",
+  "publisher": "trae",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "extensionDependencies": [
+    "trae.icube-manager"
+  ],
+  "browser": "./dist/web/extension.js",
+  "l10n": "./l10n",
+  "packageNLSUris": [
+    [
+      "zh-cn",
+      "package.nls.zh-cn.json"
+    ]
+  ],
+  "contributes": {
+    "localizations": [
+      {
+        "languageId": "zh-cn",
+        "translations": [
+          {
+            "id": "vscode",
+            "path": "./l10n/bundle.l10n.zh-cn.json"
+          }
+        ]
+      }
+    ],
+    "icubeInteractiveSession": [
+      {
+        "label": "%command.ai.name%",
+        "id": "icube-ai",
+        "icon": ""
+      }
+    ],
+    "commands": [
+      {
+        "command": "icube.interactiveEditor.explain",
+        "title": "%command.explain.title%"
+      },
+      {
+        "command": "icube.interactiveEditor.doc",
+        "title": "%command.doc.title%"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "icube.inlineChat.start",
+        "mac": "cmd+i"
+      }
+    ],
+    "configuration": {
+      "type": "string",
+      "title": "AI Assistant",
+      "properties": {
+        "ai_assistant.request.env.ppe": {
+          "type": [
+            "string"
+          ],
+          "description": "The env for AI backend request in PPE"
+        }
+      }
+    }
+  },
+  "enabledApiProposals": [
+    "extensionRuntime",
+    "interactiveUserActions",
+    "chat",
+    "chatAgents2",
+    "chatAgents2Additions",
+    "chatVariables",
+    "icubeInteractive",
+    "inlineCompletionsAdditions",
+    "icube",
+    "terminalDataWriteEvent",
+    "terminalExecuteCommandEvent",
+    "terminalSelection",
+    "resolvers"
+  ]
+}
