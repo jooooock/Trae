@@ -13,6 +13,7 @@
     "electron": "^33.3.1"
   },
   "devDependencies": {
-    "@electron/asar": "^3.2.8"
+    "@electron/asar": "^3.2.8",
+    "prettier": "^3.4.2"
   }
 }
