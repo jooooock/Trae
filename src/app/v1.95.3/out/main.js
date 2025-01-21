@@ -550,24 +550,30 @@ export default {
 var RC = Object.create,
   y4 = Object.defineProperty,
   TC = Object.getOwnPropertyDescriptor,
-  A1 = Object.getOwnPropertyNames,
+  getOwnPropertyNames = Object.getOwnPropertyNames,
   NC = Object.getPrototypeOf,
   BC = Object.prototype.hasOwnProperty,
   L1 = ((t) => (typeof require < "u" ? require : typeof Proxy < "u" ? new Proxy(t, { get: (e, i) => (typeof require < "u" ? require : e)[i] }) : t))(function (t) {
     if (typeof require < "u") return require.apply(this, arguments);
     throw Error('Dynamic require of "' + t + '" is not supported');
   }),
-  v = (t, e) =>
+  v = (obj, result) =>
     function () {
-      return t && (e = (0, t[A1(t)[0]])((t = 0))), e;
+      if (obj) {
+        const firstKey = getOwnPropertyNames(obj)[0];
+        const fn = obj[firstKey];
+        obj = 0;
+        result = fn(0);
+      }
+      return result;
     },
   jC = (t, e) =>
     function () {
-      return e || (0, t[A1(t)[0]])((e = { exports: {} }).exports, e), e.exports;
+      return e || (0, t[getOwnPropertyNames(t)[0]])((e = { exports: {} }).exports, e), e.exports;
     },
   UC = (t, e, i, s) => {
     if ((e && typeof e == "object") || typeof e == "function")
-      for (let r of A1(e))
+      for (let r of getOwnPropertyNames(e))
         !BC.call(t, r) &&
           r !== i &&
           y4(t, r, {
@@ -642,7 +648,9 @@ var F1,
   xr = v({
     "out-build/vs/base/common/performance.js"() {
       "use strict";
-      (F1 = HC(globalThis)), (qe = F1.mark), (_1 = F1.getMarks);
+      F1 = HC(globalThis);
+      qe = F1.mark;
+      _1 = F1.getMarks;
     },
   });
 
@@ -673,7 +681,7 @@ import { HttpError as kj, newError as Sj } from "builder-util-runtime";
 import Ij, { Provider as Ej } from "electron-updater";
 import { parseUpdateInfo as Dj, resolveFiles as Cj } from "electron-updater/out/providers/Provider.js";
 import { TronClientChecker as Aj } from "@ies/tron-client";
-import { DeviceRegister as DH } from "@byted/device-register";
+import { DeviceRegister } from "@byted/device-register";
 import { createDefaultSlardarClient as CH } from "@byted-icube/slardar/dist/index.node.js";
 import { createDefaultTeaClient as xH } from "@byted-icube/tea/dist/index.node.js";
 import { Tenant as qE } from "@byted-icube/env";
@@ -997,7 +1005,7 @@ function YC() {
 function P4() {
   const t = $os.networkInterfaces();
   let e;
-  const i = _4[process.platform] || [];
+  const i = GetMacAddress[process.platform] || [];
   for (const s of i) {
     const r = t[s];
     if (r) {
@@ -1013,16 +1021,16 @@ function P4() {
 }
 
 var F4,
-  _4,
+  GetMacAddress,
   O4 = v({
     "out-build/vs/base/node/getMacAddress.js"() {
       "use strict";
-      (F4 = new Set(["00:00:00:00:00:00", "ff:ff:ff:ff:ff:ff", "ac:de:48:00:11:22"])),
-        (_4 = {
-          darwin: ["en0", "en1", "llw0"],
-          linux: ["wlan0", "eth0"],
-          win32: ["Wi-Fi", "WLAN", "Ethernet"],
-        });
+      F4 = new Set(["00:00:00:00:00:00", "ff:ff:ff:ff:ff:ff", "ac:de:48:00:11:22"]);
+      GetMacAddress = {
+        darwin: ["en0", "en1", "llw0"],
+        linux: ["wlan0", "eth0"],
+        win32: ["Wi-Fi", "WLAN", "Ethernet"],
+      };
     },
   }),
   M4,
@@ -1033,17 +1041,22 @@ var F4,
     "out-build/vs/base/common/product.js"() {
       "use strict";
       (function (t) {
-        (t[(t.PRO = 0)] = "PRO"), (t[(t.LITE = 1)] = "LITE"), (t[(t.UX_SIMPLE = 2)] = "UX_SIMPLE");
-      })(M4 || (M4 = {})),
-        (function (t) {
-          (t.YINLI = "Yinli"), (t.SPRING = "Spring");
-        })(Jt || (Jt = {})),
-        (function (t) {
-          (t.CN = "cn"), (t.I18N = "i18n");
-        })(R4 || (R4 = {})),
-        (function (t) {
-          (t.Yinli = "Yinli"), (t.Spring = "Spring");
-        })(T4 || (T4 = {}));
+        t[(t.PRO = 0)] = "PRO";
+        t[(t.LITE = 1)] = "LITE";
+        t[(t.UX_SIMPLE = 2)] = "UX_SIMPLE";
+      })(M4 || (M4 = {}));
+      (function (t) {
+        t.YINLI = "Yinli";
+        t.SPRING = "Spring";
+      })(Jt || (Jt = {}));
+      (function (t) {
+        t.CN = "cn";
+        t.I18N = "i18n";
+      })(R4 || (R4 = {}));
+      (function (t) {
+        t.Yinli = "Yinli";
+        t.Spring = "Spring";
+      })(T4 || (T4 = {}));
     },
   }),
   N4,
@@ -3857,498 +3870,498 @@ var Bv,
   Ae = v({
     "out-build/vs/base/common/path.js"() {
       "use strict";
-      Ls(),
-        (Bv = 65),
-        (jv = 97),
-        (Uv = 90),
-        (Wv = 122),
-        (Ar = 46),
-        (Kt = 47),
-        (_i = 92),
-        (Lr = 58),
-        (Hv = 63),
-        (ng = class extends Error {
-          constructor(t, e, i) {
-            let s;
-            typeof e == "string" && e.indexOf("not ") === 0 ? ((s = "must not be"), (e = e.replace(/^not /, ""))) : (s = "must be");
-            const r = t.indexOf(".") !== -1 ? "property" : "argument";
-            let n = `The "${t}" ${r} ${s} of type ${e}`;
-            (n += `. Received type ${typeof i}`), super(n), (this.code = "ERR_INVALID_ARG_TYPE");
-          }
-        }),
-        (Oi = Oc === "win32"),
-        (pt = {
-          resolve(...t) {
-            let e = "",
-              i = "",
-              s = !1;
-            for (let r = t.length - 1; r >= -1; r--) {
-              let n;
-              if (r >= 0) {
-                if (((n = t[r]), $t(n, `paths[${r}]`), n.length === 0)) continue;
-              } else e.length === 0 ? (n = Zs()) : ((n = Ge[`=${e}`] || Zs()), (n === void 0 || (n.slice(0, 2).toLowerCase() !== e.toLowerCase() && n.charCodeAt(2) === _i)) && (n = `${e}\\`));
-              const o = n.length;
-              let a = 0,
-                c = "",
-                l = !1;
-              const h = n.charCodeAt(0);
-              if (o === 1) Le(h) && ((a = 1), (l = !0));
-              else if (Le(h))
-                if (((l = !0), Le(n.charCodeAt(1)))) {
-                  let d = 2,
-                    p = d;
-                  for (; d < o && !Le(n.charCodeAt(d)); ) d++;
-                  if (d < o && d !== p) {
-                    const g = n.slice(p, d);
-                    for (p = d; d < o && Le(n.charCodeAt(d)); ) d++;
-                    if (d < o && d !== p) {
-                      for (p = d; d < o && !Le(n.charCodeAt(d)); ) d++;
-                      (d === o || d !== p) && ((c = `\\\\${g}\\${n.slice(p, d)}`), (a = d));
-                    }
-                  }
-                } else a = 1;
-              else rn(h) && n.charCodeAt(1) === Lr && ((c = n.slice(0, 2)), (a = 2), o > 2 && Le(n.charCodeAt(2)) && ((l = !0), (a = 3)));
-              if (c.length > 0)
-                if (e.length > 0) {
-                  if (c.toLowerCase() !== e.toLowerCase()) continue;
-                } else e = c;
-              if (s) {
-                if (e.length > 0) break;
-              } else if (((i = `${n.slice(a)}\\${i}`), (s = l), l && e.length > 0)) break;
-            }
-            return (i = mh(i, !s, "\\", Le)), s ? `${e}\\${i}` : `${e}${i}` || ".";
-          },
-          normalize(t) {
-            $t(t, "path");
-            const e = t.length;
-            if (e === 0) return ".";
-            let i = 0,
-              s,
-              r = !1;
-            const n = t.charCodeAt(0);
-            if (e === 1) return rg(n) ? "\\" : t;
-            if (Le(n))
-              if (((r = !0), Le(t.charCodeAt(1)))) {
-                let a = 2,
-                  c = a;
-                for (; a < e && !Le(t.charCodeAt(a)); ) a++;
-                if (a < e && a !== c) {
-                  const l = t.slice(c, a);
-                  for (c = a; a < e && Le(t.charCodeAt(a)); ) a++;
-                  if (a < e && a !== c) {
-                    for (c = a; a < e && !Le(t.charCodeAt(a)); ) a++;
-                    if (a === e) return `\\\\${l}\\${t.slice(c)}\\`;
-                    a !== c && ((s = `\\\\${l}\\${t.slice(c, a)}`), (i = a));
-                  }
-                }
-              } else i = 1;
-            else rn(n) && t.charCodeAt(1) === Lr && ((s = t.slice(0, 2)), (i = 2), e > 2 && Le(t.charCodeAt(2)) && ((r = !0), (i = 3)));
-            let o = i < e ? mh(t.slice(i), !r, "\\", Le) : "";
-            return o.length === 0 && !r && (o = "."), o.length > 0 && Le(t.charCodeAt(e - 1)) && (o += "\\"), s === void 0 ? (r ? `\\${o}` : o) : r ? `${s}\\${o}` : `${s}${o}`;
-          },
-          isAbsolute(t) {
-            $t(t, "path");
-            const e = t.length;
-            if (e === 0) return !1;
-            const i = t.charCodeAt(0);
-            return Le(i) || (e > 2 && rn(i) && t.charCodeAt(1) === Lr && Le(t.charCodeAt(2)));
-          },
-          join(...t) {
-            if (t.length === 0) return ".";
-            let e, i;
-            for (let n = 0; n < t.length; ++n) {
-              const o = t[n];
-              $t(o, "path"), o.length > 0 && (e === void 0 ? (e = i = o) : (e += `\\${o}`));
-            }
-            if (e === void 0) return ".";
-            let s = !0,
-              r = 0;
-            if (typeof i == "string" && Le(i.charCodeAt(0))) {
-              ++r;
-              const n = i.length;
-              n > 1 && Le(i.charCodeAt(1)) && (++r, n > 2 && (Le(i.charCodeAt(2)) ? ++r : (s = !1)));
-            }
-            if (s) {
-              for (; r < e.length && Le(e.charCodeAt(r)); ) r++;
-              r >= 2 && (e = `\\${e.slice(r)}`);
-            }
-            return pt.normalize(e);
-          },
-          relative(t, e) {
-            if (($t(t, "from"), $t(e, "to"), t === e)) return "";
-            const i = pt.resolve(t),
-              s = pt.resolve(e);
-            if (i === s || ((t = i.toLowerCase()), (e = s.toLowerCase()), t === e)) return "";
-            let r = 0;
-            for (; r < t.length && t.charCodeAt(r) === _i; ) r++;
-            let n = t.length;
-            for (; n - 1 > r && t.charCodeAt(n - 1) === _i; ) n--;
-            const o = n - r;
-            let a = 0;
-            for (; a < e.length && e.charCodeAt(a) === _i; ) a++;
-            let c = e.length;
-            for (; c - 1 > a && e.charCodeAt(c - 1) === _i; ) c--;
-            const l = c - a,
-              h = o < l ? o : l;
-            let d = -1,
-              p = 0;
-            for (; p < h; p++) {
-              const m = t.charCodeAt(r + p);
-              if (m !== e.charCodeAt(a + p)) break;
-              m === _i && (d = p);
-            }
-            if (p !== h) {
-              if (d === -1) return s;
-            } else {
-              if (l > h) {
-                if (e.charCodeAt(a + p) === _i) return s.slice(a + p + 1);
-                if (p === 2) return s.slice(a + p);
-              }
-              o > h && (t.charCodeAt(r + p) === _i ? (d = p) : p === 2 && (d = 3)), d === -1 && (d = 0);
-            }
-            let g = "";
-            for (p = r + d + 1; p <= n; ++p) (p === n || t.charCodeAt(p) === _i) && (g += g.length === 0 ? ".." : "\\..");
-            return (a += d), g.length > 0 ? `${g}${s.slice(a, c)}` : (s.charCodeAt(a) === _i && ++a, s.slice(a, c));
-          },
-          toNamespacedPath(t) {
-            if (typeof t != "string" || t.length === 0) return t;
-            const e = pt.resolve(t);
-            if (e.length <= 2) return t;
-            if (e.charCodeAt(0) === _i) {
-              if (e.charCodeAt(1) === _i) {
-                const i = e.charCodeAt(2);
-                if (i !== Hv && i !== Ar) return `\\\\?\\UNC\\${e.slice(2)}`;
-              }
-            } else if (rn(e.charCodeAt(0)) && e.charCodeAt(1) === Lr && e.charCodeAt(2) === _i) return `\\\\?\\${e}`;
-            return t;
-          },
-          dirname(t) {
-            $t(t, "path");
-            const e = t.length;
-            if (e === 0) return ".";
-            let i = -1,
-              s = 0;
-            const r = t.charCodeAt(0);
-            if (e === 1) return Le(r) ? t : ".";
-            if (Le(r)) {
-              if (((i = s = 1), Le(t.charCodeAt(1)))) {
-                let a = 2,
-                  c = a;
-                for (; a < e && !Le(t.charCodeAt(a)); ) a++;
-                if (a < e && a !== c) {
-                  for (c = a; a < e && Le(t.charCodeAt(a)); ) a++;
-                  if (a < e && a !== c) {
-                    for (c = a; a < e && !Le(t.charCodeAt(a)); ) a++;
-                    if (a === e) return t;
-                    a !== c && (i = s = a + 1);
-                  }
-                }
-              }
-            } else rn(r) && t.charCodeAt(1) === Lr && ((i = e > 2 && Le(t.charCodeAt(2)) ? 3 : 2), (s = i));
-            let n = -1,
-              o = !0;
-            for (let a = e - 1; a >= s; --a)
-              if (Le(t.charCodeAt(a))) {
-                if (!o) {
-                  n = a;
-                  break;
-                }
-              } else o = !1;
-            if (n === -1) {
-              if (i === -1) return ".";
-              n = i;
-            }
-            return t.slice(0, n);
-          },
-          basename(t, e) {
-            e !== void 0 && $t(e, "suffix"), $t(t, "path");
-            let i = 0,
-              s = -1,
-              r = !0,
-              n;
-            if ((t.length >= 2 && rn(t.charCodeAt(0)) && t.charCodeAt(1) === Lr && (i = 2), e !== void 0 && e.length > 0 && e.length <= t.length)) {
-              if (e === t) return "";
-              let o = e.length - 1,
-                a = -1;
-              for (n = t.length - 1; n >= i; --n) {
-                const c = t.charCodeAt(n);
-                if (Le(c)) {
-                  if (!r) {
-                    i = n + 1;
-                    break;
-                  }
-                } else a === -1 && ((r = !1), (a = n + 1)), o >= 0 && (c === e.charCodeAt(o) ? --o === -1 && (s = n) : ((o = -1), (s = a)));
-              }
-              return i === s ? (s = a) : s === -1 && (s = t.length), t.slice(i, s);
-            }
-            for (n = t.length - 1; n >= i; --n)
-              if (Le(t.charCodeAt(n))) {
-                if (!r) {
-                  i = n + 1;
-                  break;
-                }
-              } else s === -1 && ((r = !1), (s = n + 1));
-            return s === -1 ? "" : t.slice(i, s);
-          },
-          extname(t) {
-            $t(t, "path");
-            let e = 0,
-              i = -1,
-              s = 0,
-              r = -1,
-              n = !0,
-              o = 0;
-            t.length >= 2 && t.charCodeAt(1) === Lr && rn(t.charCodeAt(0)) && (e = s = 2);
-            for (let a = t.length - 1; a >= e; --a) {
-              const c = t.charCodeAt(a);
-              if (Le(c)) {
-                if (!n) {
-                  s = a + 1;
-                  break;
-                }
-                continue;
-              }
-              r === -1 && ((n = !1), (r = a + 1)), c === Ar ? (i === -1 ? (i = a) : o !== 1 && (o = 1)) : i !== -1 && (o = -1);
-            }
-            return i === -1 || r === -1 || o === 0 || (o === 1 && i === r - 1 && i === s + 1) ? "" : t.slice(i, r);
-          },
-          format: Nv.bind(null, "\\"),
-          parse(t) {
-            $t(t, "path");
-            const e = { root: "", dir: "", base: "", ext: "", name: "" };
-            if (t.length === 0) return e;
-            const i = t.length;
-            let s = 0,
-              r = t.charCodeAt(0);
-            if (i === 1) return Le(r) ? ((e.root = e.dir = t), e) : ((e.base = e.name = t), e);
-            if (Le(r)) {
-              if (((s = 1), Le(t.charCodeAt(1)))) {
+      Ls();
+      Bv = 65;
+      jv = 97;
+      Uv = 90;
+      Wv = 122;
+      Ar = 46;
+      Kt = 47;
+      _i = 92;
+      Lr = 58;
+      Hv = 63;
+      ng = class extends Error {
+        constructor(t, e, i) {
+          let s;
+          typeof e == "string" && e.indexOf("not ") === 0 ? ((s = "must not be"), (e = e.replace(/^not /, ""))) : (s = "must be");
+          const r = t.indexOf(".") !== -1 ? "property" : "argument";
+          let n = `The "${t}" ${r} ${s} of type ${e}`;
+          (n += `. Received type ${typeof i}`), super(n), (this.code = "ERR_INVALID_ARG_TYPE");
+        }
+      };
+      Oi = Oc === "win32";
+      pt = {
+        resolve(...t) {
+          let e = "",
+            i = "",
+            s = !1;
+          for (let r = t.length - 1; r >= -1; r--) {
+            let n;
+            if (r >= 0) {
+              if (((n = t[r]), $t(n, `paths[${r}]`), n.length === 0)) continue;
+            } else e.length === 0 ? (n = Zs()) : ((n = Ge[`=${e}`] || Zs()), (n === void 0 || (n.slice(0, 2).toLowerCase() !== e.toLowerCase() && n.charCodeAt(2) === _i)) && (n = `${e}\\`));
+            const o = n.length;
+            let a = 0,
+              c = "",
+              l = !1;
+            const h = n.charCodeAt(0);
+            if (o === 1) Le(h) && ((a = 1), (l = !0));
+            else if (Le(h))
+              if (((l = !0), Le(n.charCodeAt(1)))) {
                 let d = 2,
                   p = d;
-                for (; d < i && !Le(t.charCodeAt(d)); ) d++;
-                if (d < i && d !== p) {
-                  for (p = d; d < i && Le(t.charCodeAt(d)); ) d++;
-                  if (d < i && d !== p) {
-                    for (p = d; d < i && !Le(t.charCodeAt(d)); ) d++;
-                    d === i ? (s = d) : d !== p && (s = d + 1);
+                for (; d < o && !Le(n.charCodeAt(d)); ) d++;
+                if (d < o && d !== p) {
+                  const g = n.slice(p, d);
+                  for (p = d; d < o && Le(n.charCodeAt(d)); ) d++;
+                  if (d < o && d !== p) {
+                    for (p = d; d < o && !Le(n.charCodeAt(d)); ) d++;
+                    (d === o || d !== p) && ((c = `\\\\${g}\\${n.slice(p, d)}`), (a = d));
                   }
                 }
-              }
-            } else if (rn(r) && t.charCodeAt(1) === Lr) {
-              if (i <= 2) return (e.root = e.dir = t), e;
-              if (((s = 2), Le(t.charCodeAt(2)))) {
-                if (i === 3) return (e.root = e.dir = t), e;
-                s = 3;
-              }
-            }
-            s > 0 && (e.root = t.slice(0, s));
-            let n = -1,
-              o = s,
-              a = -1,
-              c = !0,
-              l = t.length - 1,
-              h = 0;
-            for (; l >= s; --l) {
-              if (((r = t.charCodeAt(l)), Le(r))) {
-                if (!c) {
-                  o = l + 1;
-                  break;
-                }
-                continue;
-              }
-              a === -1 && ((c = !1), (a = l + 1)), r === Ar ? (n === -1 ? (n = l) : h !== 1 && (h = 1)) : n !== -1 && (h = -1);
-            }
-            return (
-              a !== -1 && (n === -1 || h === 0 || (h === 1 && n === a - 1 && n === o + 1) ? (e.base = e.name = t.slice(o, a)) : ((e.name = t.slice(o, n)), (e.base = t.slice(o, a)), (e.ext = t.slice(n, a)))),
-              o > 0 && o !== s ? (e.dir = t.slice(0, o - 1)) : (e.dir = e.root),
-              e
-            );
-          },
-          sep: "\\",
-          delimiter: ";",
-          win32: null,
-          posix: null,
-        }),
-        (zv = (() => {
-          if (Oi) {
-            const t = /\\/g;
-            return () => {
-              const e = Zs().replace(t, "/");
-              return e.slice(e.indexOf("/"));
-            };
+              } else a = 1;
+            else rn(h) && n.charCodeAt(1) === Lr && ((c = n.slice(0, 2)), (a = 2), o > 2 && Le(n.charCodeAt(2)) && ((l = !0), (a = 3)));
+            if (c.length > 0)
+              if (e.length > 0) {
+                if (c.toLowerCase() !== e.toLowerCase()) continue;
+              } else e = c;
+            if (s) {
+              if (e.length > 0) break;
+            } else if (((i = `${n.slice(a)}\\${i}`), (s = l), l && e.length > 0)) break;
           }
-          return () => Zs();
-        })()),
-        (ye = {
-          resolve(...t) {
-            let e = "",
-              i = !1;
-            for (let s = t.length - 1; s >= -1 && !i; s--) {
-              const r = s >= 0 ? t[s] : zv();
-              $t(r, `paths[${s}]`), r.length !== 0 && ((e = `${r}/${e}`), (i = r.charCodeAt(0) === Kt));
-            }
-            return (e = mh(e, !i, "/", rg)), i ? `/${e}` : e.length > 0 ? e : ".";
-          },
-          normalize(t) {
-            if (($t(t, "path"), t.length === 0)) return ".";
-            const e = t.charCodeAt(0) === Kt,
-              i = t.charCodeAt(t.length - 1) === Kt;
-            return (t = mh(t, !e, "/", rg)), t.length === 0 ? (e ? "/" : i ? "./" : ".") : (i && (t += "/"), e ? `/${t}` : t);
-          },
-          isAbsolute(t) {
-            return $t(t, "path"), t.length > 0 && t.charCodeAt(0) === Kt;
-          },
-          join(...t) {
-            if (t.length === 0) return ".";
-            let e;
-            for (let i = 0; i < t.length; ++i) {
-              const s = t[i];
-              $t(s, "path"), s.length > 0 && (e === void 0 ? (e = s) : (e += `/${s}`));
-            }
-            return e === void 0 ? "." : ye.normalize(e);
-          },
-          relative(t, e) {
-            if (($t(t, "from"), $t(e, "to"), t === e || ((t = ye.resolve(t)), (e = ye.resolve(e)), t === e))) return "";
-            const i = 1,
-              s = t.length,
-              r = s - i,
-              n = 1,
-              o = e.length - n,
-              a = r < o ? r : o;
-            let c = -1,
-              l = 0;
-            for (; l < a; l++) {
-              const d = t.charCodeAt(i + l);
-              if (d !== e.charCodeAt(n + l)) break;
-              d === Kt && (c = l);
-            }
-            if (l === a)
-              if (o > a) {
-                if (e.charCodeAt(n + l) === Kt) return e.slice(n + l + 1);
-                if (l === 0) return e.slice(n + l);
-              } else r > a && (t.charCodeAt(i + l) === Kt ? (c = l) : l === 0 && (c = 0));
-            let h = "";
-            for (l = i + c + 1; l <= s; ++l) (l === s || t.charCodeAt(l) === Kt) && (h += h.length === 0 ? ".." : "/..");
-            return `${h}${e.slice(n + c)}`;
-          },
-          toNamespacedPath(t) {
-            return t;
-          },
-          dirname(t) {
-            if (($t(t, "path"), t.length === 0)) return ".";
-            const e = t.charCodeAt(0) === Kt;
-            let i = -1,
-              s = !0;
-            for (let r = t.length - 1; r >= 1; --r)
-              if (t.charCodeAt(r) === Kt) {
-                if (!s) {
-                  i = r;
-                  break;
+          return (i = mh(i, !s, "\\", Le)), s ? `${e}\\${i}` : `${e}${i}` || ".";
+        },
+        normalize(t) {
+          $t(t, "path");
+          const e = t.length;
+          if (e === 0) return ".";
+          let i = 0,
+            s,
+            r = !1;
+          const n = t.charCodeAt(0);
+          if (e === 1) return rg(n) ? "\\" : t;
+          if (Le(n))
+            if (((r = !0), Le(t.charCodeAt(1)))) {
+              let a = 2,
+                c = a;
+              for (; a < e && !Le(t.charCodeAt(a)); ) a++;
+              if (a < e && a !== c) {
+                const l = t.slice(c, a);
+                for (c = a; a < e && Le(t.charCodeAt(a)); ) a++;
+                if (a < e && a !== c) {
+                  for (c = a; a < e && !Le(t.charCodeAt(a)); ) a++;
+                  if (a === e) return `\\\\${l}\\${t.slice(c)}\\`;
+                  a !== c && ((s = `\\\\${l}\\${t.slice(c, a)}`), (i = a));
                 }
-              } else s = !1;
-            return i === -1 ? (e ? "/" : ".") : e && i === 1 ? "//" : t.slice(0, i);
-          },
-          basename(t, e) {
-            e !== void 0 && $t(e, "ext"), $t(t, "path");
-            let i = 0,
-              s = -1,
-              r = !0,
-              n;
-            if (e !== void 0 && e.length > 0 && e.length <= t.length) {
-              if (e === t) return "";
-              let o = e.length - 1,
-                a = -1;
-              for (n = t.length - 1; n >= 0; --n) {
-                const c = t.charCodeAt(n);
-                if (c === Kt) {
-                  if (!r) {
-                    i = n + 1;
-                    break;
-                  }
-                } else a === -1 && ((r = !1), (a = n + 1)), o >= 0 && (c === e.charCodeAt(o) ? --o === -1 && (s = n) : ((o = -1), (s = a)));
               }
-              return i === s ? (s = a) : s === -1 && (s = t.length), t.slice(i, s);
+            } else i = 1;
+          else rn(n) && t.charCodeAt(1) === Lr && ((s = t.slice(0, 2)), (i = 2), e > 2 && Le(t.charCodeAt(2)) && ((r = !0), (i = 3)));
+          let o = i < e ? mh(t.slice(i), !r, "\\", Le) : "";
+          return o.length === 0 && !r && (o = "."), o.length > 0 && Le(t.charCodeAt(e - 1)) && (o += "\\"), s === void 0 ? (r ? `\\${o}` : o) : r ? `${s}\\${o}` : `${s}${o}`;
+        },
+        isAbsolute(t) {
+          $t(t, "path");
+          const e = t.length;
+          if (e === 0) return !1;
+          const i = t.charCodeAt(0);
+          return Le(i) || (e > 2 && rn(i) && t.charCodeAt(1) === Lr && Le(t.charCodeAt(2)));
+        },
+        join(...t) {
+          if (t.length === 0) return ".";
+          let e, i;
+          for (let n = 0; n < t.length; ++n) {
+            const o = t[n];
+            $t(o, "path"), o.length > 0 && (e === void 0 ? (e = i = o) : (e += `\\${o}`));
+          }
+          if (e === void 0) return ".";
+          let s = !0,
+            r = 0;
+          if (typeof i == "string" && Le(i.charCodeAt(0))) {
+            ++r;
+            const n = i.length;
+            n > 1 && Le(i.charCodeAt(1)) && (++r, n > 2 && (Le(i.charCodeAt(2)) ? ++r : (s = !1)));
+          }
+          if (s) {
+            for (; r < e.length && Le(e.charCodeAt(r)); ) r++;
+            r >= 2 && (e = `\\${e.slice(r)}`);
+          }
+          return pt.normalize(e);
+        },
+        relative(t, e) {
+          if (($t(t, "from"), $t(e, "to"), t === e)) return "";
+          const i = pt.resolve(t),
+            s = pt.resolve(e);
+          if (i === s || ((t = i.toLowerCase()), (e = s.toLowerCase()), t === e)) return "";
+          let r = 0;
+          for (; r < t.length && t.charCodeAt(r) === _i; ) r++;
+          let n = t.length;
+          for (; n - 1 > r && t.charCodeAt(n - 1) === _i; ) n--;
+          const o = n - r;
+          let a = 0;
+          for (; a < e.length && e.charCodeAt(a) === _i; ) a++;
+          let c = e.length;
+          for (; c - 1 > a && e.charCodeAt(c - 1) === _i; ) c--;
+          const l = c - a,
+            h = o < l ? o : l;
+          let d = -1,
+            p = 0;
+          for (; p < h; p++) {
+            const m = t.charCodeAt(r + p);
+            if (m !== e.charCodeAt(a + p)) break;
+            m === _i && (d = p);
+          }
+          if (p !== h) {
+            if (d === -1) return s;
+          } else {
+            if (l > h) {
+              if (e.charCodeAt(a + p) === _i) return s.slice(a + p + 1);
+              if (p === 2) return s.slice(a + p);
             }
-            for (n = t.length - 1; n >= 0; --n)
-              if (t.charCodeAt(n) === Kt) {
+            o > h && (t.charCodeAt(r + p) === _i ? (d = p) : p === 2 && (d = 3)), d === -1 && (d = 0);
+          }
+          let g = "";
+          for (p = r + d + 1; p <= n; ++p) (p === n || t.charCodeAt(p) === _i) && (g += g.length === 0 ? ".." : "\\..");
+          return (a += d), g.length > 0 ? `${g}${s.slice(a, c)}` : (s.charCodeAt(a) === _i && ++a, s.slice(a, c));
+        },
+        toNamespacedPath(t) {
+          if (typeof t != "string" || t.length === 0) return t;
+          const e = pt.resolve(t);
+          if (e.length <= 2) return t;
+          if (e.charCodeAt(0) === _i) {
+            if (e.charCodeAt(1) === _i) {
+              const i = e.charCodeAt(2);
+              if (i !== Hv && i !== Ar) return `\\\\?\\UNC\\${e.slice(2)}`;
+            }
+          } else if (rn(e.charCodeAt(0)) && e.charCodeAt(1) === Lr && e.charCodeAt(2) === _i) return `\\\\?\\${e}`;
+          return t;
+        },
+        dirname(t) {
+          $t(t, "path");
+          const e = t.length;
+          if (e === 0) return ".";
+          let i = -1,
+            s = 0;
+          const r = t.charCodeAt(0);
+          if (e === 1) return Le(r) ? t : ".";
+          if (Le(r)) {
+            if (((i = s = 1), Le(t.charCodeAt(1)))) {
+              let a = 2,
+                c = a;
+              for (; a < e && !Le(t.charCodeAt(a)); ) a++;
+              if (a < e && a !== c) {
+                for (c = a; a < e && Le(t.charCodeAt(a)); ) a++;
+                if (a < e && a !== c) {
+                  for (c = a; a < e && !Le(t.charCodeAt(a)); ) a++;
+                  if (a === e) return t;
+                  a !== c && (i = s = a + 1);
+                }
+              }
+            }
+          } else rn(r) && t.charCodeAt(1) === Lr && ((i = e > 2 && Le(t.charCodeAt(2)) ? 3 : 2), (s = i));
+          let n = -1,
+            o = !0;
+          for (let a = e - 1; a >= s; --a)
+            if (Le(t.charCodeAt(a))) {
+              if (!o) {
+                n = a;
+                break;
+              }
+            } else o = !1;
+          if (n === -1) {
+            if (i === -1) return ".";
+            n = i;
+          }
+          return t.slice(0, n);
+        },
+        basename(t, e) {
+          e !== void 0 && $t(e, "suffix"), $t(t, "path");
+          let i = 0,
+            s = -1,
+            r = !0,
+            n;
+          if ((t.length >= 2 && rn(t.charCodeAt(0)) && t.charCodeAt(1) === Lr && (i = 2), e !== void 0 && e.length > 0 && e.length <= t.length)) {
+            if (e === t) return "";
+            let o = e.length - 1,
+              a = -1;
+            for (n = t.length - 1; n >= i; --n) {
+              const c = t.charCodeAt(n);
+              if (Le(c)) {
                 if (!r) {
                   i = n + 1;
                   break;
                 }
-              } else s === -1 && ((r = !1), (s = n + 1));
-            return s === -1 ? "" : t.slice(i, s);
-          },
-          extname(t) {
-            $t(t, "path");
-            let e = -1,
-              i = 0,
-              s = -1,
-              r = !0,
-              n = 0;
-            for (let o = t.length - 1; o >= 0; --o) {
-              const a = t.charCodeAt(o);
-              if (a === Kt) {
+              } else a === -1 && ((r = !1), (a = n + 1)), o >= 0 && (c === e.charCodeAt(o) ? --o === -1 && (s = n) : ((o = -1), (s = a)));
+            }
+            return i === s ? (s = a) : s === -1 && (s = t.length), t.slice(i, s);
+          }
+          for (n = t.length - 1; n >= i; --n)
+            if (Le(t.charCodeAt(n))) {
+              if (!r) {
+                i = n + 1;
+                break;
+              }
+            } else s === -1 && ((r = !1), (s = n + 1));
+          return s === -1 ? "" : t.slice(i, s);
+        },
+        extname(t) {
+          $t(t, "path");
+          let e = 0,
+            i = -1,
+            s = 0,
+            r = -1,
+            n = !0,
+            o = 0;
+          t.length >= 2 && t.charCodeAt(1) === Lr && rn(t.charCodeAt(0)) && (e = s = 2);
+          for (let a = t.length - 1; a >= e; --a) {
+            const c = t.charCodeAt(a);
+            if (Le(c)) {
+              if (!n) {
+                s = a + 1;
+                break;
+              }
+              continue;
+            }
+            r === -1 && ((n = !1), (r = a + 1)), c === Ar ? (i === -1 ? (i = a) : o !== 1 && (o = 1)) : i !== -1 && (o = -1);
+          }
+          return i === -1 || r === -1 || o === 0 || (o === 1 && i === r - 1 && i === s + 1) ? "" : t.slice(i, r);
+        },
+        format: Nv.bind(null, "\\"),
+        parse(t) {
+          $t(t, "path");
+          const e = { root: "", dir: "", base: "", ext: "", name: "" };
+          if (t.length === 0) return e;
+          const i = t.length;
+          let s = 0,
+            r = t.charCodeAt(0);
+          if (i === 1) return Le(r) ? ((e.root = e.dir = t), e) : ((e.base = e.name = t), e);
+          if (Le(r)) {
+            if (((s = 1), Le(t.charCodeAt(1)))) {
+              let d = 2,
+                p = d;
+              for (; d < i && !Le(t.charCodeAt(d)); ) d++;
+              if (d < i && d !== p) {
+                for (p = d; d < i && Le(t.charCodeAt(d)); ) d++;
+                if (d < i && d !== p) {
+                  for (p = d; d < i && !Le(t.charCodeAt(d)); ) d++;
+                  d === i ? (s = d) : d !== p && (s = d + 1);
+                }
+              }
+            }
+          } else if (rn(r) && t.charCodeAt(1) === Lr) {
+            if (i <= 2) return (e.root = e.dir = t), e;
+            if (((s = 2), Le(t.charCodeAt(2)))) {
+              if (i === 3) return (e.root = e.dir = t), e;
+              s = 3;
+            }
+          }
+          s > 0 && (e.root = t.slice(0, s));
+          let n = -1,
+            o = s,
+            a = -1,
+            c = !0,
+            l = t.length - 1,
+            h = 0;
+          for (; l >= s; --l) {
+            if (((r = t.charCodeAt(l)), Le(r))) {
+              if (!c) {
+                o = l + 1;
+                break;
+              }
+              continue;
+            }
+            a === -1 && ((c = !1), (a = l + 1)), r === Ar ? (n === -1 ? (n = l) : h !== 1 && (h = 1)) : n !== -1 && (h = -1);
+          }
+          return (
+            a !== -1 && (n === -1 || h === 0 || (h === 1 && n === a - 1 && n === o + 1) ? (e.base = e.name = t.slice(o, a)) : ((e.name = t.slice(o, n)), (e.base = t.slice(o, a)), (e.ext = t.slice(n, a)))),
+            o > 0 && o !== s ? (e.dir = t.slice(0, o - 1)) : (e.dir = e.root),
+            e
+          );
+        },
+        sep: "\\",
+        delimiter: ";",
+        win32: null,
+        posix: null,
+      };
+      zv = (() => {
+        if (Oi) {
+          const t = /\\/g;
+          return () => {
+            const e = Zs().replace(t, "/");
+            return e.slice(e.indexOf("/"));
+          };
+        }
+        return () => Zs();
+      })();
+      ye = {
+        resolve(...t) {
+          let e = "",
+            i = !1;
+          for (let s = t.length - 1; s >= -1 && !i; s--) {
+            const r = s >= 0 ? t[s] : zv();
+            $t(r, `paths[${s}]`), r.length !== 0 && ((e = `${r}/${e}`), (i = r.charCodeAt(0) === Kt));
+          }
+          return (e = mh(e, !i, "/", rg)), i ? `/${e}` : e.length > 0 ? e : ".";
+        },
+        normalize(t) {
+          if (($t(t, "path"), t.length === 0)) return ".";
+          const e = t.charCodeAt(0) === Kt,
+            i = t.charCodeAt(t.length - 1) === Kt;
+          return (t = mh(t, !e, "/", rg)), t.length === 0 ? (e ? "/" : i ? "./" : ".") : (i && (t += "/"), e ? `/${t}` : t);
+        },
+        isAbsolute(t) {
+          return $t(t, "path"), t.length > 0 && t.charCodeAt(0) === Kt;
+        },
+        join(...t) {
+          if (t.length === 0) return ".";
+          let e;
+          for (let i = 0; i < t.length; ++i) {
+            const s = t[i];
+            $t(s, "path"), s.length > 0 && (e === void 0 ? (e = s) : (e += `/${s}`));
+          }
+          return e === void 0 ? "." : ye.normalize(e);
+        },
+        relative(t, e) {
+          if (($t(t, "from"), $t(e, "to"), t === e || ((t = ye.resolve(t)), (e = ye.resolve(e)), t === e))) return "";
+          const i = 1,
+            s = t.length,
+            r = s - i,
+            n = 1,
+            o = e.length - n,
+            a = r < o ? r : o;
+          let c = -1,
+            l = 0;
+          for (; l < a; l++) {
+            const d = t.charCodeAt(i + l);
+            if (d !== e.charCodeAt(n + l)) break;
+            d === Kt && (c = l);
+          }
+          if (l === a)
+            if (o > a) {
+              if (e.charCodeAt(n + l) === Kt) return e.slice(n + l + 1);
+              if (l === 0) return e.slice(n + l);
+            } else r > a && (t.charCodeAt(i + l) === Kt ? (c = l) : l === 0 && (c = 0));
+          let h = "";
+          for (l = i + c + 1; l <= s; ++l) (l === s || t.charCodeAt(l) === Kt) && (h += h.length === 0 ? ".." : "/..");
+          return `${h}${e.slice(n + c)}`;
+        },
+        toNamespacedPath(t) {
+          return t;
+        },
+        dirname(t) {
+          if (($t(t, "path"), t.length === 0)) return ".";
+          const e = t.charCodeAt(0) === Kt;
+          let i = -1,
+            s = !0;
+          for (let r = t.length - 1; r >= 1; --r)
+            if (t.charCodeAt(r) === Kt) {
+              if (!s) {
+                i = r;
+                break;
+              }
+            } else s = !1;
+          return i === -1 ? (e ? "/" : ".") : e && i === 1 ? "//" : t.slice(0, i);
+        },
+        basename(t, e) {
+          e !== void 0 && $t(e, "ext"), $t(t, "path");
+          let i = 0,
+            s = -1,
+            r = !0,
+            n;
+          if (e !== void 0 && e.length > 0 && e.length <= t.length) {
+            if (e === t) return "";
+            let o = e.length - 1,
+              a = -1;
+            for (n = t.length - 1; n >= 0; --n) {
+              const c = t.charCodeAt(n);
+              if (c === Kt) {
                 if (!r) {
-                  i = o + 1;
+                  i = n + 1;
                   break;
                 }
-                continue;
+              } else a === -1 && ((r = !1), (a = n + 1)), o >= 0 && (c === e.charCodeAt(o) ? --o === -1 && (s = n) : ((o = -1), (s = a)));
+            }
+            return i === s ? (s = a) : s === -1 && (s = t.length), t.slice(i, s);
+          }
+          for (n = t.length - 1; n >= 0; --n)
+            if (t.charCodeAt(n) === Kt) {
+              if (!r) {
+                i = n + 1;
+                break;
               }
-              s === -1 && ((r = !1), (s = o + 1)), a === Ar ? (e === -1 ? (e = o) : n !== 1 && (n = 1)) : e !== -1 && (n = -1);
-            }
-            return e === -1 || s === -1 || n === 0 || (n === 1 && e === s - 1 && e === i + 1) ? "" : t.slice(e, s);
-          },
-          format: Nv.bind(null, "/"),
-          parse(t) {
-            $t(t, "path");
-            const e = { root: "", dir: "", base: "", ext: "", name: "" };
-            if (t.length === 0) return e;
-            const i = t.charCodeAt(0) === Kt;
-            let s;
-            i ? ((e.root = "/"), (s = 1)) : (s = 0);
-            let r = -1,
-              n = 0,
-              o = -1,
-              a = !0,
-              c = t.length - 1,
-              l = 0;
-            for (; c >= s; --c) {
-              const h = t.charCodeAt(c);
-              if (h === Kt) {
-                if (!a) {
-                  n = c + 1;
-                  break;
-                }
-                continue;
+            } else s === -1 && ((r = !1), (s = n + 1));
+          return s === -1 ? "" : t.slice(i, s);
+        },
+        extname(t) {
+          $t(t, "path");
+          let e = -1,
+            i = 0,
+            s = -1,
+            r = !0,
+            n = 0;
+          for (let o = t.length - 1; o >= 0; --o) {
+            const a = t.charCodeAt(o);
+            if (a === Kt) {
+              if (!r) {
+                i = o + 1;
+                break;
               }
-              o === -1 && ((a = !1), (o = c + 1)), h === Ar ? (r === -1 ? (r = c) : l !== 1 && (l = 1)) : r !== -1 && (l = -1);
+              continue;
             }
-            if (o !== -1) {
-              const h = n === 0 && i ? 1 : n;
-              r === -1 || l === 0 || (l === 1 && r === o - 1 && r === n + 1) ? (e.base = e.name = t.slice(h, o)) : ((e.name = t.slice(h, r)), (e.base = t.slice(h, o)), (e.ext = t.slice(r, o)));
+            s === -1 && ((r = !1), (s = o + 1)), a === Ar ? (e === -1 ? (e = o) : n !== 1 && (n = 1)) : e !== -1 && (n = -1);
+          }
+          return e === -1 || s === -1 || n === 0 || (n === 1 && e === s - 1 && e === i + 1) ? "" : t.slice(e, s);
+        },
+        format: Nv.bind(null, "/"),
+        parse(t) {
+          $t(t, "path");
+          const e = { root: "", dir: "", base: "", ext: "", name: "" };
+          if (t.length === 0) return e;
+          const i = t.charCodeAt(0) === Kt;
+          let s;
+          i ? ((e.root = "/"), (s = 1)) : (s = 0);
+          let r = -1,
+            n = 0,
+            o = -1,
+            a = !0,
+            c = t.length - 1,
+            l = 0;
+          for (; c >= s; --c) {
+            const h = t.charCodeAt(c);
+            if (h === Kt) {
+              if (!a) {
+                n = c + 1;
+                break;
+              }
+              continue;
             }
-            return n > 0 ? (e.dir = t.slice(0, n - 1)) : i && (e.dir = "/"), e;
-          },
-          sep: "/",
-          delimiter: ":",
-          win32: null,
-          posix: null,
-        }),
-        (ye.win32 = pt.win32 = pt),
-        (ye.posix = pt.posix = ye),
-        (Mi = Oi ? pt.normalize : ye.normalize),
-        (nn = Oi ? pt.isAbsolute : ye.isAbsolute),
-        (R = Oi ? pt.join : ye.join),
-        (eo = Oi ? pt.resolve : ye.resolve),
-        (Vv = Oi ? pt.relative : ye.relative),
-        (Zt = Oi ? pt.dirname : ye.dirname),
-        (Ke = Oi ? pt.basename : ye.basename),
-        (wh = Oi ? pt.extname : ye.extname),
-        ($x = Oi ? pt.format : ye.format),
-        (Ix = Oi ? pt.parse : ye.parse),
-        (Ax = Oi ? pt.toNamespacedPath : ye.toNamespacedPath),
-        (hi = Oi ? pt.sep : ye.sep),
-        (bh = Oi ? pt.delimiter : ye.delimiter);
+            o === -1 && ((a = !1), (o = c + 1)), h === Ar ? (r === -1 ? (r = c) : l !== 1 && (l = 1)) : r !== -1 && (l = -1);
+          }
+          if (o !== -1) {
+            const h = n === 0 && i ? 1 : n;
+            r === -1 || l === 0 || (l === 1 && r === o - 1 && r === n + 1) ? (e.base = e.name = t.slice(h, o)) : ((e.name = t.slice(h, r)), (e.base = t.slice(h, o)), (e.ext = t.slice(r, o)));
+          }
+          return n > 0 ? (e.dir = t.slice(0, n - 1)) : i && (e.dir = "/"), e;
+        },
+        sep: "/",
+        delimiter: ":",
+        win32: null,
+        posix: null,
+      };
+      ye.win32 = pt.win32 = pt;
+      ye.posix = pt.posix = ye;
+      Mi = Oi ? pt.normalize : ye.normalize;
+      nn = Oi ? pt.isAbsolute : ye.isAbsolute;
+      R = Oi ? pt.join : ye.join;
+      eo = Oi ? pt.resolve : ye.resolve;
+      Vv = Oi ? pt.relative : ye.relative;
+      Zt = Oi ? pt.dirname : ye.dirname;
+      Ke = Oi ? pt.basename : ye.basename;
+      wh = Oi ? pt.extname : ye.extname;
+      $x = Oi ? pt.format : ye.format;
+      Ix = Oi ? pt.parse : ye.parse;
+      Ax = Oi ? pt.toNamespacedPath : ye.toNamespacedPath;
+      hi = Oi ? pt.sep : ye.sep;
+      bh = Oi ? pt.delimiter : ye.delimiter;
     },
   });
 
@@ -4626,13 +4639,20 @@ function Ox(t, e, i) {
       (e[Ps.DI_TARGET] = e));
 }
 
-function U(t) {
-  if (Ps.serviceIds.has(t)) return Ps.serviceIds.get(t);
-  const e = function (i, s, r) {
-    if (arguments.length !== 3) throw new Error("@IServiceName-decorator can only be used to decorate a parameter");
-    Ox(e, i, r);
+function U(id) {
+  if (Ps.serviceIds.has(id)) {
+    return Ps.serviceIds.get(id);
+  }
+
+  const service = function (i, s, r) {
+    if (arguments.length !== 3) {
+      throw new Error("@IServiceName-decorator can only be used to decorate a parameter");
+    }
+    Ox(service, i, r);
   };
-  return (e.toString = () => t), Ps.serviceIds.set(t, e), e;
+  service.toString = () => id;
+  Ps.serviceIds.set(id, service);
+  return service;
 }
 
 function XV(t) {
@@ -4652,8 +4672,8 @@ var Ps,
         }
 
         t.getServiceDependencies = e;
-      })(Ps || (Ps = {})),
-        (Fs = U("instantiationService"));
+      })(Ps || (Ps = {}));
+      Fs = U("instantiationService");
     },
   });
 
@@ -12326,277 +12346,288 @@ var K,
   Q = v({
     "out-build/vs/platform/log/common/log.js"() {
       "use strict";
-      le(),
-        dn(),
-        H(),
-        bn(),
-        T(),
-        Zi(),
-        Z(),
-        nt(),
-        Me(),
-        ge(),
-        p6(),
-        G(),
-        (K = U("logService")),
-        (pa = U("loggerService")),
-        (function (t) {
-          (t[(t.Off = 0)] = "Off"), (t[(t.Trace = 1)] = "Trace"), (t[(t.Debug = 2)] = "Debug"), (t[(t.Info = 3)] = "Info"), (t[(t.Warning = 4)] = "Warning"), (t[(t.Error = 5)] = "Error");
-        })(ie || (ie = {})),
-        (cl = ie.Info),
-        (ed = class extends N {
-          constructor() {
-            super(...arguments), (this.b = cl), (this.c = this.B(new $())), (this.onDidChangeLogLevel = this.c.event);
+      le();
+      dn();
+      H();
+      bn();
+      T();
+      Zi();
+      Z();
+      nt();
+      Me();
+      ge();
+      p6();
+      G();
+      K = U("logService");
+      pa = U("loggerService");
+      (function (t) {
+        t[(t.Off = 0)] = "Off";
+        t[(t.Trace = 1)] = "Trace";
+        t[(t.Debug = 2)] = "Debug";
+        t[(t.Info = 3)] = "Info";
+        t[(t.Warning = 4)] = "Warning";
+        t[(t.Error = 5)] = "Error";
+      })(ie || (ie = {}));
+      cl = ie.Info;
+      ed = class extends N {
+        constructor() {
+          super(...arguments);
+          this.b = cl;
+          this.c = this.B(new $());
+          this.onDidChangeLogLevel = this.c.event;
+        }
+
+        setLevel(level) {
+          if (this.b !== level) {
+            this.b = level;
+            this.c.fire(this.b);
           }
+        }
 
-          setLevel(t) {
-            this.b !== t && ((this.b = t), this.c.fire(this.b));
+        getLevel() {
+          return this.b;
+        }
+
+        f(t) {
+          return this.b !== ie.Off && this.b <= t;
+        }
+      };
+      r0 = class extends ed {
+        constructor(t) {
+          super(), (this.h = t);
+        }
+
+        f(t) {
+          return this.h || super.f(t);
+        }
+
+        trace(t, ...e) {
+          this.f(ie.Trace) && this.g(ie.Trace, fa([t, ...e], !0));
+        }
+
+        debug(t, ...e) {
+          this.f(ie.Debug) && this.g(ie.Debug, fa([t, ...e]));
+        }
+
+        info(t, ...e) {
+          this.f(ie.Info) && this.g(ie.Info, fa([t, ...e]));
+        }
+
+        warn(t, ...e) {
+          this.f(ie.Warning) && this.g(ie.Warning, fa([t, ...e]));
+        }
+
+        error(t, ...e) {
+          if (this.f(ie.Error))
+            if (t instanceof Error) {
+              const i = Array.prototype.slice.call(arguments);
+              (i[0] = t.stack), this.g(ie.Error, fa(i));
+            } else this.g(ie.Error, fa([t, ...e]));
+        }
+
+        flush() {}
+      };
+      m6 = class extends ed {
+        constructor(t = cl) {
+          super(), this.setLevel(t), (this.g = !J);
+        }
+
+        trace(t, ...e) {
+          this.f(ie.Trace) && (this.g ? console.log(`\x1B[90m[main ${ir()}]\x1B[0m`, t, ...e) : console.log(`[main ${ir()}]`, t, ...e));
+        }
+
+        debug(t, ...e) {
+          this.f(ie.Debug) && (this.g ? console.log(`\x1B[90m[main ${ir()}]\x1B[0m`, t, ...e) : console.log(`[main ${ir()}]`, t, ...e));
+        }
+
+        info(t, ...e) {
+          this.f(ie.Info) && (this.g ? console.log(`\x1B[90m[main ${ir()}]\x1B[0m`, t, ...e) : console.log(`[main ${ir()}]`, t, ...e));
+        }
+
+        warn(t, ...e) {
+          this.f(ie.Warning) && (this.g ? console.warn(`\x1B[93m[main ${ir()}]\x1B[0m`, t, ...e) : console.warn(`[main ${ir()}]`, t, ...e));
+        }
+
+        error(t, ...e) {
+          this.f(ie.Error) && (this.g ? console.error(`\x1B[91m[main ${ir()}]\x1B[0m`, t, ...e) : console.error(`[main ${ir()}]`, t, ...e));
+        }
+
+        flush() {}
+      };
+      w6 = class extends ed {
+        constructor(t) {
+          super(), (this.g = t), t.length && this.setLevel(t[0].getLevel());
+        }
+
+        setLevel(t) {
+          for (const e of this.g) e.setLevel(t);
+          super.setLevel(t);
+        }
+
+        trace(t, ...e) {
+          for (const i of this.g) i.trace(t, ...e);
+        }
+
+        debug(t, ...e) {
+          for (const i of this.g) i.debug(t, ...e);
+        }
+
+        info(t, ...e) {
+          for (const i of this.g) i.info(t, ...e);
+        }
+
+        warn(t, ...e) {
+          for (const i of this.g) i.warn(t, ...e);
+        }
+
+        error(t, ...e) {
+          for (const i of this.g) i.error(t, ...e);
+        }
+
+        flush() {
+          for (const t of this.g) t.flush();
+        }
+
+        dispose() {
+          for (const t of this.g) t.dispose();
+          super.dispose();
+        }
+      };
+      b6 = class extends N {
+        constructor(t, e, i) {
+          if (
+            (super(),
+            (this.h = t),
+            (this.j = e),
+            (this.b = new li()),
+            (this.c = this.B(new $())),
+            (this.onDidChangeLoggers = this.c.event),
+            (this.f = this.B(new $())),
+            (this.onDidChangeLogLevel = this.f.event),
+            (this.g = this.B(new $())),
+            (this.onDidChangeVisibility = this.g.event),
+            i)
+          )
+            for (const s of i)
+              this.b.set(s.resource, {
+                logger: void 0,
+                info: s,
+              });
+        }
+
+        m(t) {
+          return it(t) ? [...this.b.values()].find((e) => e.info.id === t) : this.b.get(t);
+        }
+
+        getLogger(t) {
+          return this.m(t)?.logger;
+        }
+
+        createLogger(t, e) {
+          const i = this.n(t),
+            s = it(t) ? t : (e?.id ?? Or(i.toString()).toString(16));
+          let r = this.b.get(i)?.logger;
+          const n = e?.logLevel === "always" ? ie.Trace : e?.logLevel;
+          r || (r = this.s(i, n ?? this.getLogLevel(i) ?? this.h, { ...e, id: s }));
+          const o = {
+            logger: r,
+            info: {
+              resource: i,
+              id: s,
+              logLevel: n,
+              name: e?.name,
+              hidden: e?.hidden,
+              extensionId: e?.extensionId,
+              when: e?.when,
+            },
+          };
+          return this.registerLogger(o.info), this.b.set(i, o), r;
+        }
+
+        n(t) {
+          return it(t) ? me(this.j, `${t}.log`) : t;
+        }
+
+        setLogLevel(t, e) {
+          if (L.isUri(t)) {
+            const i = t,
+              s = e,
+              r = this.b.get(i);
+            r && s !== r.info.logLevel && ((r.info.logLevel = s === this.h ? void 0 : s), r.logger?.setLevel(s), this.b.set(r.info.resource, r), this.f.fire([i, s]));
+          } else {
+            this.h = t;
+            for (const [i, s] of this.b.entries()) this.b.get(i)?.info.logLevel === void 0 && s.logger?.setLevel(this.h);
+            this.f.fire(this.h);
           }
+        }
 
-          getLevel() {
-            return this.b;
-          }
+        setVisibility(t, e) {
+          const i = this.m(t);
+          i && e !== !i.info.hidden && ((i.info.hidden = !e), this.b.set(i.info.resource, i), this.g.fire([i.info.resource, e]));
+        }
 
-          f(t) {
-            return this.b !== ie.Off && this.b <= t;
-          }
-        }),
-        (r0 = class extends ed {
-          constructor(t) {
-            super(), (this.h = t);
-          }
+        getLogLevel(t) {
+          let e;
+          return t && (e = this.b.get(t)?.info.logLevel), e ?? this.h;
+        }
 
-          f(t) {
-            return this.h || super.f(t);
-          }
+        registerLogger(t) {
+          const e = this.b.get(t.resource);
+          e
+            ? e.info.hidden !== t.hidden && this.setVisibility(t.resource, !t.hidden)
+            : (this.b.set(t.resource, {
+                info: t,
+                logger: void 0,
+              }),
+              this.c.fire({ added: [t], removed: [] }));
+        }
 
-          trace(t, ...e) {
-            this.f(ie.Trace) && this.g(ie.Trace, fa([t, ...e], !0));
-          }
+        deregisterLogger(t) {
+          const e = this.b.get(t);
+          e && (e.logger && e.logger.dispose(), this.b.delete(t), this.c.fire({ added: [], removed: [e.info] }));
+        }
 
-          debug(t, ...e) {
-            this.f(ie.Debug) && this.g(ie.Debug, fa([t, ...e]));
-          }
+        *getRegisteredLoggers() {
+          for (const t of this.b.values()) yield t.info;
+        }
 
-          info(t, ...e) {
-            this.f(ie.Info) && this.g(ie.Info, fa([t, ...e]));
-          }
+        getRegisteredLogger(t) {
+          return this.b.get(t)?.info;
+        }
 
-          warn(t, ...e) {
-            this.f(ie.Warning) && this.g(ie.Warning, fa([t, ...e]));
-          }
+        dispose() {
+          this.b.forEach((t) => t.logger?.dispose()), this.b.clear(), super.dispose();
+        }
+      };
+      v6 = class {
+        constructor() {
+          this.onDidChangeLogLevel = new $().event;
+        }
 
-          error(t, ...e) {
-            if (this.f(ie.Error))
-              if (t instanceof Error) {
-                const i = Array.prototype.slice.call(arguments);
-                (i[0] = t.stack), this.g(ie.Error, fa(i));
-              } else this.g(ie.Error, fa([t, ...e]));
-          }
+        setLevel(t) {}
 
-          flush() {}
-        }),
-        (m6 = class extends ed {
-          constructor(t = cl) {
-            super(), this.setLevel(t), (this.g = !J);
-          }
+        getLevel() {
+          return ie.Info;
+        }
 
-          trace(t, ...e) {
-            this.f(ie.Trace) && (this.g ? console.log(`\x1B[90m[main ${ir()}]\x1B[0m`, t, ...e) : console.log(`[main ${ir()}]`, t, ...e));
-          }
+        trace(t, ...e) {}
 
-          debug(t, ...e) {
-            this.f(ie.Debug) && (this.g ? console.log(`\x1B[90m[main ${ir()}]\x1B[0m`, t, ...e) : console.log(`[main ${ir()}]`, t, ...e));
-          }
+        debug(t, ...e) {}
 
-          info(t, ...e) {
-            this.f(ie.Info) && (this.g ? console.log(`\x1B[90m[main ${ir()}]\x1B[0m`, t, ...e) : console.log(`[main ${ir()}]`, t, ...e));
-          }
+        info(t, ...e) {}
 
-          warn(t, ...e) {
-            this.f(ie.Warning) && (this.g ? console.warn(`\x1B[93m[main ${ir()}]\x1B[0m`, t, ...e) : console.warn(`[main ${ir()}]`, t, ...e));
-          }
+        warn(t, ...e) {}
 
-          error(t, ...e) {
-            this.f(ie.Error) && (this.g ? console.error(`\x1B[91m[main ${ir()}]\x1B[0m`, t, ...e) : console.error(`[main ${ir()}]`, t, ...e));
-          }
+        error(t, ...e) {}
 
-          flush() {}
-        }),
-        (w6 = class extends ed {
-          constructor(t) {
-            super(), (this.g = t), t.length && this.setLevel(t[0].getLevel());
-          }
+        critical(t, ...e) {}
 
-          setLevel(t) {
-            for (const e of this.g) e.setLevel(t);
-            super.setLevel(t);
-          }
+        dispose() {}
 
-          trace(t, ...e) {
-            for (const i of this.g) i.trace(t, ...e);
-          }
-
-          debug(t, ...e) {
-            for (const i of this.g) i.debug(t, ...e);
-          }
-
-          info(t, ...e) {
-            for (const i of this.g) i.info(t, ...e);
-          }
-
-          warn(t, ...e) {
-            for (const i of this.g) i.warn(t, ...e);
-          }
-
-          error(t, ...e) {
-            for (const i of this.g) i.error(t, ...e);
-          }
-
-          flush() {
-            for (const t of this.g) t.flush();
-          }
-
-          dispose() {
-            for (const t of this.g) t.dispose();
-            super.dispose();
-          }
-        }),
-        (b6 = class extends N {
-          constructor(t, e, i) {
-            if (
-              (super(),
-              (this.h = t),
-              (this.j = e),
-              (this.b = new li()),
-              (this.c = this.B(new $())),
-              (this.onDidChangeLoggers = this.c.event),
-              (this.f = this.B(new $())),
-              (this.onDidChangeLogLevel = this.f.event),
-              (this.g = this.B(new $())),
-              (this.onDidChangeVisibility = this.g.event),
-              i)
-            )
-              for (const s of i)
-                this.b.set(s.resource, {
-                  logger: void 0,
-                  info: s,
-                });
-          }
-
-          m(t) {
-            return it(t) ? [...this.b.values()].find((e) => e.info.id === t) : this.b.get(t);
-          }
-
-          getLogger(t) {
-            return this.m(t)?.logger;
-          }
-
-          createLogger(t, e) {
-            const i = this.n(t),
-              s = it(t) ? t : (e?.id ?? Or(i.toString()).toString(16));
-            let r = this.b.get(i)?.logger;
-            const n = e?.logLevel === "always" ? ie.Trace : e?.logLevel;
-            r || (r = this.s(i, n ?? this.getLogLevel(i) ?? this.h, { ...e, id: s }));
-            const o = {
-              logger: r,
-              info: {
-                resource: i,
-                id: s,
-                logLevel: n,
-                name: e?.name,
-                hidden: e?.hidden,
-                extensionId: e?.extensionId,
-                when: e?.when,
-              },
-            };
-            return this.registerLogger(o.info), this.b.set(i, o), r;
-          }
-
-          n(t) {
-            return it(t) ? me(this.j, `${t}.log`) : t;
-          }
-
-          setLogLevel(t, e) {
-            if (L.isUri(t)) {
-              const i = t,
-                s = e,
-                r = this.b.get(i);
-              r && s !== r.info.logLevel && ((r.info.logLevel = s === this.h ? void 0 : s), r.logger?.setLevel(s), this.b.set(r.info.resource, r), this.f.fire([i, s]));
-            } else {
-              this.h = t;
-              for (const [i, s] of this.b.entries()) this.b.get(i)?.info.logLevel === void 0 && s.logger?.setLevel(this.h);
-              this.f.fire(this.h);
-            }
-          }
-
-          setVisibility(t, e) {
-            const i = this.m(t);
-            i && e !== !i.info.hidden && ((i.info.hidden = !e), this.b.set(i.info.resource, i), this.g.fire([i.info.resource, e]));
-          }
-
-          getLogLevel(t) {
-            let e;
-            return t && (e = this.b.get(t)?.info.logLevel), e ?? this.h;
-          }
-
-          registerLogger(t) {
-            const e = this.b.get(t.resource);
-            e
-              ? e.info.hidden !== t.hidden && this.setVisibility(t.resource, !t.hidden)
-              : (this.b.set(t.resource, {
-                  info: t,
-                  logger: void 0,
-                }),
-                this.c.fire({ added: [t], removed: [] }));
-          }
-
-          deregisterLogger(t) {
-            const e = this.b.get(t);
-            e && (e.logger && e.logger.dispose(), this.b.delete(t), this.c.fire({ added: [], removed: [e.info] }));
-          }
-
-          *getRegisteredLoggers() {
-            for (const t of this.b.values()) yield t.info;
-          }
-
-          getRegisteredLogger(t) {
-            return this.b.get(t)?.info;
-          }
-
-          dispose() {
-            this.b.forEach((t) => t.logger?.dispose()), this.b.clear(), super.dispose();
-          }
-        }),
-        (v6 = class {
-          constructor() {
-            this.onDidChangeLogLevel = new $().event;
-          }
-
-          setLevel(t) {}
-
-          getLevel() {
-            return ie.Info;
-          }
-
-          trace(t, ...e) {}
-
-          debug(t, ...e) {}
-
-          info(t, ...e) {}
-
-          warn(t, ...e) {}
-
-          error(t, ...e) {}
-
-          critical(t, ...e) {}
-
-          dispose() {}
-
-          flush() {}
-        }),
-        (y6 = class extends v6 {}),
-        (VI = new i0("logLevel", HI(ie.Info)));
+        flush() {}
+      };
+      y6 = class extends v6 {};
+      VI = new i0("logLevel", HI(ie.Info));
     },
   }),
   k6,
@@ -15259,103 +15290,120 @@ var dd,
   ay = v({
     "out-build/vs/platform/state/node/stateService.js"() {
       "use strict";
-      de(),
-        mt(),
-        T(),
-        Me(),
-        ns(),
-        lt(),
-        Q(),
-        (function (t) {
-          (t[(t.IMMEDIATE = 0)] = "IMMEDIATE"), (t[(t.DELAYED = 1)] = "DELAYED");
-        })(ny || (ny = {})),
-        (oy = class extends N {
-          constructor(t, e, i, s) {
-            super(), (this.h = t), (this.j = e), (this.m = i), (this.n = s), (this.a = Object.create(null)), (this.b = ""), (this.c = this.B(new Pr(this.j === 0 ? 0 : 100))), (this.f = void 0), (this.g = void 0);
-          }
+      de();
+      mt();
+      T();
+      Me();
+      ns();
+      lt();
+      Q();
 
-          init() {
-            return this.f || (this.f = this.r()), this.f;
-          }
+      (function (t) {
+        t[(t.IMMEDIATE = 0)] = "IMMEDIATE";
+        t[(t.DELAYED = 1)] = "DELAYED";
+      })(ny || (ny = {}));
 
-          async r() {
+      oy = class extends N {
+        constructor(t, e, i, s) {
+          debugger;
+          super();
+          this.h = t;
+          this.j = e;
+          this.m = i;
+          this.n = s;
+          this.a = Object.create(null);
+          this.b = "";
+          this.c = this.B(new Pr(this.j === 0 ? 0 : 100));
+          this.f = void 0;
+          this.g = void 0;
+        }
+
+        init() {
+          this.f || (this.f = this.r());
+          return this.f;
+        }
+
+        async r() {
+          try {
+            this.b = (await this.n.readFile(this.h)).value.toString();
+            this.a = JSON.parse(this.b);
+          } catch (t) {
+            t.fileOperationResult !== 1 && this.m.error(t);
+          }
+        }
+
+        getItem(key, defaultValue) {
+          const i = this.a[key];
+          return ui(i) ? defaultValue : i;
+        }
+
+        setItem(key, data) {
+          this.setItems([{ key: key, data: data }]);
+        }
+
+        setItems(t) {
+          let e = !1;
+          for (const { key: i, data: s } of t) this.a[i] !== s && (ui(s) ? Ir(this.a[i]) || ((this.a[i] = void 0), (e = !0)) : ((this.a[i] = s), (e = !0)));
+          e && this.s();
+        }
+
+        removeItem(key) {
+          Ir(this.a[key]) || ((this.a[key] = void 0), this.s());
+        }
+
+        async s() {
+          if (!this.g) return this.c.trigger(() => this.t());
+        }
+
+        async t() {
+          if (!this.f) return;
+          await this.f;
+          const t = JSON.stringify(this.a, null, 4);
+          if (t !== this.b)
             try {
-              (this.b = (await this.n.readFile(this.h)).value.toString()), (this.a = JSON.parse(this.b));
-            } catch (t) {
-              t.fileOperationResult !== 1 && this.m.error(t);
+              await this.n.writeFile(this.h, ee.fromString(t), { atomic: { postfix: ".vsctmp" } }), (this.b = t);
+            } catch (e) {
+              this.m.error(e);
             }
-          }
+        }
 
-          getItem(t, e) {
-            const i = this.a[t];
-            return ui(i) ? e : i;
-          }
+        async close() {
+          return this.g || (this.g = this.c.trigger(() => this.t(), 0)), this.g;
+        }
+      };
+      fd = class extends N {
+        constructor(e, i, s, r) {
+          super();
+          debugger;
+          this.a = this.B(new oy(i.stateResource, e, s, r));
+        }
 
-          setItem(t, e) {
-            this.setItems([{ key: t, data: e }]);
-          }
+        async init() {
+          await this.a.init();
+        }
 
-          setItems(t) {
-            let e = !1;
-            for (const { key: i, data: s } of t) this.a[i] !== s && (ui(s) ? Ir(this.a[i]) || ((this.a[i] = void 0), (e = !0)) : ((this.a[i] = s), (e = !0)));
-            e && this.s();
-          }
+        getItem(key, defaultValue) {
+          return this.a.getItem(key, defaultValue);
+        }
+      };
+      fd = __decorate([__param(1, er), __param(2, K), __param(3, yt)], fd);
+      D0 = class extends fd {
+        setItem(key, data) {
+          this.a.setItem(key, data);
+        }
 
-          removeItem(t) {
-            Ir(this.a[t]) || ((this.a[t] = void 0), this.s());
-          }
+        setItems(items) {
+          this.a.setItems(items);
+        }
 
-          async s() {
-            if (!this.g) return this.c.trigger(() => this.t());
-          }
+        removeItem(key) {
+          this.a.removeItem(key);
+        }
 
-          async t() {
-            if (!this.f) return;
-            await this.f;
-            const t = JSON.stringify(this.a, null, 4);
-            if (t !== this.b)
-              try {
-                await this.n.writeFile(this.h, ee.fromString(t), { atomic: { postfix: ".vsctmp" } }), (this.b = t);
-              } catch (e) {
-                this.m.error(e);
-              }
-          }
-
-          async close() {
-            return this.g || (this.g = this.c.trigger(() => this.t(), 0)), this.g;
-          }
-        }),
-        (fd = class extends N {
-          constructor(e, i, s, r) {
-            super(), (this.a = this.B(new oy(i.stateResource, e, s, r)));
-          }
-
-          async init() {
-            await this.a.init();
-          }
-
-          getItem(e, i) {
-            return this.a.getItem(e, i);
-          }
-        }),
-        (fd = __decorate([__param(1, er), __param(2, K), __param(3, yt)], fd)),
-        (D0 = class extends fd {
-          setItem(t, e) {
-            this.a.setItem(t, e);
-          }
-
-          setItems(t) {
-            this.a.setItems(t);
-          }
-
-          removeItem(t) {
-            this.a.removeItem(t);
-          }
-
-          close() {
-            return this.a.close();
-          }
-        });
+        close() {
+          return this.a.close();
+        }
+      };
     },
   }),
   pd,
@@ -22752,22 +22800,22 @@ var Q7,
         });
     },
   }),
-  ke,
+  Descriptors,
   Ra = v({
     "out-build/vs/platform/instantiation/common/descriptors.js"() {
       "use strict";
-      ke = class {
+      Descriptors = class {
         constructor(t, e = [], i = !1) {
           (this.ctor = t), (this.staticArguments = e), (this.supportsDelayedInstantiation = i);
         }
       };
     },
   }),
-  Gd,
+  serviceCollection,
   vm = v({
     "out-build/vs/platform/instantiation/common/serviceCollection.js"() {
       "use strict";
-      Gd = class {
+      serviceCollection = class {
         constructor(...t) {
           this.a = new Map();
           for (const [e, i] of t) this.set(e, i);
@@ -26524,7 +26572,9 @@ var O9,
   Vm = v({
     "out-build/vs/platform/sign/common/sign.js"() {
       "use strict";
-      G(), (R9 = "signService"), (Ua = U(R9));
+      G();
+      R9 = "signService";
+      Ua = U(R9);
     },
   }),
   T9,
@@ -36631,7 +36681,7 @@ var tS,
           id: "themes",
           label: u(13914, null),
           access: { canToggle: !1 },
-          renderer: new ke(tS),
+          renderer: new Descriptors(tS),
         }),
         (iS = class {
           constructor(t, e, i = !1, s = void 0) {
@@ -37156,58 +37206,58 @@ var pS,
   mS = v({
     "out-build/vs/code/electron-main/oauth/common/request.js"() {
       "use strict";
-      Yf(),
-        (pS = dns.promises),
-        (gS = ["ENOTFOUND", "ENETUNREACH", "ECONNREFUSED", "ETIMEDOUT", "ECONNABORTED", "ERR_NETWORK"]),
-        (rb = class {
-          constructor(t, e) {
-            (this.e = t), (this.f = e), (this.a = new https.Agent({ family: 6 })), (this.b = new https.Agent({ family: 4 })), (this.c = new http.Agent({ family: 6 })), (this.d = new http.Agent({ family: 4 }));
-          }
+      Yf();
+      pS = dns.promises;
+      gS = ["ENOTFOUND", "ENETUNREACH", "ECONNREFUSED", "ETIMEDOUT", "ECONNABORTED", "ERR_NETWORK"];
+      rb = class {
+        constructor(t, e) {
+          (this.e = t), (this.f = e), (this.a = new https.Agent({ family: 6 })), (this.b = new https.Agent({ family: 4 })), (this.c = new http.Agent({ family: 6 })), (this.d = new http.Agent({ family: 4 }));
+        }
 
-          async request(t) {
-            const e = axios.create({});
-            let i;
-            const s = this.f.getValue("login.env.ppe"),
-              r = {};
-            s && ((r["x-tt-env"] = s), (r["x-use-ppe"] = "1")), (t.headers = { ...(t.headers || {}), ...r }), this.e.info("[Request start]", wr(t));
-            try {
-              i = await e.request(t);
-            } catch (n) {
-              if (
-                (this.e.error("[Request Error]", n, n.code, n.response?.data, n.response?.headers, n.stack, wr(t)),
-                this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", n?.request?.socket?.localAddress, n?.request?.socket?.localPort),
-                t.url)
-              ) {
-                const o = new URL(t.url),
-                  a = await pS.lookup(o.hostname).catch((c) => {
-                    this.e.error("[Request Error]", "get address from dns error", c);
-                  });
-                this.e.info("[Request]", "get address from dns", a);
-              }
-              if (t.tryAgent && n.code && gS.includes(n.code)) {
-                this.e.info("[Request]", "try http agent for v4 and v6", t);
-                const o = axios.create({ httpsAgent: this.a, httpAgent: this.c }),
-                  a = axios.create({ httpsAgent: this.b, httpAgent: this.d }),
-                  c = { v4: new AbortController(), v6: new AbortController() };
-                i = await Promise.any([
-                  o
-                    .request({ ...t, signal: c.v6.signal })
-                    .then((l) => (c.v4.abort(), l))
-                    .catch((l) => {
-                      throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
-                    }),
-                  a
-                    .request({ ...t, signal: c.v4.signal })
-                    .then((l) => (c.v6.abort(), l))
-                    .catch((l) => {
-                      throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
-                    }),
-                ]);
-              } else throw n;
+        async request(t) {
+          const e = axios.create({});
+          let i;
+          const s = this.f.getValue("login.env.ppe"),
+            r = {};
+          s && ((r["x-tt-env"] = s), (r["x-use-ppe"] = "1")), (t.headers = { ...(t.headers || {}), ...r }), this.e.info("[Request start]", wr(t));
+          try {
+            i = await e.request(t);
+          } catch (n) {
+            if (
+              (this.e.error("[Request Error]", n, n.code, n.response?.data, n.response?.headers, n.stack, wr(t)),
+              this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", n?.request?.socket?.localAddress, n?.request?.socket?.localPort),
+              t.url)
+            ) {
+              const o = new URL(t.url),
+                a = await pS.lookup(o.hostname).catch((c) => {
+                  this.e.error("[Request Error]", "get address from dns error", c);
+                });
+              this.e.info("[Request]", "get address from dns", a);
             }
-            return this.e.info("[Request Success]", "Header: ", i?.headers), this.e.info("[Request Success Network]", "local address: ", i?.request?.socket?.localAddress, i?.request?.socket?.localPort), i?.data;
+            if (t.tryAgent && n.code && gS.includes(n.code)) {
+              this.e.info("[Request]", "try http agent for v4 and v6", t);
+              const o = axios.create({ httpsAgent: this.a, httpAgent: this.c }),
+                a = axios.create({ httpsAgent: this.b, httpAgent: this.d }),
+                c = { v4: new AbortController(), v6: new AbortController() };
+              i = await Promise.any([
+                o
+                  .request({ ...t, signal: c.v6.signal })
+                  .then((l) => (c.v4.abort(), l))
+                  .catch((l) => {
+                    throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
+                  }),
+                a
+                  .request({ ...t, signal: c.v4.signal })
+                  .then((l) => (c.v6.abort(), l))
+                  .catch((l) => {
+                    throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
+                  }),
+              ]);
+            } else throw n;
           }
-        });
+          return this.e.info("[Request Success]", "Header: ", i?.headers), this.e.info("[Request Success Network]", "local address: ", i?.request?.socket?.localAddress, i?.request?.socket?.localPort), i?.data;
+        }
+      };
     },
   });
 
@@ -37418,153 +37468,153 @@ var nb,
         });
     },
   }),
-  bS,
+  ByteDanceOAuthService,
   wj = v({
     "out-build/vs/code/electron-main/oauth/bytedance/oauthService.js"() {
       "use strict";
-      T(),
-        lS(),
-        Pn(),
-        de(),
-        mS(),
-        is(),
-        Yf(),
-        (bS = class extends N {
-          constructor(t, e, i, s, r, n, o, a) {
-            super(),
-              (this.h = t),
-              (this.j = e),
-              (this.m = i),
-              (this.n = s),
-              (this.r = r),
-              (this.s = n),
-              (this.t = o),
-              (this.u = a),
-              (this.c = new mu(this.h, this.j, this.m, this.n)),
-              (this.f = new rb(this.h, this.t)),
-              (this.g = this.j.provider === Jt.YINLI ? "ide.byted.org" : "ide-us.tiktok-row.org");
-          }
+      T();
+      lS();
+      Pn();
+      de();
+      mS();
+      is();
+      Yf();
+      ByteDanceOAuthService = class extends N {
+        constructor(t, e, i, s, r, n, o, a) {
+          super(),
+            (this.h = t),
+            (this.j = e),
+            (this.m = i),
+            (this.n = s),
+            (this.r = r),
+            (this.s = n),
+            (this.t = o),
+            (this.u = a),
+            (this.c = new mu(this.h, this.j, this.m, this.n)),
+            (this.f = new rb(this.h, this.t)),
+            (this.g = this.j.provider === Jt.YINLI ? "ide.byted.org" : "ide-us.tiktok-row.org");
+        }
 
-          async login() {
-            this.a || (this.a = new di()),
-              this.h.info("OAuthenticator#start a server to listen for oauth result"),
-              await this.c.getServer(),
-              this.c.setAuthCodeHandler(this.D.bind(this), !0),
-              this.c.setAuthorizationTimeoutHandler(this.C.bind(this)),
-              this.h.info("OAuthenticator#open oauth url"),
-              this.F(await this.c.getPort());
-            const t = await this.a.p;
-            return (this.a = void 0), t;
-          }
+        async login() {
+          this.a || (this.a = new di()),
+            this.h.info("OAuthenticator#start a server to listen for oauth result"),
+            await this.c.getServer(),
+            this.c.setAuthCodeHandler(this.D.bind(this), !0),
+            this.c.setAuthorizationTimeoutHandler(this.C.bind(this)),
+            this.h.info("OAuthenticator#open oauth url"),
+            this.F(await this.c.getPort());
+          const t = await this.a.p;
+          return (this.a = void 0), t;
+        }
 
-          async refreshToken(t) {
-            if (!t) throw new Error("RefreshTokenError:TokenNullError");
-            return await this.z(t);
-          }
+        async refreshToken(t) {
+          if (!t) throw new Error("RefreshTokenError:TokenNullError");
+          return await this.z(t);
+        }
 
-          async w(t) {
-            try {
-              const e = await this.f.request({
-                method: "POST",
-                url: `https://${this.g}/api/v2?Action=GetUserToken`,
-                data: {},
-                timeout: 3e4,
-                tryAgent: !0,
-                headers: { "X-Cloudide-Token": t },
-              });
-              if (!e) throw new Error("GetJwtTokenError:ResultNullError");
-              return (
-                this.h.info("[getJwtToken]", "Result: ", wr(e)),
-                {
-                  Token: e.Result.Token,
-                  ExpiredAt: e.Result.ExpiredAt,
-                  UserID: e.Result.UserID,
-                  TenantID: e.Result.TenantID,
-                }
-              );
-            } catch (e) {
-              throw new Error(`GetJwtTokenError:${e}`);
-            }
+        async w(t) {
+          try {
+            const e = await this.f.request({
+              method: "POST",
+              url: `https://${this.g}/api/v2?Action=GetUserToken`,
+              data: {},
+              timeout: 3e4,
+              tryAgent: !0,
+              headers: { "X-Cloudide-Token": t },
+            });
+            if (!e) throw new Error("GetJwtTokenError:ResultNullError");
+            return (
+              this.h.info("[getJwtToken]", "Result: ", wr(e)),
+              {
+                Token: e.Result.Token,
+                ExpiredAt: e.Result.ExpiredAt,
+                UserID: e.Result.UserID,
+                TenantID: e.Result.TenantID,
+              }
+            );
+          } catch (e) {
+            throw new Error(`GetJwtTokenError:${e}`);
           }
+        }
 
-          async y(t) {
-            try {
-              const e = await this.f.request({
-                method: "POST",
-                url: `https://${this.g}/api/v2/GetUserNativeRegion`,
-                data: {},
-                timeout: 3e4,
-                tryAgent: !0,
-                headers: { "X-Cloudide-Token": t },
-              });
-              if (!e) throw new Error("GetAiRegionError:ResultNullError");
-              if ((this.h.info("[getAiRegion]", "Result: ", e), !e.Result.Allow)) throw new Error("GetAiRegionError:NotAllowed");
-              return (
-                e.Result.AIRegion === "-" && (e.Result.AIRegion = void 0),
-                {
-                  Allow: e.Result.Allow,
-                  AIRegion: e.Result.AIRegion,
-                }
-              );
-            } catch (e) {
-              throw new Error(`GetAiRegionError:${e}`);
-            }
+        async y(t) {
+          try {
+            const e = await this.f.request({
+              method: "POST",
+              url: `https://${this.g}/api/v2/GetUserNativeRegion`,
+              data: {},
+              timeout: 3e4,
+              tryAgent: !0,
+              headers: { "X-Cloudide-Token": t },
+            });
+            if (!e) throw new Error("GetAiRegionError:ResultNullError");
+            if ((this.h.info("[getAiRegion]", "Result: ", e), !e.Result.Allow)) throw new Error("GetAiRegionError:NotAllowed");
+            return (
+              e.Result.AIRegion === "-" && (e.Result.AIRegion = void 0),
+              {
+                Allow: e.Result.Allow,
+                AIRegion: e.Result.AIRegion,
+              }
+            );
+          } catch (e) {
+            throw new Error(`GetAiRegionError:${e}`);
           }
+        }
 
-          async z(t) {
-            const e = t?.split(".")[1],
-              i = e && e.replace(/-/g, "+").replace(/_/g, "/"),
-              s = JSON.parse(decodeURIComponent(escape(atob(i)))),
-              { avatar_url: r, email: n, iat: o, iss: a, organization: c, username: l, work_country: h } = s;
-            if (l) {
-              const [{ Token: d, ExpiredAt: p }, g] = await Promise.all([this.w(t), this.y(t)]),
-                m = g.AIRegion,
-                b = {
-                  username: l,
-                  iss: a,
-                  iat: o,
-                  organization: c,
-                  work_country: h,
-                  email: n,
-                  avatar_url: r,
-                  scope: wi.BYTEDANCE,
-                };
-              return { token: d, refreshToken: t, expiredAt: p, userId: l, aiRegion: m, account: b };
-            } else throw new Error("RefreshTokenError:TokenParseError");
-          }
+        async z(t) {
+          const e = t?.split(".")[1],
+            i = e && e.replace(/-/g, "+").replace(/_/g, "/"),
+            s = JSON.parse(decodeURIComponent(escape(atob(i)))),
+            { avatar_url: r, email: n, iat: o, iss: a, organization: c, username: l, work_country: h } = s;
+          if (l) {
+            const [{ Token: d, ExpiredAt: p }, g] = await Promise.all([this.w(t), this.y(t)]),
+              m = g.AIRegion,
+              b = {
+                username: l,
+                iss: a,
+                iat: o,
+                organization: c,
+                work_country: h,
+                email: n,
+                avatar_url: r,
+                scope: wi.BYTEDANCE,
+              };
+            return { token: d, refreshToken: t, expiredAt: p, userId: l, aiRegion: m, account: b };
+          } else throw new Error("RefreshTokenError:TokenParseError");
+        }
 
-          C() {
-            this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
-          }
+        C() {
+          this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
+        }
 
-          async D(t) {
-            if (t) {
-              if ((this.h.info("OAuthenticator#write ide_credential file to local path"), !this.a)) throw new Error("CloudIDETokenError:LinkExpired");
-              const e = await this.z(t).catch((i) => {
-                throw (this.a?.error(i), (this.a = void 0), i);
-              });
-              this.a?.complete(e);
-            } else this.a?.error(new Error("CloudIDETokenError:TokenNullError")), (this.a = void 0);
-          }
+        async D(t) {
+          if (t) {
+            if ((this.h.info("OAuthenticator#write ide_credential file to local path"), !this.a)) throw new Error("CloudIDETokenError:LinkExpired");
+            const e = await this.z(t).catch((i) => {
+              throw (this.a?.error(i), (this.a = void 0), i);
+            });
+            this.a?.complete(e);
+          } else this.a?.error(new Error("CloudIDETokenError:TokenNullError")), (this.a = void 0);
+        }
 
-          F(t) {
-            const e = `http://127.0.0.1:${t}${Xa.LOGIN_CONFIRM}`,
-              i = `https://${this.g}/ide/api/v1/users/login/local?next=${e}`;
-            if (!this.r) {
-              this.h.error("OAuthenticator# this.nativeHostMainService is undefined");
-              return;
-            }
-            this.r.openExternal(void 0, i),
-              this.b && clearTimeout(this.b),
-              (this.b = setTimeout(() => {
-                this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
-              }, mu.TIMEOUT_MS));
+        F(t) {
+          const e = `http://127.0.0.1:${t}${Xa.LOGIN_CONFIRM}`,
+            i = `https://${this.g}/ide/api/v1/users/login/local?next=${e}`;
+          if (!this.r) {
+            this.h.error("OAuthenticator# this.nativeHostMainService is undefined");
+            return;
           }
+          this.r.openExternal(void 0, i),
+            this.b && clearTimeout(this.b),
+            (this.b = setTimeout(() => {
+              this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
+            }, mu.TIMEOUT_MS));
+        }
 
-          async checkToken() {
-            return !0;
-          }
-        });
+        async checkToken() {
+          return !0;
+        }
+      };
     },
   });
 
@@ -37572,456 +37622,457 @@ var ob,
   vS,
   br,
   Gr,
-  bu,
+  CubeAuthManagement,
   Mo = v({
     "out-build/vs/code/electron-main/iCubeAuthManagement.js"() {
       "use strict";
-      H(),
-        Q(),
-        ut(),
-        Ht(),
-        G(),
-        T(),
-        Ci(),
-        Me(),
-        de(),
-        bf(),
-        Pn(),
-        fn(),
-        q9(),
-        gt(),
-        lt(),
-        mj(),
-        wj(),
-        ri(),
-        Yf(),
-        is(),
-        rt(),
-        (vS = ["ide.byted.org", "ide-us.byted.org"]),
-        (br = U("IMainICubeAuthManagementService")),
-        (function (t) {
-          (t.CREATE_TOKEN = "CREATE_TOKEN"), (t.REFRESH_TOKEN = "REFRESH_TOKEN");
-        })(Gr || (Gr = {})),
-        (bu = class extends N {
-          static {
-            ob = this;
-          }
-          static {
-            this.REFRESH_TOKEN_DURATION = 24 * 60 * 60 * 1e3;
-          }
+      H();
+      Q();
+      ut();
+      Ht();
+      G();
+      T();
+      Ci();
+      Me();
+      de();
+      bf();
+      Pn();
+      fn();
+      q9();
+      gt();
+      lt();
+      mj();
+      wj();
+      ri();
+      Yf();
+      is();
+      rt();
+      vS = ["ide.byted.org", "ide-us.byted.org"];
+      br = U("IMainICubeAuthManagementService");
+      (function (t) {
+        t.CREATE_TOKEN = "CREATE_TOKEN";
+        t.REFRESH_TOKEN = "REFRESH_TOKEN";
+      })(Gr || (Gr = {}));
+      CubeAuthManagement = class extends N {
+        static {
+          ob = this;
+        }
+        static {
+          this.REFRESH_TOKEN_DURATION = 24 * 60 * 60 * 1e3;
+        }
 
-          constructor(e, i, s, r, n, o) {
-            super(),
-              (this.n = e),
-              (this.r = i),
-              (this.s = s),
-              (this.t = r),
-              (this.u = n),
-              (this.w = o),
-              (this.a = void 0),
-              (this.f = new Map()),
-              (this.g = void 0),
-              (this.h = void 0),
-              (this.m = new di()),
-              (this.z = this.B(new $())),
-              (this.onDidChangeUserInfo = this.z.event),
-              (this.C = this.B(new $())),
-              (this.onDidChangeAppMetadata = this.C.event),
-              (this.D = void 0),
-              (this.J = 60 * 60 * 1e3),
-              (this.jb = !1),
-              (this.D = this.ib()),
-              this.U(),
-              this.M();
-          }
+        constructor(e, i, s, r, n, o) {
+          super(),
+            (this.n = e),
+            (this.r = i),
+            (this.s = s),
+            (this.t = r),
+            (this.u = n),
+            (this.w = o),
+            (this.a = void 0),
+            (this.f = new Map()),
+            (this.g = void 0),
+            (this.h = void 0),
+            (this.m = new di()),
+            (this.z = this.B(new $())),
+            (this.onDidChangeUserInfo = this.z.event),
+            (this.C = this.B(new $())),
+            (this.onDidChangeAppMetadata = this.C.event),
+            (this.D = void 0),
+            (this.J = 60 * 60 * 1e3),
+            (this.jb = !1),
+            (this.D = this.ib()),
+            this.U(),
+            this.M();
+        }
 
-          y(e, i) {
-            this.j?.getTeaClient().then((s) => {
-              s?.collect(e, i);
-            });
-          }
+        y(e, i) {
+          this.j?.getTeaClient().then((s) => {
+            s?.collect(e, i);
+          });
+        }
 
-          async login(e) {
-            return await this.mb(void 0, { forceLogin: !0, provider: e || wi.BYTEDANCE });
-          }
+        async login(e) {
+          return await this.mb(void 0, { forceLogin: !0, provider: e || wi.BYTEDANCE });
+        }
 
-          get userInfo() {
-            return this.P(this.D);
-          }
+        get userInfo() {
+          return this.P(this.D);
+        }
 
-          get nativeAppMetadata() {
-            return { appProvider: this.G + "-" + this.H, appRegion: this.H, appTenant: this.I };
-          }
+        get nativeAppMetadata() {
+          return { appProvider: this.G + "-" + this.H, appRegion: this.H, appTenant: this.I };
+        }
 
-          getNativeAppMetadata() {
-            return this.nativeAppMetadata;
-          }
+        getNativeAppMetadata() {
+          return this.nativeAppMetadata;
+        }
 
-          get F() {
-            return this.r.getItem(Gm) || wf.CN;
-          }
+        get F() {
+          return this.r.getItem(Gm) || wf.CN;
+        }
 
-          get G() {
-            return wi.BYTEDANCE;
-          }
+        get G() {
+          return wi.BYTEDANCE;
+        }
 
-          get H() {
-            return RF(this.F);
-          }
+        get H() {
+          return RF(this.F);
+        }
 
-          get I() {
-            if (this.D?.account?.scope) return this.D.account.scope;
-          }
+        get I() {
+          if (this.D?.account?.scope) return this.D.account.scope;
+        }
 
-          M() {
-            this.N(),
-              (this.L = setInterval(() => {
-                this.s.info("[MainICubeAuthManagementService] Performing scheduled token validity check"), this.P(this.D);
-              }, this.J));
-          }
+        M() {
+          this.N(),
+            (this.L = setInterval(() => {
+              this.s.info("[MainICubeAuthManagementService] Performing scheduled token validity check"), this.P(this.D);
+            }, this.J));
+        }
 
-          N() {
-            this.L && (clearInterval(this.L), (this.L = void 0));
-          }
+        N() {
+          this.L && (clearInterval(this.L), (this.L = void 0));
+        }
 
-          dispose() {
-            super.dispose(), (this.eb = void 0), (this.eb = void 0), this.N();
-          }
+        dispose() {
+          super.dispose(), (this.eb = void 0), (this.eb = void 0), this.N();
+        }
 
-          async O(e) {
-            const i = e.account.scope;
-            if (this.hb) {
-              this.s.info("[MainICubeAuthManagementService] verify strick token already run");
+        async O(e) {
+          const i = e.account.scope;
+          if (this.hb) {
+            this.s.info("[MainICubeAuthManagementService] verify strick token already run");
+            return;
+          }
+          this.hb = new di();
+          const s = await this.kb(i);
+          if (!s) {
+            this.s.info("[MainICubeAuthManagementService] no login provider");
+            return;
+          }
+          let r = !0;
+          try {
+            r = await s.checkToken(e.token, e.region, e.host);
+          } catch (n) {
+            this.s.info("[MainICubeAuthManagementService] verifyStrickTokenInBackground error", n);
+          }
+          r || this.R(void 0, !0), this.hb.complete(), (this.hb = void 0);
+        }
+
+        P(e) {
+          const i = this.db(e),
+            s = e?.account.scope || wi.BYTEDANCE;
+          if (i === "need-login") {
+            if ((this.s.info("[MainICubeAuthManagementService#verifyTokenInBackground] need login according to existed state#auth_info"), !e)) {
+              this.R(void 0);
               return;
             }
-            this.hb = new di();
-            const s = await this.kb(i);
+            this.mb(e.refreshToken, { forceLogin: !!e.refreshToken, provider: s });
+            return;
+          } else return i === "need-refresh" ? (this.lb(e?.refreshToken, Gr.REFRESH_TOKEN, s), e) : (this.O(e), e);
+        }
+
+        Q() {
+          this.g && (this.f.set(wi.BYTEDANCE, new ByteDanceOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)), this.f.set(wi.MARSCODE, new wS(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)));
+        }
+
+        async initialize(e) {
+          (this.g = e.nativeHostMainService),
+            (this.h = e.telemetryService),
+            (this.a = e.broadcastToCodeWindows),
+            (this.b = e.onLoginSuccess),
+            (this.c = e.onLogout),
+            (this.j = e.iCubeEventReportService),
+            this.Q(),
+            this.m.complete("initialize");
+          let i;
+          try {
+            (i = await this.getAuthUserInfo({ forceLogin: !1 })), this.s.info("[MainICubeAuthManagementService] initialize success");
+          } catch (s) {
+            this.s.error("[MainICubeAuthManagementService] initialize failed due to %s", s);
+          } finally {
+            this.R(i);
+          }
+        }
+
+        R(e, i) {
+          (this.D = e),
+            this.z.fire(e),
+            this.C.fire(this.nativeAppMetadata),
+            this.a?.(Dt.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D),
+            this.a?.(Dt.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata),
+            this.s.info("[persistUserInfoWithNotify]", this.S, wr(e)),
+            this.S && (e ? this.r.setItem(this.S, JSON.stringify(e)) : i && this.r.removeItem(this.S));
+        }
+
+        get S() {
+          const { authProviderId: e } = this.n.iCubeApp?.nativeAppConfig || {};
+          if (e) return `${U9}://${e}`;
+        }
+
+        U() {
+          this.s.info("[MainICubeAuthManagementService] registerListeners"),
+            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_APP_METADATA, this.$.bind(this)),
+            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_USER_INFO, this.ab.bind(this)),
+            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_LOGIN, this.Z.bind(this)),
+            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_CHECK_BYTEDANCE, this.nb.bind(this)),
+            De.on(Dt.SANDBOX_TO_MAIN_SEND_OPEN_LOGIN_WINDOW, this.Z.bind(this)),
+            De.on(Dt.SANDBOX_TO_MAIN_SEND_NEED_REFRESH_USER_INFO, this.Y.bind(this)),
+            De.handle(Dt.SANDBOX_TO_MAIN_SEND_LOGOUT, this.X.bind(this)),
+            De.handle(Dt.SANDBOX_TO_MAIN_REFRESH_USERINFO, this.W.bind(this));
+        }
+
+        async W() {
+          if (!this.D) return;
+          if (this.db(this.D) === "valid-token") {
+            const i = this.D?.account.scope || wi.BYTEDANCE,
+              s = await this.kb(i);
             if (!s) {
               this.s.info("[MainICubeAuthManagementService] no login provider");
               return;
             }
-            let r = !0;
-            try {
-              r = await s.checkToken(e.token, e.region, e.host);
-            } catch (n) {
-              this.s.info("[MainICubeAuthManagementService] verifyStrickTokenInBackground error", n);
-            }
-            r || this.R(void 0, !0), this.hb.complete(), (this.hb = void 0);
-          }
-
-          P(e) {
-            const i = this.db(e),
-              s = e?.account.scope || wi.BYTEDANCE;
-            if (i === "need-login") {
-              if ((this.s.info("[MainICubeAuthManagementService#verifyTokenInBackground] need login according to existed state#auth_info"), !e)) {
-                this.R(void 0);
-                return;
-              }
-              this.mb(e.refreshToken, { forceLogin: !!e.refreshToken, provider: s });
-              return;
-            } else return i === "need-refresh" ? (this.lb(e?.refreshToken, Gr.REFRESH_TOKEN, s), e) : (this.O(e), e);
-          }
-
-          Q() {
-            this.g && (this.f.set(wi.BYTEDANCE, new bS(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)), this.f.set(wi.MARSCODE, new wS(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)));
-          }
-
-          async initialize(e) {
-            (this.g = e.nativeHostMainService),
-              (this.h = e.telemetryService),
-              (this.a = e.broadcastToCodeWindows),
-              (this.b = e.onLoginSuccess),
-              (this.c = e.onLogout),
-              (this.j = e.iCubeEventReportService),
-              this.Q(),
-              this.m.complete("initialize");
-            let i;
-            try {
-              (i = await this.getAuthUserInfo({ forceLogin: !1 })), this.s.info("[MainICubeAuthManagementService] initialize success");
-            } catch (s) {
-              this.s.error("[MainICubeAuthManagementService] initialize failed due to %s", s);
-            } finally {
-              this.R(i);
+            if (s.refreshUserInfo) {
+              const r = await s.refreshUserInfo(this.D.token, this.D.region, this.D.host),
+                n = JSON.stringify(this.D.account || {}) !== JSON.stringify(r || {});
+              n &&
+                (this.s.info("[MainICubeAuthManagementService] get account info", r, n),
+                this.R({
+                  ...this.D,
+                  account: r,
+                }));
             }
           }
+        }
 
-          R(e, i) {
-            (this.D = e),
-              this.z.fire(e),
+        X() {
+          return (
+            this.S &&
+              ((this.D = void 0),
+              this.z.fire(void 0),
               this.C.fire(this.nativeAppMetadata),
               this.a?.(Dt.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D),
               this.a?.(Dt.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata),
-              this.s.info("[persistUserInfoWithNotify]", this.S, wr(e)),
-              this.S && (e ? this.r.setItem(this.S, JSON.stringify(e)) : i && this.r.removeItem(this.S));
-          }
+              this.r.removeItem(this.S),
+              this.c && this.c()),
+            Promise.resolve(!0)
+          );
+        }
 
-          get S() {
-            const { authProviderId: e } = this.n.iCubeApp?.nativeAppConfig || {};
-            if (e) return `${U9}://${e}`;
-          }
+        Y(e) {
+          this.getAuthUserInfo();
+        }
 
-          U() {
-            this.s.info("[MainICubeAuthManagementService] registerListeners"),
-              De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_APP_METADATA, this.$.bind(this)),
-              De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_USER_INFO, this.ab.bind(this)),
-              De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_LOGIN, this.Z.bind(this)),
-              De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_CHECK_BYTEDANCE, this.nb.bind(this)),
-              De.on(Dt.SANDBOX_TO_MAIN_SEND_OPEN_LOGIN_WINDOW, this.Z.bind(this)),
-              De.on(Dt.SANDBOX_TO_MAIN_SEND_NEED_REFRESH_USER_INFO, this.Y.bind(this)),
-              De.handle(Dt.SANDBOX_TO_MAIN_SEND_LOGOUT, this.X.bind(this)),
-              De.handle(Dt.SANDBOX_TO_MAIN_REFRESH_USERINFO, this.W.bind(this));
-          }
+        async Z(e, i = wi.BYTEDANCE) {
+          this.s.info("[MainICubeAuthManagementService]", "handleOpenLoginWindow");
+          const s = await this.mb(void 0, { forceLogin: !0, provider: i }),
+            n = BrowserWindow.getAllWindows().find((o) => o.webContents.mainFrame.processId === e.processId);
+          return this.s.info("[MainICubeAuthManagementService]", "show window", n), n && (n.isMinimized() && n.restore(), n.focus(), n.show()), this.b && this.b(s), s;
+        }
 
-          async W() {
-            if (!this.D) return;
-            if (this.db(this.D) === "valid-token") {
-              const i = this.D?.account.scope || wi.BYTEDANCE,
-                s = await this.kb(i);
-              if (!s) {
-                this.s.info("[MainICubeAuthManagementService] no login provider");
-                return;
-              }
-              if (s.refreshUserInfo) {
-                const r = await s.refreshUserInfo(this.D.token, this.D.region, this.D.host),
-                  n = JSON.stringify(this.D.account || {}) !== JSON.stringify(r || {});
-                n &&
-                  (this.s.info("[MainICubeAuthManagementService] get account info", r, n),
-                  this.R({
-                    ...this.D,
-                    account: r,
-                  }));
-              }
-            }
-          }
+        async $(e) {
+          return this.nativeAppMetadata;
+        }
 
-          X() {
-            return (
-              this.S &&
-                ((this.D = void 0),
-                this.z.fire(void 0),
-                this.C.fire(this.nativeAppMetadata),
-                this.a?.(Dt.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D),
-                this.a?.(Dt.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata),
-                this.r.removeItem(this.S),
-                this.c && this.c()),
-              Promise.resolve(!0)
-            );
-          }
+        async ab(e, i = !1) {
+          return this.s.info("[MainICubeAuthManagementService] invoke getUserInfo from codeWindow %s", e.sender.id), this.getAuthUserInfo({ forceLogin: !1 });
+        }
 
-          Y(e) {
-            this.getAuthUserInfo();
-          }
+        bb(e, i) {
+          (e === Gr.CREATE_TOKEN || i) && this.R(void 0, i), this.fb && (this.fb.error(new Error("Login Failed")), (this.fb = void 0), (this.gb = void 0)), this.eb && (this.eb = void 0);
+        }
 
-          async Z(e, i = wi.BYTEDANCE) {
-            this.s.info("[MainICubeAuthManagementService]", "handleOpenLoginWindow");
-            const s = await this.mb(void 0, { forceLogin: !0, provider: i }),
-              n = BrowserWindow.getAllWindows().find((o) => o.webContents.mainFrame.processId === e.processId);
-            return this.s.info("[MainICubeAuthManagementService]", "show window", n), n && (n.isMinimized() && n.restore(), n.focus(), n.show()), this.b && this.b(s), s;
+        cb(e, i) {
+          if ((this.s.info("[MainICubeAuthManagementService] get userInfo by action %s", i), !e)) {
+            this.s.warn("[MainICubeAuthManagementService] userInfo is empty");
+            return;
           }
+          this.R(e), e.refreshToken && (this.jb = !1), this.fb && (this.fb.complete(e), (this.fb = void 0), (this.gb = void 0)), this.eb && (this.eb = void 0);
+        }
 
-          async $(e) {
-            return this.nativeAppMetadata;
+        db(e) {
+          if (xt(e) && e.token && e.expiredAt) {
+            const i = Date.parse(e.expiredAt) - Date.now();
+            return i <= 0 ? "need-login" : i <= ob.REFRESH_TOKEN_DURATION ? "need-refresh" : "valid-token";
           }
+          return "need-login";
+        }
 
-          async ab(e, i = !1) {
-            return this.s.info("[MainICubeAuthManagementService] invoke getUserInfo from codeWindow %s", e.sender.id), this.getAuthUserInfo({ forceLogin: !1 });
+        ib() {
+          if (!this.S) return;
+          const e = this.r.getItem(this.S);
+          if (!e) {
+            this.s.info("[MainICubeAuthManagementService] no available persist userInfo to restore.");
+            return;
           }
-
-          bb(e, i) {
-            (e === Gr.CREATE_TOKEN || i) && this.R(void 0, i), this.fb && (this.fb.error(new Error("Login Failed")), (this.fb = void 0), (this.gb = void 0)), this.eb && (this.eb = void 0);
-          }
-
-          cb(e, i) {
-            if ((this.s.info("[MainICubeAuthManagementService] get userInfo by action %s", i), !e)) {
-              this.s.warn("[MainICubeAuthManagementService] userInfo is empty");
+          try {
+            const i = JSON.parse(e),
+              s = i.account.scope || wi.BYTEDANCE;
+            if (this.db(i) === "need-login") {
+              this.mb(i?.refreshToken, { forceLogin: !!i?.refreshToken, provider: s });
               return;
-            }
-            this.R(e), e.refreshToken && (this.jb = !1), this.fb && (this.fb.complete(e), (this.fb = void 0), (this.gb = void 0)), this.eb && (this.eb = void 0);
+            } else return this.s.info("[MainICubeAuthManagementService] restore userInfoStr success"), i;
+          } catch {
+            this.s.warn("[MainICubeAuthManagementService] restore userInfoStr failed %s", e);
+            return;
           }
+        }
 
-          db(e) {
-            if (xt(e) && e.token && e.expiredAt) {
-              const i = Date.parse(e.expiredAt) - Date.now();
-              return i <= 0 ? "need-login" : i <= ob.REFRESH_TOKEN_DURATION ? "need-refresh" : "valid-token";
-            }
-            return "need-login";
+        async getAuthUserInfo(e = { forceLogin: !1 }) {
+          if (!this.S) return;
+          const i = this.r.getItem(this.S);
+          if (!i) {
+            this.R(void 0);
+            return;
           }
+          try {
+            const s = JSON.parse(i),
+              r = s.account.scope || wi.BYTEDANCE,
+              n = this.db(s);
+            return n === "need-login"
+              ? (this.s.info("[MainICubeAuthManagementService#getAuthUserInfo] need login according to existed state#auth_info"),
+                this.mb(s?.refreshToken, {
+                  ...e,
+                  provider: r,
+                }))
+              : (n === "need-refresh" && this.lb(s.refreshToken, Gr.REFRESH_TOKEN, r), s);
+          } catch {
+            this.s.warn("[MainICubeAuthManagementService] invalid userInfoStr %s", i), this.R(void 0);
+            return;
+          }
+        }
 
-          ib() {
-            if (!this.S) return;
-            const e = this.r.getItem(this.S);
-            if (!e) {
+        async kb(e) {
+          return await this.m.p, this.f.get(e);
+        }
+
+        async lb(e, i = Gr.REFRESH_TOKEN, s = wi.BYTEDANCE) {
+          if (this.jb) {
+            this.s.info("[MainICubeAuthManagementService] skip refreshToken due to v1 token has no refresh_token");
+            return;
+          }
+          let r, n;
+          if (!this.D && this.S) {
+            const a = this.r.getItem(this.S);
+            if (!a) {
               this.s.info("[MainICubeAuthManagementService] no available persist userInfo to restore.");
               return;
             }
             try {
-              const i = JSON.parse(e),
-                s = i.account.scope || wi.BYTEDANCE;
-              if (this.db(i) === "need-login") {
-                this.mb(i?.refreshToken, { forceLogin: !!i?.refreshToken, provider: s });
-                return;
-              } else return this.s.info("[MainICubeAuthManagementService] restore userInfoStr success"), i;
-            } catch {
-              this.s.warn("[MainICubeAuthManagementService] restore userInfoStr failed %s", e);
-              return;
+              const c = JSON.parse(a);
+              (r = c.region), (n = c.host);
+            } catch (c) {
+              this.s.error("[refreshTokenInBackground] parse userInfoStr failed %s", c);
             }
+          } else (r = this.D?.region), (n = this.D?.host);
+          let o = await this.kb(s);
+          if (!o) {
+            this.s.info("[MainICubeAuthManagementService] no login provider");
+            return;
           }
-
-          async getAuthUserInfo(e = { forceLogin: !1 }) {
-            if (!this.S) return;
-            const i = this.r.getItem(this.S);
-            if (!i) {
-              this.R(void 0);
-              return;
-            }
-            try {
-              const s = JSON.parse(i),
-                r = s.account.scope || wi.BYTEDANCE,
-                n = this.db(s);
-              return n === "need-login"
-                ? (this.s.info("[MainICubeAuthManagementService#getAuthUserInfo] need login according to existed state#auth_info"),
-                  this.mb(s?.refreshToken, {
-                    ...e,
-                    provider: r,
-                  }))
-                : (n === "need-refresh" && this.lb(s.refreshToken, Gr.REFRESH_TOKEN, r), s);
-            } catch {
-              this.s.warn("[MainICubeAuthManagementService] invalid userInfoStr %s", i), this.R(void 0);
-              return;
-            }
-          }
-
-          async kb(e) {
-            return await this.m.p, this.f.get(e);
-          }
-
-          async lb(e, i = Gr.REFRESH_TOKEN, s = wi.BYTEDANCE) {
-            if (this.jb) {
-              this.s.info("[MainICubeAuthManagementService] skip refreshToken due to v1 token has no refresh_token");
-              return;
-            }
-            let r, n;
-            if (!this.D && this.S) {
-              const a = this.r.getItem(this.S);
-              if (!a) {
-                this.s.info("[MainICubeAuthManagementService] no available persist userInfo to restore.");
-                return;
-              }
-              try {
-                const c = JSON.parse(a);
-                (r = c.region), (n = c.host);
-              } catch (c) {
-                this.s.error("[refreshTokenInBackground] parse userInfoStr failed %s", c);
-              }
-            } else (r = this.D?.region), (n = this.D?.host);
-            let o = await this.kb(s);
-            if (!o) {
-              this.s.info("[MainICubeAuthManagementService] no login provider");
-              return;
-            }
-            if (this.eb) this.s.info("[MainICubeAuthManagementService] refreshToken is already in background");
-            else {
-              const a = Date.now();
-              this.y("icube_refresh_token_start", {}),
-                (this.eb = o.refreshToken(e, r, n)),
-                this.eb
-                  .then((c) => {
-                    this.cb(c, i), this.y("icube_refresh_token_success", { duration: Date.now() - a });
-                  })
-                  .catch(async (c) => {
-                    this.s.error("[MainICubeAuthManagementService] refreshToken failed %s", c);
-                    let l = !1;
-                    c.message === "RefreshTokenError:TokenVersionError:1.0" || c.message === "RefreshTokenError:TokenNullError" ? (this.jb = !0) : c.message === Sf.RefreshTokenInvalid && (l = !0),
-                      this.bb(i, l),
-                      this.y("icube_refresh_token_failure", {
-                        duration: Date.now() - a,
-                        message: c.message,
-                      });
-                  });
-            }
-            return this.eb;
-          }
-
-          async mb(e, i) {
-            if (((e = e || this.D?.refreshToken), !i?.forceLogin)) {
-              this.R(void 0);
-              return;
-            }
-            const s = i?.provider || wi.BYTEDANCE,
-              r = Date.now();
-            if ((this.y("icube_login_start", { provider: s }), e)) return this.s.info("[MainICubeAuthManagementService] login via refreshToken started"), (this.jb = !1), this.lb(e, Gr.CREATE_TOKEN, i.provider);
-            this.fb && (this.s.info("[MainICubeAuthManagementService] login in progress already"), this.fb.cancel(), (this.fb = void 0), (this.gb = void 0)), (this.fb = new di());
-            const n = Qt();
-            this.gb = n;
-            const o = await this.kb(s);
-            if (!o) {
-              this.s.info("[MainICubeAuthManagementService] no login provider"),
-                this.y("icube_login_failure", {
-                  provider: s,
-                  duration: Date.now() - r,
-                  message: `no login provider: ${i?.provider}`,
+          if (this.eb) this.s.info("[MainICubeAuthManagementService] refreshToken is already in background");
+          else {
+            const a = Date.now();
+            this.y("icube_refresh_token_start", {}),
+              (this.eb = o.refreshToken(e, r, n)),
+              this.eb
+                .then((c) => {
+                  this.cb(c, i), this.y("icube_refresh_token_success", { duration: Date.now() - a });
+                })
+                .catch(async (c) => {
+                  this.s.error("[MainICubeAuthManagementService] refreshToken failed %s", c);
+                  let l = !1;
+                  c.message === "RefreshTokenError:TokenVersionError:1.0" || c.message === "RefreshTokenError:TokenNullError" ? (this.jb = !0) : c.message === Sf.RefreshTokenInvalid && (l = !0),
+                    this.bb(i, l),
+                    this.y("icube_refresh_token_failure", {
+                      duration: Date.now() - a,
+                      message: c.message,
+                    });
                 });
-              return;
-            }
-            return (
-              o
-                .login()
-                .then(
-                  (a) => (
-                    this.cb(a, Gr.CREATE_TOKEN),
-                    this.y("icube_login_success", {
-                      provider: s,
-                      duration: Date.now() - r,
-                    }),
-                    a
-                  ),
-                )
-                .catch((a) => {
-                  if (n !== this.gb) {
-                    this.s.info("[MainICubeAuthManagementService] login operate is expired");
-                    return;
-                  }
-                  this.s.error("[MainICubeAuthManagementService] login failed %s", a),
-                    this.y("icube_login_failure", {
-                      provider: s,
-                      duration: Date.now() - r,
-                      message: a.message,
-                    }),
-                    this.bb(Gr.CREATE_TOKEN);
-                }),
-              await this.fb.p
-            );
           }
+          return this.eb;
+        }
 
-          async nb() {
-            try {
-              return this.n.provider === Jt.SPRING
-                ? !1
-                : (await Promise.race([
-                    Promise.any(
-                      vS.map(
-                        (e) =>
-                          new Promise((i, s) => {
-                            dns.lookup(e, (r, n, o) => {
-                              r ? s(r) : i(n);
-                            });
-                          }),
-                      ),
-                    ),
-                    new Promise((e, i) => {
-                      setTimeout(() => {
-                        i();
-                      }, 3e3);
-                    }),
-                  ]),
-                  !0);
-            } catch (e) {
-              return this.s.info("[handleCheckBytedance]", e), !1;
-            }
+        async mb(e, i) {
+          if (((e = e || this.D?.refreshToken), !i?.forceLogin)) {
+            this.R(void 0);
+            return;
           }
-        }),
-        __decorate([nI(300)], bu.prototype, "Y", null),
-        (bu = ob = __decorate([__param(0, Je), __param(1, Ot), __param(2, K), __param(3, ct), __param(4, yt), __param(5, st)], bu));
+          const s = i?.provider || wi.BYTEDANCE,
+            r = Date.now();
+          if ((this.y("icube_login_start", { provider: s }), e)) return this.s.info("[MainICubeAuthManagementService] login via refreshToken started"), (this.jb = !1), this.lb(e, Gr.CREATE_TOKEN, i.provider);
+          this.fb && (this.s.info("[MainICubeAuthManagementService] login in progress already"), this.fb.cancel(), (this.fb = void 0), (this.gb = void 0)), (this.fb = new di());
+          const n = Qt();
+          this.gb = n;
+          const o = await this.kb(s);
+          if (!o) {
+            this.s.info("[MainICubeAuthManagementService] no login provider"),
+              this.y("icube_login_failure", {
+                provider: s,
+                duration: Date.now() - r,
+                message: `no login provider: ${i?.provider}`,
+              });
+            return;
+          }
+          return (
+            o
+              .login()
+              .then(
+                (a) => (
+                  this.cb(a, Gr.CREATE_TOKEN),
+                  this.y("icube_login_success", {
+                    provider: s,
+                    duration: Date.now() - r,
+                  }),
+                  a
+                ),
+              )
+              .catch((a) => {
+                if (n !== this.gb) {
+                  this.s.info("[MainICubeAuthManagementService] login operate is expired");
+                  return;
+                }
+                this.s.error("[MainICubeAuthManagementService] login failed %s", a),
+                  this.y("icube_login_failure", {
+                    provider: s,
+                    duration: Date.now() - r,
+                    message: a.message,
+                  }),
+                  this.bb(Gr.CREATE_TOKEN);
+              }),
+            await this.fb.p
+          );
+        }
+
+        async nb() {
+          try {
+            return this.n.provider === Jt.SPRING
+              ? !1
+              : (await Promise.race([
+                  Promise.any(
+                    vS.map(
+                      (e) =>
+                        new Promise((i, s) => {
+                          dns.lookup(e, (r, n, o) => {
+                            r ? s(r) : i(n);
+                          });
+                        }),
+                    ),
+                  ),
+                  new Promise((e, i) => {
+                    setTimeout(() => {
+                      i();
+                    }, 3e3);
+                  }),
+                ]),
+                !0);
+          } catch (e) {
+            return this.s.info("[handleCheckBytedance]", e), !1;
+          }
+        }
+      };
+      __decorate([nI(300)], CubeAuthManagement.prototype, "Y", null);
+      CubeAuthManagement = ob = __decorate([__param(0, Je), __param(1, Ot), __param(2, K), __param(3, ct), __param(4, yt), __param(5, st)], CubeAuthManagement);
     },
   });
 
@@ -39102,7 +39153,8 @@ async function Zj(t, e, i) {
 var Qj = v({
   "out-build/vs/platform/externalServices/common/serviceMachineId.js"() {
     "use strict";
-    mt(), ri();
+    mt();
+    ri();
   },
 });
 
@@ -40263,32 +40315,32 @@ var rp,
   }),
   ic,
   op,
-  ap,
+  CubeSetupManagement,
   hb = v({
     "out-build/vs/code/electron-main/iCubeSetupManagement.js"() {
       "use strict";
-      T(),
-        G(),
-        Ht(),
-        Pn(),
-        (function (t) {
-          (t.INIT = "INIT"), (t.PROGRESS = "PROGRESS"), (t.DONE = "DONE");
-        })(ic || (ic = {})),
-        (op = U("IMainICubeSetupManagement")),
-        (ap = class extends N {
-          constructor(e) {
-            super(), (this.b = e), (this.a = "ICubeSetupState");
-          }
+      T();
+      G();
+      Ht();
+      Pn();
+      (function (t) {
+        (t.INIT = "INIT"), (t.PROGRESS = "PROGRESS"), (t.DONE = "DONE");
+      })(ic || (ic = {}));
+      op = U("IMainICubeSetupManagement");
+      CubeSetupManagement = class extends N {
+        constructor(e) {
+          super(), (this.b = e), (this.a = "ICubeSetupState");
+        }
 
-          async get() {
-            return this.b.getItem(mf) ? ic.DONE : this.b.getItem(this.a) || ic.INIT;
-          }
+        async get() {
+          return this.b.getItem(mf) ? ic.DONE : this.b.getItem(this.a) || ic.INIT;
+        }
 
-          async set(e) {
-            this.b.setItem(this.a, e);
-          }
-        }),
-        (ap = __decorate([__param(0, Ot)], ap));
+        async set(e) {
+          this.b.setItem(this.a, e);
+        }
+      };
+      CubeSetupManagement = __decorate([__param(0, Ot)], CubeSetupManagement);
     },
   });
 
@@ -44436,47 +44488,47 @@ var kW = v({
         });
     },
   }),
-  Sp,
+  RequestStore,
   PW = v({
     "out-build/vs/platform/terminal/common/requestStore.js"() {
       "use strict";
-      de(),
-        jt(),
-        H(),
-        T(),
-        Q(),
-        (Sp = class extends N {
-          constructor(e, i) {
-            super(),
-              (this.h = i),
-              (this.a = 0),
-              (this.c = new Map()),
-              (this.f = new Map()),
-              (this.g = this.B(new $())),
-              (this.onCreateRequest = this.g.event),
-              (this.b = e === void 0 ? 15e3 : e),
-              this.B(
-                Pe(() => {
-                  for (const s of this.f.values()) Bt(s);
-                }),
-              );
-          }
+      de();
+      jt();
+      H();
+      T();
+      Q();
+      RequestStore = class extends N {
+        constructor(e, i) {
+          super(),
+            (this.h = i),
+            (this.a = 0),
+            (this.c = new Map()),
+            (this.f = new Map()),
+            (this.g = this.B(new $())),
+            (this.onCreateRequest = this.g.event),
+            (this.b = e === void 0 ? 15e3 : e),
+            this.B(
+              Pe(() => {
+                for (const s of this.f.values()) Bt(s);
+              }),
+            );
+        }
 
-          createRequest(e) {
-            return new Promise((i, s) => {
-              const r = ++this.a;
-              this.c.set(r, i), this.g.fire({ requestId: r, ...e });
-              const n = new ps();
-              Ti(this.b, n.token).then(() => s(`Request ${r} timed out (${this.b}ms)`)), this.f.set(r, [Pe(() => n.cancel())]);
-            });
-          }
+        createRequest(e) {
+          return new Promise((i, s) => {
+            const r = ++this.a;
+            this.c.set(r, i), this.g.fire({ requestId: r, ...e });
+            const n = new ps();
+            Ti(this.b, n.token).then(() => s(`Request ${r} timed out (${this.b}ms)`)), this.f.set(r, [Pe(() => n.cancel())]);
+          });
+        }
 
-          acceptReply(e, i) {
-            const s = this.c.get(e);
-            s ? (this.c.delete(e), Bt(this.f.get(e) || []), this.f.delete(e), s(i)) : this.h.warn(`RequestStore#acceptReply was called without receiving a matching request ${e}`);
-          }
-        }),
-        (Sp = __decorate([__param(1, K)], Sp));
+        acceptReply(e, i) {
+          const s = this.c.get(e);
+          s ? (this.c.delete(e), Bt(this.f.get(e) || []), this.f.delete(e), s(i)) : this.h.warn(`RequestStore#acceptReply was called without receiving a matching request ${e}`);
+        }
+      };
+      RequestStore = __decorate([__param(1, K)], RequestStore);
     },
   });
 
@@ -45196,7 +45248,7 @@ var EE,
               RW(),
               this.B(this.N),
               this.B(Pe(() => this.X())),
-              (this.j = this.B(new Sp(void 0, this.P))),
+              (this.j = this.B(new RequestStore(void 0, this.P))),
               this.B(this.j.onCreateRequest(this.D.fire, this.D)),
               this.N.onRequestConnection && this.B(I.once(this.N.onRequestConnection)(() => this.h())),
               this.N.onWillShutdown && this.B(this.N.onWillShutdown(() => (this.m = !0)));
@@ -45461,23 +45513,23 @@ var EE,
   oH = v({
     "out-build/vs/platform/remote/common/electronRemoteResources.js"() {
       "use strict";
-      (kb = "request"),
-        (DE = "remoteResourceHandler"),
-        (CE = class {
-          async routeCall(t, e, i) {
-            if (e !== kb) throw new Error(`Call not found: ${e}`);
-            const s = i[0];
-            if (s?.authority) {
-              const r = t.connections.find((n) => n.ctx === s.authority);
-              if (r) return r;
-            }
-            throw new Error("Caller not found");
+      kb = "request";
+      DE = "remoteResourceHandler";
+      CE = class {
+        async routeCall(t, e, i) {
+          if (e !== kb) throw new Error(`Call not found: ${e}`);
+          const s = i[0];
+          if (s?.authority) {
+            const r = t.connections.find((n) => n.ctx === s.authority);
+            if (r) return r;
           }
+          throw new Error("Caller not found");
+        }
 
-          routeEvent(t, e) {
-            throw new Error(`Event not found: ${e}`);
-          }
-        });
+        routeEvent(t, e) {
+          throw new Error(`Event not found: ${e}`);
+        }
+      };
     },
   });
 
@@ -45833,38 +45885,38 @@ var Lp,
   pH = v({
     "out-build/vs/platform/iCubeVSImportService/electron-main/iCubeVSImportChannel.js"() {
       "use strict";
-      H(),
-        Pp(),
-        (IE = class {
-          constructor(t) {
-            (this.a = t), (this._onEvent = new $());
-          }
+      H();
+      Pp();
+      IE = class {
+        constructor(t) {
+          (this.a = t), (this._onEvent = new $());
+        }
 
-          listen(t, e) {
-            return I.map(this._onEvent.event, (i) => ((i.called = e), i));
-          }
+        listen(t, e) {
+          return I.map(this._onEvent.event, (i) => ((i.called = e), i));
+        }
 
-          async call(t, e, i) {
-            switch (e) {
-              case "importFromVS":
-                await this.a.importFromVS(i.enterFrom, i.source);
-                return;
-              case "checkVSCode":
-                return this.a.checkVSCode(i.source || Ss.VSCode);
-              case "getVSCodeImportData":
-                return this.a.getVSCodeImportData();
-              case "checkDetail":
-                return this.a.checkDetail(i.source || Ss.VSCode);
-              case "setDetail":
-                if (i.detail) return this.a.setDetail(i.detail, i.source || Ss.VSCode);
-                throw new Error("Args not found: detail");
-              case "exportUserData":
-                await this.a.exportUserData(i.dir, i.fileName, i.userAvatar, i.userName);
-                return;
-            }
-            throw new Error(`Call not found: ${e}`);
+        async call(t, e, i) {
+          switch (e) {
+            case "importFromVS":
+              await this.a.importFromVS(i.enterFrom, i.source);
+              return;
+            case "checkVSCode":
+              return this.a.checkVSCode(i.source || Ss.VSCode);
+            case "getVSCodeImportData":
+              return this.a.getVSCodeImportData();
+            case "checkDetail":
+              return this.a.checkDetail(i.source || Ss.VSCode);
+            case "setDetail":
+              if (i.detail) return this.a.setDetail(i.detail, i.source || Ss.VSCode);
+              throw new Error("Args not found: detail");
+            case "exportUserData":
+              await this.a.exportUserData(i.dir, i.fileName, i.userAvatar, i.userName);
+              return;
           }
-        });
+          throw new Error(`Call not found: ${e}`);
+        }
+      };
     },
   }),
   AE,
@@ -45873,7 +45925,7 @@ var Lp,
   gH = v({
     "out-build/vs/platform/iCubeVSImportService/electron-main/constants.js"() {
       "use strict";
-      (AE = [
+      AE = [
         "workbench.sideBar.location",
         "workbench.activityBar.location",
         "workbench.editor.centeredLayoutAutoResize",
@@ -45883,18 +45935,18 @@ var Lp,
         "editor.minimap.enabled",
         "breadcrumbs.enabled",
         "window.zoomLevel",
-      ]),
-        (LE = [
-          "workbench.colorTheme",
-          "workbench.preferredDarkColorTheme",
-          "workbench.preferredLightColorTheme",
-          "workbench.preferredHighContrastColorTheme",
-          "workbench.preferredHighContrastLightColorTheme",
-          "workbench.iconTheme",
-          "workbench.productIconTheme",
-          "workbench.colorCustomizations",
-        ]),
-        (PE = [...AE, ...LE]);
+      ];
+      LE = [
+        "workbench.colorTheme",
+        "workbench.preferredDarkColorTheme",
+        "workbench.preferredLightColorTheme",
+        "workbench.preferredHighContrastColorTheme",
+        "workbench.preferredHighContrastLightColorTheme",
+        "workbench.iconTheme",
+        "workbench.productIconTheme",
+        "workbench.colorCustomizations",
+      ];
+      PE = [...AE, ...LE];
     },
   }),
   Db,
@@ -45902,7 +45954,8 @@ var Lp,
   mH = v({
     "out-build/vs/platform/iCubeVSImportService/common/constants.js"() {
       "use strict";
-      (Db = ["byted-cannycoder.cannycoder", "marscode.marscode-extension"]), (FE = ["byted-ide.gallery", "vue.volar"]);
+      Db = ["byted-cannycoder.cannycoder", "marscode.marscode-extension"];
+      FE = ["byted-ide.gallery", "vue.volar"];
     },
   }),
   _E,
@@ -45910,75 +45963,75 @@ var Lp,
   wH = v({
     "out-build/vs/platform/commands/common/commands.js"() {
       "use strict";
-      H(),
-        Ic(),
-        T(),
-        Z1(),
-        Me(),
-        G(),
-        (_E = U("commandService")),
-        (Cb = new (class {
-          constructor() {
-            (this.a = new Map()), (this.b = new Map()), (this.c = new $()), (this.onDidRegisterCommand = this.c.event);
-          }
+      H();
+      Ic();
+      T();
+      Z1();
+      Me();
+      G();
+      _E = U("commandService");
+      Cb = new (class {
+        constructor() {
+          (this.a = new Map()), (this.b = new Map()), (this.c = new $()), (this.onDidRegisterCommand = this.c.event);
+        }
 
-          registerCommand(t, e) {
-            if (!t) throw new Error("invalid command");
-            const i = new Ne(),
-              s = (a, c) => (this.b.set(a, c), Pe(() => this.b.delete(a)));
-            if (typeof t == "string") {
-              if (!e) throw new Error("invalid command");
-              return i.add(this.registerCommand({ id: t, handler: e })), i.add(s(t, i)), i;
-            }
-            if (t.metadata && Array.isArray(t.metadata.args)) {
-              const a = [];
-              for (const l of t.metadata.args) a.push(l.constraint);
-              const c = t.handler;
-              t.handler = function (l, ...h) {
-                return Ex(h, a), c(l, ...h);
-              };
-            }
-            const { id: r } = t;
-            let n = this.a.get(r);
-            n || ((n = new uh()), this.a.set(r, n));
-            const o = n.unshift(t);
-            return (
-              i.add(
-                Pe(() => {
-                  o(), this.a.get(r)?.isEmpty() && this.a.delete(r);
-                }),
-              ),
-              this.c.fire(r),
-              i.add(s(r, i)),
-              i
-            );
+        registerCommand(t, e) {
+          if (!t) throw new Error("invalid command");
+          const i = new Ne(),
+            s = (a, c) => (this.b.set(a, c), Pe(() => this.b.delete(a)));
+          if (typeof t == "string") {
+            if (!e) throw new Error("invalid command");
+            return i.add(this.registerCommand({ id: t, handler: e })), i.add(s(t, i)), i;
           }
+          if (t.metadata && Array.isArray(t.metadata.args)) {
+            const a = [];
+            for (const l of t.metadata.args) a.push(l.constraint);
+            const c = t.handler;
+            t.handler = function (l, ...h) {
+              return Ex(h, a), c(l, ...h);
+            };
+          }
+          const { id: r } = t;
+          let n = this.a.get(r);
+          n || ((n = new uh()), this.a.set(r, n));
+          const o = n.unshift(t);
+          return (
+            i.add(
+              Pe(() => {
+                o(), this.a.get(r)?.isEmpty() && this.a.delete(r);
+              }),
+            ),
+            this.c.fire(r),
+            i.add(s(r, i)),
+            i
+          );
+        }
 
-          registerCommandAlias(t, e) {
-            return Cb.registerCommand(t, (i, ...s) => i.get(_E).executeCommand(e, ...s));
-          }
+        registerCommandAlias(t, e) {
+          return Cb.registerCommand(t, (i, ...s) => i.get(_E).executeCommand(e, ...s));
+        }
 
-          unregisterCommand(t) {
-            const e = typeof t == "string" ? t : t.id,
-              i = this.b.get(e);
-            i && i.dispose();
-          }
+        unregisterCommand(t) {
+          const e = typeof t == "string" ? t : t.id,
+            i = this.b.get(e);
+          i && i.dispose();
+        }
 
-          getCommand(t) {
-            const e = this.a.get(t);
-            if (!(!e || e.isEmpty())) return tn.first(e);
-          }
+        getCommand(t) {
+          const e = this.a.get(t);
+          if (!(!e || e.isEmpty())) return tn.first(e);
+        }
 
-          getCommands() {
-            const t = new Map();
-            for (const e of this.a.keys()) {
-              const i = this.getCommand(e);
-              i && t.set(e, i);
-            }
-            return t;
+        getCommands() {
+          const t = new Map();
+          for (const e of this.a.keys()) {
+            const i = this.getCommand(e);
+            i && t.set(e, i);
           }
-        })()),
-        Cb.registerCommand("noop", () => {});
+          return t;
+        }
+      })();
+      Cb.registerCommand("noop", () => {});
     },
   }),
   xb,
@@ -46621,51 +46674,51 @@ var ME,
   SH = v({
     "out-build/vs/platform/iCubeDeviceRegister/common/iCubeDeviceRegisterService.js"() {
       "use strict";
-      H(),
-        T(),
-        G(),
-        (jE = U("IIcubeDeviceRegisterService")),
-        (UE = class extends N {
-          constructor() {
-            super(),
-              (this.a = "0"),
-              (this.b = "0"),
-              (this.c = !1),
-              (this.f = !1),
-              (this.g = this.B(new $())),
-              (this.onDidReadyDeviceId = this.g.event),
-              (this.h = this.B(new $())),
-              (this.onDidReadyInstallId = this.h.event),
-              (this.j = this.B(new $())),
-              (this.onDidChangeDeviceId = this.j.event),
-              (this.m = this.B(new $())),
-              (this.onDidChangeInstallId = this.m.event);
-          }
+      H();
+      T();
+      G();
+      jE = U("IIcubeDeviceRegisterService");
+      UE = class extends N {
+        constructor() {
+          super();
+          this.a = "0";
+          this.b = "0";
+          this.c = !1;
+          this.f = !1;
+          this.g = this.B(new $());
+          this.onDidReadyDeviceId = this.g.event;
+          this.h = this.B(new $());
+          this.onDidReadyInstallId = this.h.event;
+          this.j = this.B(new $());
+          this.onDidChangeDeviceId = this.j.event;
+          this.m = this.B(new $());
+          this.onDidChangeInstallId = this.m.event;
+        }
 
-          get n() {
-            return this.a;
-          }
+        get n() {
+          return this.a;
+        }
 
-          getDeviceId() {
-            return this.a;
-          }
+        getDeviceId() {
+          return this.a;
+        }
 
-          set n(t) {
-            t !== "0" && this.a !== t && ((this.a = t), this.j.fire(t), this.c || ((this.c = !0), this.g.fire(t)));
-          }
+        set n(t) {
+          t !== "0" && this.a !== t && ((this.a = t), this.j.fire(t), this.c || ((this.c = !0), this.g.fire(t)));
+        }
 
-          get r() {
-            return this.b;
-          }
+        get r() {
+          return this.b;
+        }
 
-          getInstallId() {
-            return this.b;
-          }
+        getInstallId() {
+          return this.b;
+        }
 
-          set r(t) {
-            t !== "0" && this.b !== t && ((this.b = t), this.f || ((this.f = !0), this.h.fire(t)), this.m.fire(t));
-          }
-        });
+        set r(t) {
+          t !== "0" && this.b !== t && ((this.b = t), this.f || ((this.f = !0), this.h.fire(t)), this.m.fire(t));
+        }
+      };
     },
   });
 
@@ -46680,140 +46733,164 @@ var Ab,
   Pb = v({
     "out-build/vs/platform/iCubeDeviceRegister/electron-main/iCubeDeviceRegisterMainService.js"() {
       "use strict";
-      H(),
-        Ht(),
-        ut(),
-        is(),
-        Z(),
-        Q(),
-        SH(),
-        gt(),
-        G(),
-        Ci(),
-        bf(),
-        (Ab = "device_id"),
-        (Lb = "install_id"),
-        (WE = "https://log.snssdk.com/service/2/desktop/device_register/"),
-        (HE = "https://log.byteoversea.com/service/2/desktop/device_register/"),
-        (zE = "https://log.snssdk.com/service/2/app_alert_check/"),
-        (VE = "https://log.byteoversea.com/service/2/app_alert_check/"),
-        (cc = jE),
-        (_p = class extends UE {
-          constructor(e, i, s, r, n) {
-            super(),
-              (this.D = e),
-              (this.F = i),
-              (this.G = s),
-              (this.H = r),
-              (this.I = n),
-              (this.w = !1),
-              (this.y = 0),
-              (this.n = this.F.getItem(Ab, "0")),
-              (this.r = this.F.getItem(Lb, "0")),
-              this.D.info(`[MainICubeDeviceRegisterService] (constructor) deviceId: ${this.n}, installId: ${this.r}`),
-              (this.s = this.M()),
-              (this.t = this.N()),
-              (this.u = new DH(this.s, this.t)),
-              this.O(),
-              this.Q();
-          }
 
-          get J() {
-            return this.G.provider === Jt.SPRING;
-          }
+      debugger;
 
-          get L() {
-            return this.w;
-          }
+      H();
+      Ht();
+      ut();
+      is();
+      Z();
+      Q();
+      SH();
+      gt();
+      G();
+      Ci();
+      bf();
+      Ab = "device_id";
+      Lb = "install_id";
+      WE = "https://log.snssdk.com/service/2/desktop/device_register/";
+      HE = "https://log.byteoversea.com/service/2/desktop/device_register/";
+      zE = "https://log.snssdk.com/service/2/app_alert_check/";
+      VE = "https://log.byteoversea.com/service/2/app_alert_check/";
+      cc = jE;
+      _p = class extends UE {
+        constructor(e, i, s, r, n) {
+          debugger;
 
-          set L(e) {
-            this.w = e;
-          }
+          super();
+          this.D = e;
+          this.F = i;
+          this.G = s;
+          this.H = r;
+          this.I = n;
+          this.w = false;
+          this.y = 0;
+          this.n = this.F.getItem("device_id", "0");
+          this.r = this.F.getItem("install_id", "0");
+          this.D.info(`[MainICubeDeviceRegisterService] (constructor) deviceId: ${this.n}, installId: ${this.r}`);
+          this.s = this.M();
+          this.t = this.N();
+          this.u = new DeviceRegister(this.s, this.t);
+          this.O();
+          this.Q();
+        }
 
-          M() {
-            return {
-              id: this.J ? 677332 : 647416,
-              channel: this.G.quality || "stable",
-              package: this.J ? "com.trae.app" : "com.marscode",
-              name: this.G.nameShort,
-              version: this.G.appVersion,
-              region: this.J ? "US" : "CN",
-              language: ss,
-            };
-          }
+        get J() {
+          return this.G.provider === Jt.SPRING;
+        }
 
-          N() {
-            let e = "";
-            if (J) e = `\\Software\\Bytedance\\${this.s.name}\\Test\\Common`;
-            else if (Oe) {
-              const i = this.H.userDataPath;
-              e = $path.resolve(i, "User/globalStorage/common");
-            }
-            return {
-              cachePath: e,
-              force: !1,
-              newUserMode: !1,
-              registryUrl: this.J ? HE : WE,
-              activeUrl: this.J ? VE : zE,
-              logger: {
-                trace: (i) => this.D.trace(i),
-                debug: (i) => this.D.debug(i),
-                info: (i) => this.D.info(i),
-                warn: (i) => this.D.warn(i),
-                error: (i) => this.D.error(i),
-              },
-            };
-          }
+        get L() {
+          return this.w;
+        }
 
-          async O() {
-            this.D.info(`[MainICubeDeviceRegisterService] (init) start init, retryCount: ${this.y}`);
-            try {
-              const { deviceId: e, installId: i, isActiveSuccess: s } = await this.u.registryAndActive();
-              (this.n = e.toString()), (this.r = i.toString()), (this.w = s);
-            } catch (e) {
-              this.D.error(e);
-            }
-            if (this.n === "0" || this.r === "0") {
-              this.D.error("[MainICubeDeviceRegisterService] (init) failed. current deviceId or installId is 0");
-              const e = Math.min(this.y * 15, 60) * 1e3;
-              (this.z = setTimeout(() => this.O(), e)), (this.y += 1);
-            } else this.D.info(`[MainICubeDeviceRegisterService] (init) success, deviceId: ${this.n}, installId: ${this.r}`), this.z && clearTimeout(this.z), (this.C = setTimeout(() => this.P(), 1e3 * 60 * 60 * 6));
-          }
+        set L(e) {
+          this.w = e;
+        }
 
-          async P() {
-            this.D.info("[MainICubeDeviceRegisterService] (refresh) start refresh");
-            try {
-              const { deviceId: e, installId: i, isActiveSuccess: s } = await this.u.registryAndActive();
-              (this.n = e.toString()), (this.r = i.toString()), (this.L = s);
-            } catch (e) {
-              this.D.error(e);
-            }
-            this.C && clearTimeout(this.C), this.D.info(`[MainICubeDeviceRegisterService] (refresh) done, deviceId: ${this.n}, installId: ${this.r}`), (this.C = setTimeout(() => this.P(), 1e3 * 60 * 60 * 6));
-          }
+        // app info
+        M() {
+          return {
+            id: this.J ? 677332 : 647416,
+            channel: this.G.quality || "stable",
+            package: this.J ? "com.trae.app" : "com.marscode",
+            name: this.G.nameShort,
+            version: this.G.appVersion,
+            region: this.J ? "US" : "CN",
+            language: ss,
+          };
+        }
 
-          Q() {
-            this.D.info("[MainICubeDeviceRegisterService] (registerListeners) start registerListeners"),
-              De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_DEVICE_ID, () => Promise.resolve(this.n)),
-              De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_INSTALL_ID, () => Promise.resolve(this.r)),
-              this.onDidChangeDeviceId((e) => {
-                this.I?.(Dt.MAIN_TO_SANDBOX_SEND_DEVICE_ID, this.n), this.F.setItem(Ab, e);
-              }),
-              this.onDidChangeInstallId((e) => {
-                this.I?.(Dt.MAIN_TO_SANDBOX_SEND_INSTALL_ID, this.r), this.F.setItem(Lb, e);
-              });
+        // config
+        N() {
+          let cachePath = "";
+          if (J) cachePath = `\\Software\\Bytedance\\${this.s.name}\\Test\\Common`;
+          else if (Oe) {
+            const i = this.H.userDataPath;
+            cachePath = $path.resolve(i, "User/globalStorage/common");
           }
+          return {
+            cachePath: cachePath,
+            force: false,
+            newUserMode: false,
+            registryUrl: this.J ? HE : WE,
+            activeUrl: this.J ? VE : zE,
+            logger: {
+              trace: (i) => this.D.trace(i),
+              debug: (i) => this.D.debug(i),
+              info: (i) => this.D.info(i),
+              warn: (i) => this.D.warn(i),
+              error: (i) => this.D.error(i),
+            },
+          };
+        }
 
-          resolveDeviceId(e = 10 * 1e3) {
-            if (this.n !== "0") return Promise.resolve(this.n);
-            if (e === 0) return I.toPromise(this.onDidChangeDeviceId);
-            const i = new Promise((r) => {
-                setTimeout(() => r(this.n), e);
-              }),
-              s = I.toPromise(this.onDidChangeDeviceId);
-            return Promise.race([i, s]);
+        // init
+        async O() {
+          debugger;
+          this.D.info(`[MainICubeDeviceRegisterService] (init) start init, retryCount: ${this.y}`);
+          try {
+            const { deviceId, installId, isActiveSuccess } = await this.u.registryAndActive();
+            this.n = deviceId.toString();
+            this.r = installId.toString();
+            this.w = isActiveSuccess;
+          } catch (err) {
+            this.D.error(err);
           }
-        }),
-        (_p = __decorate([__param(0, K), __param(1, Ot), __param(2, Je), __param(3, ct)], _p));
+          if (this.n === "0" || this.r === "0") {
+            this.D.error("[MainICubeDeviceRegisterService] (init) failed. current deviceId or installId is 0");
+            const rnd = Math.min(this.y * 15, 60) * 1000;
+            this.z = setTimeout(() => this.O(), rnd);
+            this.y += 1;
+          } else {
+            this.D.info(`[MainICubeDeviceRegisterService] (init) success, deviceId: ${this.n}, installId: ${this.r}`);
+            this.z && clearTimeout(this.z);
+            this.C = setTimeout(() => this.P(), 1000 * 60 * 60 * 6);
+          }
+        }
+
+        // refresh
+        async P() {
+          this.D.info("[MainICubeDeviceRegisterService] (refresh) start refresh");
+          try {
+            const { deviceId, installId, isActiveSuccess } = await this.u.registryAndActive();
+            this.n = deviceId.toString();
+            this.r = installId.toString();
+            this.L = isActiveSuccess;
+          } catch (err) {
+            this.D.error(err);
+          }
+          this.C && clearTimeout(this.C);
+          this.D.info(`[MainICubeDeviceRegisterService] (refresh) done, deviceId: ${this.n}, installId: ${this.r}`);
+          this.C = setTimeout(() => this.P(), 1000 * 60 * 60 * 6);
+        }
+
+        // registerListeners
+        Q() {
+          this.D.info("[MainICubeDeviceRegisterService] (registerListeners) start registerListeners");
+          De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_DEVICE_ID, () => Promise.resolve(this.n));
+          De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_INSTALL_ID, () => Promise.resolve(this.r));
+          this.onDidChangeDeviceId((deviceId) => {
+            this.I?.(Dt.MAIN_TO_SANDBOX_SEND_DEVICE_ID, this.n);
+            this.F.setItem("device_id", deviceId);
+          });
+          this.onDidChangeInstallId((installId) => {
+            this.I?.(Dt.MAIN_TO_SANDBOX_SEND_INSTALL_ID, this.r);
+            this.F.setItem("install_id", installId);
+          });
+        }
+
+        resolveDeviceId(e = 10 * 1000) {
+          if (this.n !== "0") return Promise.resolve(this.n);
+          if (e === 0) return I.toPromise(this.onDidChangeDeviceId);
+          const i = new Promise((r) => {
+              setTimeout(() => r(this.n), e);
+            }),
+            s = I.toPromise(this.onDidChangeDeviceId);
+          return Promise.race([i, s]);
+        }
+      };
+      _p = __decorate([__param(0, K), __param(1, Ot), __param(2, Je), __param(3, ct)], _p);
     },
   });
 
@@ -47620,497 +47697,381 @@ var Mb,
   JH = v({
     "out-build/vs/code/electron-main/app.js"() {
       "use strict";
-      yc(),
-        Ci(),
-        mt(),
-        dn(),
-        We(),
-        H(),
-        bc(),
-        Fr(),
-        T(),
-        Re(),
-        Ae(),
-        Z(),
-        Me(),
-        ge(),
-        ri(),
-        kI(),
-        _r(),
-        EI(),
-        j5(),
-        xy(),
-        le(),
-        Sl(),
-        vA(),
-        rt(),
-        EA(),
-        Id(),
-        Q0(),
-        Dn(),
-        V5(),
-        rL(),
-        gt(),
-        Al(),
-        sm(),
-        DL(),
-        CL(),
-        xL(),
-        LL(),
-        zL(),
-        lt(),
-        mP(),
-        bm(),
-        Ra(),
-        G(),
-        vm(),
-        wP(),
-        oF(),
-        lF(),
-        uF(),
-        dF(),
-        kt(),
-        Q(),
-        wF(),
-        Ta(),
-        ut(),
-        xl(),
-        LF(),
-        Vm(),
-        Ht(),
-        PF(),
-        vd(),
-        F9(),
-        Et(),
-        FF(),
-        OF(),
-        Co(),
-        Ln(),
-        MF(),
-        Lj(),
-        Pj(),
-        Mj(),
-        Wj(),
-        v9(),
-        Hj(),
-        zj(),
-        Vj(),
-        qj(),
-        Kj(),
-        Sn(),
-        ni(),
-        hU(),
-        dU(),
-        Ii(),
-        Z0(),
-        cf(),
-        fU(),
-        bo(),
-        pr(),
-        pU(),
-        ho(),
-        pp(),
-        GS(),
-        hW(),
-        dW(),
-        fW(),
-        de(),
-        kW(),
-        SW(),
-        EW(),
-        ql(),
-        DW(),
-        CW(),
-        fE(),
-        AW(),
-        nH(),
-        oH(),
-        zc(),
-        kl(),
-        hH(),
-        Ih(),
-        Xd(),
-        dH(),
-        Mo(),
-        fH(),
-        Pp(),
-        pH(),
-        yH(),
-        hb(),
-        $E(),
-        yf(),
-        bf(),
-        RE(),
-        V9(),
-        bc(),
-        $H(),
-        bs(),
-        ri(),
-        MH(),
-        RH(),
-        TH(),
-        OE(),
-        NH(),
-        BH(),
-        cS(),
-        pk(),
-        jH(),
-        HH(),
-        Pb(),
-        (zp = class extends N {
-          static {
-            Mb = this;
-          }
-          static {
-            this.b = {
-              [O.file]: "security.promptForLocalFileProtocolHandling",
-              [O.vscodeRemote]: "security.promptForRemoteFileProtocolHandling",
+      yc(), Ci(), mt(), dn(), We(), H(), bc(), Fr(), T(), Re(), Ae(), Z(), Me(), ge(), ri(), kI(), _r(), EI(), j5(), xy();
+      le(), Sl(), vA(), rt(), EA(), Id(), Q0(), Dn(), V5(), rL(), gt(), Al(), sm(), DL(), CL(), xL(), LL(), zL();
+      lt(), mP(), bm(), Ra(), G(), vm(), wP(), oF(), lF(), uF(), dF(), kt(), Q(), wF(), Ta(), ut(), xl(), LF(), Vm(), Ht(), PF();
+      vd(), F9(), Et(), FF(), OF(), Co(), Ln(), MF(), Lj(), Pj(), Mj(), Wj(), v9(), Hj(), zj(), Vj(), qj(), Kj(), Sn(), ni(), hU();
+      dU(), Ii(), Z0(), cf(), fU(), bo(), pr(), pU(), ho(), pp(), GS(), hW(), dW(), fW(), de(), kW(), SW(), EW(), ql();
+      DW(), CW(), fE(), AW(), nH(), oH(), zc(), kl(), hH(), Ih(), Xd(), dH(), Mo(), fH(), Pp(), pH(), yH(), hb(), $E();
+      yf(), bf(), RE(), V9(), bc(), $H(), bs(), ri(), MH(), RH(), TH(), OE(), NH(), BH(), cS(), pk(), jH(), HH(), Pb();
+
+      zp = class extends N {
+        static {
+          Mb = this;
+        }
+        static {
+          this.b = {
+            [O.file]: "security.promptForLocalFileProtocolHandling",
+            [O.vscodeRemote]: "security.promptForRemoteFileProtocolHandling",
+          };
+        }
+
+        constructor(e, i, s, r, n, o, a, c, l, h, d, p) {
+          super(), (this.j = e), (this.m = i), (this.s = s), (this.t = r), (this.u = n), (this.w = o), (this.y = a), (this.z = c), (this.C = l), (this.D = h), (this.F = d), (this.G = p), this.H(), this.I();
+        }
+
+        H() {
+          const e = (d) => d?.startsWith(`${O.vscodeFileResource}://${Yc}`),
+            i = (d) => d?.startsWith(`${O.vscodeWebview}://`),
+            s = new Set(["clipboard-read", "clipboard-sanitized-write"]),
+            r = new Set(["media"]);
+          session.defaultSession.setPermissionRequestHandler((d, p, g, m) => (i(m.requestingUrl) ? g(s.has(p)) : e(m.requestingUrl) ? g(r.has(p)) : g(!1))),
+            session.defaultSession.setPermissionCheckHandler((d, p, g, m) => (i(m.requestingUrl) ? s.has(p) : e(m.requestingUrl) ? r.has(p) : !1));
+          const n = new Set([O.file, O.vscodeFileResource, O.vscodeRemoteResource, O.vscodeManagedRemoteResource, "devtools"]),
+            o = (d) => {
+              for (let p = d; p; p = p.parent) if (p.url.startsWith(`${O.vscodeWebview}://`) || this.J(new URL(p.url).host)) return !0;
+              return !1;
+            },
+            a = (d) => d.resourceType === "xhr" || o(d.frame),
+            c = (d) => {
+              const p = d.frame;
+              if (!p || !this.f) return !1;
+              const g = BrowserWindow.getAllWindows();
+              for (const m of g) if (p.processId === m.webContents.mainFrame.processId) return !0;
+              return !1;
+            },
+            l = (d, p) => {
+              if (d.path !== "/index.html") return !0;
+              const g = p.frame;
+              if (!g || !this.f) return !1;
+              for (const m of this.f.getWindows()) if (m.win && g.processId === m.win.webContents.mainFrame.processId) return !0;
+              return !1;
             };
-          }
-
-          constructor(e, i, s, r, n, o, a, c, l, h, d, p) {
-            super(), (this.j = e), (this.m = i), (this.s = s), (this.t = r), (this.u = n), (this.w = o), (this.y = a), (this.z = c), (this.C = l), (this.D = h), (this.F = d), (this.G = p), this.H(), this.I();
-          }
-
-          H() {
-            const e = (d) => d?.startsWith(`${O.vscodeFileResource}://${Yc}`),
-              i = (d) => d?.startsWith(`${O.vscodeWebview}://`),
-              s = new Set(["clipboard-read", "clipboard-sanitized-write"]),
-              r = new Set(["media"]);
-            session.defaultSession.setPermissionRequestHandler((d, p, g, m) => (i(m.requestingUrl) ? g(s.has(p)) : e(m.requestingUrl) ? g(r.has(p)) : g(!1))),
-              session.defaultSession.setPermissionCheckHandler((d, p, g, m) => (i(m.requestingUrl) ? s.has(p) : e(m.requestingUrl) ? r.has(p) : !1));
-            const n = new Set([O.file, O.vscodeFileResource, O.vscodeRemoteResource, O.vscodeManagedRemoteResource, "devtools"]),
-              o = (d) => {
-                for (let p = d; p; p = p.parent) if (p.url.startsWith(`${O.vscodeWebview}://`) || this.J(new URL(p.url).host)) return !0;
-                return !1;
-              },
-              a = (d) => d.resourceType === "xhr" || o(d.frame),
-              c = (d) => {
-                const p = d.frame;
-                if (!p || !this.f) return !1;
-                const g = BrowserWindow.getAllWindows();
-                for (const m of g) if (p.processId === m.webContents.mainFrame.processId) return !0;
-                return !1;
-              },
-              l = (d, p) => {
-                if (d.path !== "/index.html") return !0;
-                const g = p.frame;
-                if (!g || !this.f) return !1;
-                for (const m of this.f.getWindows()) if (m.win && g.processId === m.win.webContents.mainFrame.processId) return !0;
-                return !1;
-              };
-            session.defaultSession.webRequest.onBeforeRequest((d, p) => {
-              const g = L.parse(d.url);
-              return g.scheme === O.vscodeWebview && !l(g, d)
-                ? (this.t.error("Blocked vscode-webview request", d.url), p({ cancel: !0 }))
-                : g.scheme === O.vscodeFileResource && !c(d)
-                  ? (this.t.error("Blocked vscode-file request", d.url), p({ cancel: !0 }))
-                  : g.scheme === "https" && d.resourceType === "xhr" && this.J(g.authority)
-                    ? (this.t.trace("Bypass https resource for:", d.url), p({ cancel: !1 }))
-                    : g.path.endsWith(".svg") && !n.has(g.scheme)
-                      ? p({ cancel: !a(d) })
-                      : p({ cancel: !1 });
-            }),
-              session.defaultSession.webRequest.onHeadersReceived((d, p) => {
-                const g = d.responseHeaders,
-                  m = g["content-type"] || g["Content-Type"];
-                if (m && Array.isArray(m)) {
-                  const b = L.parse(d.url);
-                  if (b.path.endsWith(".svg") && n.has(b.scheme))
-                    return (
-                      (g["Content-Type"] = ["image/svg+xml"]),
-                      p({
-                        cancel: !1,
-                        responseHeaders: g,
-                      })
-                    );
-                  if (!b.path.endsWith(O.vscodeRemoteResource) && m.some((S) => S.toLowerCase().includes("image/svg"))) return p({ cancel: !a(d) });
-                }
-                return p({ cancel: !1 });
-              }),
-              session.defaultSession.webRequest.onHeadersReceived((d, p) => {
-                if (d.url.startsWith("https://vscode.download.prss.microsoft.com/")) {
-                  const g = d.responseHeaders ?? Object.create(null);
-                  if (g["Access-Control-Allow-Origin"] === void 0)
-                    return (
-                      (g["Access-Control-Allow-Origin"] = ["*"]),
-                      p({
-                        cancel: !1,
-                        responseHeaders: g,
-                      })
-                    );
-                }
-                return p({ cancel: !1 });
-              });
-            const h = session.defaultSession;
-            typeof h.setCodeCachePath == "function" && this.w.codeCachePath && h.setCodeCachePath(R(this.w.codeCachePath, "chrome")),
-              J && (this.z.getValue("security.restrictUNCAccess") === !1 ? GC() : vc(this.z.getValue("security.allowedUNCHosts")));
-          }
-
-          I() {
-            av((s) => this.L(s)),
-              process.on("uncaughtException", (s) => {
-                ix(s) || Nt(s);
-              }),
-              process.on("unhandledRejection", (s) => Nt(s)),
-              I.once(this.y.onWillShutdown)(() => this.dispose()),
-              yI(),
-              app.on("accessibility-support-changed", (s, r) => {
-                this.f?.sendToAll("vscode:accessibilitySupportChanged", r);
-              }),
-              app.on("activate", async (s, r) => {
-                this.t.trace("app#activate"), r || (await this.f?.openEmptyWindow({ context: 1 }));
-              }),
-              app.on("certificate-error", (s, r, n, o, a, c) => {
-                this.J(new URL(n).host) ? (s.preventDefault(), c(!0)) : c(!1);
-              }),
-              app.on("web-contents-created", (s, r) => {
-                r?.opener?.url.startsWith(`${O.vscodeFileResource}://${Yc}/`) && (this.t.trace('[aux window]  app.on("web-contents-created"): Registering auxiliary window'), this.g?.registerWindow(r)),
-                  r.on("will-navigate", (n) => {
-                    this.t.error("webContents#will-navigate: Prevented webcontent navigation"),
-                      this.J(new URL(n.url).host) || (this.t.error("webContents#will-navigate: Prevented webcontent navigation for untrusted url", n.url), n.preventDefault());
-                  }),
-                  r.setWindowOpenHandler((n) =>
-                    n.url === "about:blank"
-                      ? (this.t.trace("[aux window] webContents#setWindowOpenHandler: Allowing auxiliary window to open on about:blank"),
-                        {
-                          action: "allow",
-                          overrideBrowserWindowOptions: this.g?.createWindow(n),
-                        })
-                      : (this.t.trace(`webContents#setWindowOpenHandler: Prevented opening window with URL ${n.url}}`), this.h?.openExternal(void 0, n.url), { action: "deny" }),
+          session.defaultSession.webRequest.onBeforeRequest((d, p) => {
+            const g = L.parse(d.url);
+            return g.scheme === O.vscodeWebview && !l(g, d)
+              ? (this.t.error("Blocked vscode-webview request", d.url), p({ cancel: !0 }))
+              : g.scheme === O.vscodeFileResource && !c(d)
+                ? (this.t.error("Blocked vscode-file request", d.url), p({ cancel: !0 }))
+                : g.scheme === "https" && d.resourceType === "xhr" && this.J(g.authority)
+                  ? (this.t.trace("Bypass https resource for:", d.url), p({ cancel: !1 }))
+                  : g.path.endsWith(".svg") && !n.has(g.scheme)
+                    ? p({ cancel: !a(d) })
+                    : p({ cancel: !1 });
+          }),
+            session.defaultSession.webRequest.onHeadersReceived((d, p) => {
+              const g = d.responseHeaders,
+                m = g["content-type"] || g["Content-Type"];
+              if (m && Array.isArray(m)) {
+                const b = L.parse(d.url);
+                if (b.path.endsWith(".svg") && n.has(b.scheme))
+                  return (
+                    (g["Content-Type"] = ["image/svg+xml"]),
+                    p({
+                      cancel: !1,
+                      responseHeaders: g,
+                    })
                   );
-              });
-            let e = [],
-              i;
-            app.on("open-file", (s, r) => {
-              (r = sa(r)),
-                this.t.trace("app#open-file: ", r),
-                s.preventDefault(),
-                e.push(uo(r) ? { workspaceUri: L.file(r) } : { fileUri: L.file(r) }),
-                i !== void 0 && (clearTimeout(i), (i = void 0)),
-                (i = setTimeout(async () => {
-                  await this.f?.open({
-                    context: 1,
-                    cli: this.w.args,
-                    urisToOpen: e,
-                    gotoLineMode: !1,
-                    preferNewWindow: !0,
-                  }),
-                    (e = []),
-                    (i = void 0);
-                }, 100));
+                if (!b.path.endsWith(O.vscodeRemoteResource) && m.some((S) => S.toLowerCase().includes("image/svg"))) return p({ cancel: !a(d) });
+              }
+              return p({ cancel: !1 });
             }),
-              app.on("new-window-for-tab", async () => {
-                await this.f?.openEmptyWindow({ context: 4 });
-              }),
-              De.handle("vscode:fetchShellEnv", (s) => {
-                const r = this.f?.getWindowByWebContents(s.sender);
-                let n, o;
-                return r?.config ? ((n = r.config), (o = { ...process.env, ...r.config.userEnv })) : ((n = this.w.args), (o = process.env)), this.ab(n, o, !1);
-              }),
-              De.on("vscode:toggleDevTools", (s) => s.sender.toggleDevTools()),
-              De.on("vscode:openDevTools", (s) => s.sender.openDevTools()),
-              De.on("vscode:reloadWindow", (s) => s.sender.reload()),
-              De.handle("vscode:notifyZoomLevel", async (s, r) => {
-                const n = this.f?.getWindowByWebContents(s.sender);
-                n && n.notifyZoomLevel(r);
-              });
-          }
+            session.defaultSession.webRequest.onHeadersReceived((d, p) => {
+              if (d.url.startsWith("https://vscode.download.prss.microsoft.com/")) {
+                const g = d.responseHeaders ?? Object.create(null);
+                if (g["Access-Control-Allow-Origin"] === void 0)
+                  return (
+                    (g["Access-Control-Allow-Origin"] = ["*"]),
+                    p({
+                      cancel: !1,
+                      responseHeaders: g,
+                    })
+                  );
+              }
+              return p({ cancel: !1 });
+            });
+          const h = session.defaultSession;
+          typeof h.setCodeCachePath == "function" && this.w.codeCachePath && h.setCodeCachePath(R(this.w.codeCachePath, "chrome")),
+            J && (this.z.getValue("security.restrictUNCAccess") === !1 ? GC() : vc(this.z.getValue("security.allowedUNCHosts")));
+        }
 
-          J(e) {
-            return this.F.iCubeApp?.nativeAppConfig && Array.isArray(this.F.iCubeApp?.nativeAppConfig?.bypassHosts) ? this.F.iCubeApp.nativeAppConfig.bypassHosts.some((i) => e.endsWith(i)) : !1;
-          }
-
-          L(e) {
-            if (e) {
-              const i = { message: `[uncaught exception in main]: ${e.message}`, stack: e.stack };
-              this.f?.sendToFocused("vscode:reportError", JSON.stringify(i));
-            }
-            this.t.error(`[uncaught exception in main]: ${e}`), e.stack && this.t.error(e.stack);
-          }
-
-          async startup() {
-            this.t.debug("Starting VS Code"), this.t.debug(`from: ${this.w.appRoot}`), this.t.debug("args:", this.w.args);
-            const e = this.F.win32AppUserModelId;
-            J && e && app.setAppUserModelId(e);
-            try {
-            } catch (h) {
-              this.t.error(h);
-            }
-            const i = new T5();
-            I.once(this.y.onWillShutdown)((h) => {
-              h.reason === 2 && i.dispose();
+        I() {
+          av((s) => this.L(s)),
+            process.on("uncaughtException", (s) => {
+              ix(s) || Nt(s);
             }),
-              this.t.trace("Resolving machine identifier...");
-            const [s, r, n] = await Promise.all([bW(this.C, this.t), vW(this.C, this.t), yW(this.C, this.t)]);
-            this.t.trace(`Resolved machine identifier: ${s}`);
-            const { sharedProcessReady: o, sharedProcessClient: a } = this.U(s, r, n),
-              c = await this.W(s, r, n, o);
-            this.B(c.createInstance(kf)),
-              this.B(c.createInstance(Lp)),
-              this.B(c.createInstance(Wp, s)),
-              c.invokeFunction((h) => h.get(Ed)),
-              this.B(c.createInstance(wp)),
-              this.B(c.createInstance(Tp)),
-              c.invokeFunction((h) => this.X(h, i, a)),
-              (this.a = await c.invokeFunction((h) => this.N(h, i))),
-              this.O(i),
-              (this.y.phase = 2),
-              this.C.setItem(Ib, !0),
-              this.cb(),
-              await c.invokeFunction(async (h) => {
-                (this.f = h.get(zt)), (this.g = h.get(Ea)), (this.c = h.get(Ob));
-                const d = h.get(fr),
-                  p = h.get(op),
-                  g = h.get(St),
-                  m = h.get(fo),
-                  b = h.get(cc),
-                  S = h.get(Wi),
-                  k = h.get(br);
-                De.handle("vscode:installMarscodeCli", async (F) => {
-                  this.t.info("installMarscodeCli");
-                  try {
-                    await d.installShellCommand(void 0);
-                  } catch (z) {
-                    this.t.info(z);
-                  }
+            process.on("unhandledRejection", (s) => Nt(s)),
+            I.once(this.y.onWillShutdown)(() => this.dispose()),
+            yI(),
+            app.on("accessibility-support-changed", (s, r) => {
+              this.f?.sendToAll("vscode:accessibilitySupportChanged", r);
+            }),
+            app.on("activate", async (s, r) => {
+              this.t.trace("app#activate"), r || (await this.f?.openEmptyWindow({ context: 1 }));
+            }),
+            app.on("certificate-error", (s, r, n, o, a, c) => {
+              this.J(new URL(n).host) ? (s.preventDefault(), c(!0)) : c(!1);
+            }),
+            app.on("web-contents-created", (s, r) => {
+              r?.opener?.url.startsWith(`${O.vscodeFileResource}://${Yc}/`) && (this.t.trace('[aux window]  app.on("web-contents-created"): Registering auxiliary window'), this.g?.registerWindow(r)),
+                r.on("will-navigate", (n) => {
+                  this.t.error("webContents#will-navigate: Prevented webcontent navigation"),
+                    this.J(new URL(n.url).host) || (this.t.error("webContents#will-navigate: Prevented webcontent navigation for untrusted url", n.url), n.preventDefault());
                 }),
-                  De.handle("vscode:setupTheme", async (F, z) => {
-                    this.t.info("setup page getTheme", z);
-                    const ne = await new ib(this.D).getColorTheme(z);
-                    if (ne)
-                      return (
-                        m.applicationStorage.init(),
-                        m.applicationStorage.set(Uf.STORAGE_KEY, Uf.getToStorageData(ne.currentTheme)),
-                        JSON.stringify({
-                          id: ne.currentTheme.id,
-                          css: ne.css,
-                        })
-                      );
-                  }),
-                  De.handle("vscode:login", async (F, z) => {
-                    this.t.info("login"), await k.login(z);
-                  });
-                const D = h.get(xo);
-                await k.initialize({
-                  broadcastToCodeWindows: this.M.bind(this),
-                  nativeHostMainService: d,
-                  telemetryService: g,
-                  onLogout: () => {
-                    this.M(Dt.EVENT_MAIN_TO_SANDBOX_LOGOUT), D.refreshRegion();
-                  },
-                  onLoginSuccess: (F) => {
-                    this.M(Dt.EVENT_MAIN_TO_SANDBOX_LOGIN, F), D.refreshRegion();
-                  },
-                  iCubeEventReportService: S,
-                }),
-                  D.initialize({
-                    broadcastToCodeWindows: this.M.bind(this),
-                    mainICubeAuthManagementService: k,
-                  }),
-                  D.refreshRegion();
-                const x = await k.getAuthUserInfo({ forceLogin: !1 }),
-                  C = await p.get();
-                if ((this.t.info("[Startup]", "check setup state", C), C !== ic.DONE))
-                  return this.c.openSetup({
-                    skipLogin: !!x,
-                    machineId: g.machineId,
-                    deviceId: b.n,
-                  });
-                this.Y();
-              }),
-              (this.y.phase = 3),
-              this.Z(),
-              this.B(
-                new gs(() => {
-                  this.B(Lg(() => (this.y.phase = 4), 2500));
-                }, 2500),
-              ).schedule();
-          }
-
-          M(e, ...i) {
-            const s = this.c?.getWindow();
-            s && s.webContents.send(e, ...i);
-            const r = this.f?.getWindows();
-            if (r) for (const n of r) n.win?.webContents.send(e, ...i);
-          }
-
-          async N(e, i) {
-            const s = (this.f = e.get(zt)),
-              r = e.get(Hl),
-              n = (this.h = e.get(fr)),
-              o = e.get(dr),
-              a = this;
-            r.registerHandler({
-              async handleURL(g, m) {
-                return a.S(s, o, r, g, m);
-              },
+                r.setWindowOpenHandler((n) =>
+                  n.url === "about:blank"
+                    ? (this.t.trace("[aux window] webContents#setWindowOpenHandler: Allowing auxiliary window to open on about:blank"),
+                      {
+                        action: "allow",
+                        overrideBrowserWindowOptions: this.g?.createWindow(n),
+                      })
+                    : (this.t.trace(`webContents#setWindowOpenHandler: Prevented opening window with URL ${n.url}}`), this.h?.openExternal(void 0, n.url), { action: "deny" }),
+                );
             });
-            const c = this.B(
-                new LS({
-                  onDidOpenMainWindow: n.onDidOpenMainWindow,
-                  onDidFocusMainWindow: n.onDidFocusMainWindow,
-                  getActiveWindowId: () => n.getActiveWindowId(-1),
+          let e = [],
+            i;
+          app.on("open-file", (s, r) => {
+            (r = sa(r)),
+              this.t.trace("app#open-file: ", r),
+              s.preventDefault(),
+              e.push(uo(r) ? { workspaceUri: L.file(r) } : { fileUri: L.file(r) }),
+              i !== void 0 && (clearTimeout(i), (i = void 0)),
+              (i = setTimeout(async () => {
+                await this.f?.open({
+                  context: 1,
+                  cli: this.w.args,
+                  urisToOpen: e,
+                  gotoLineMode: !1,
+                  preferNewWindow: !0,
                 }),
-              ),
-              l = new d5((g) => c.getActiveClientId().then((m) => g === m)),
-              h = new ES(l, this.t),
-              d = i.getChannel("urlHandler", h);
-            r.registerHandler(new SS(d));
-            const p = await this.P(s, o);
-            return this.B(new xS(p?.urls, r, s, this.w, this.F, this.t)), p;
-          }
-
-          O(e) {
-            const i = () => ({ statusCode: 404, data: "Not found" }),
-              s = new ln(() => e.getChannel(DE, new CE()));
-            protocol.registerBufferProtocol(O.vscodeManagedRemoteResource, (r, n) => {
-              const o = L.parse(r.url);
-              if (!o.authority.startsWith("window:")) return n(i());
-              s.value.call(kb, [o]).then(
-                (a) => n({ ...a, data: Buffer.from(a.body, "base64") }),
-                (a) => {
-                  this.t.warn("error dispatching remote resource call", a), n({ statusCode: 500, data: String(a) });
-                },
-              );
+                  (e = []),
+                  (i = void 0);
+              }, 100));
+          }),
+            app.on("new-window-for-tab", async () => {
+              await this.f?.openEmptyWindow({ context: 4 });
+            }),
+            De.handle("vscode:fetchShellEnv", (s) => {
+              const r = this.f?.getWindowByWebContents(s.sender);
+              let n, o;
+              return r?.config ? ((n = r.config), (o = { ...process.env, ...r.config.userEnv })) : ((n = this.w.args), (o = process.env)), this.ab(n, o, !1);
+            }),
+            De.on("vscode:toggleDevTools", (s) => s.sender.toggleDevTools()),
+            De.on("vscode:openDevTools", (s) => s.sender.openDevTools()),
+            De.on("vscode:reloadWindow", (s) => s.sender.reload()),
+            De.handle("vscode:notifyZoomLevel", async (s, r) => {
+              const n = this.f?.getWindowByWebContents(s.sender);
+              n && n.notifyZoomLevel(r);
             });
-          }
+        }
 
-          async P(e, i) {
-            const s = this.w.args["open-url"] ? this.w.args._urls || [] : [];
-            s.length > 0 && this.t.trace("app#resolveInitialProtocolUrls() protocol urls from command line:", s);
-            const r = global.getOpenUrls() || [];
-            if ((r.length > 0 && this.t.trace("app#resolveInitialProtocolUrls() protocol urls from macOS 'open-url' event:", r), s.length + r.length === 0)) return;
-            const n = [...s, ...r].map((c) => {
+        J(e) {
+          return this.F.iCubeApp?.nativeAppConfig && Array.isArray(this.F.iCubeApp?.nativeAppConfig?.bypassHosts) ? this.F.iCubeApp.nativeAppConfig.bypassHosts.some((i) => e.endsWith(i)) : !1;
+        }
+
+        L(e) {
+          if (e) {
+            const i = { message: `[uncaught exception in main]: ${e.message}`, stack: e.stack };
+            this.f?.sendToFocused("vscode:reportError", JSON.stringify(i));
+          }
+          this.t.error(`[uncaught exception in main]: ${e}`), e.stack && this.t.error(e.stack);
+        }
+
+        async startup() {
+          this.t.debug("Starting VS Code"), this.t.debug(`from: ${this.w.appRoot}`), this.t.debug("args:", this.w.args);
+          const e = this.F.win32AppUserModelId;
+          J && e && app.setAppUserModelId(e);
+          try {
+          } catch (h) {
+            this.t.error(h);
+          }
+          const i = new T5();
+          I.once(this.y.onWillShutdown)((h) => {
+            h.reason === 2 && i.dispose();
+          }),
+            this.t.trace("Resolving machine identifier...");
+          const [s, r, n] = await Promise.all([bW(this.C, this.t), vW(this.C, this.t), yW(this.C, this.t)]);
+          this.t.trace(`Resolved machine identifier: ${s}`);
+          const { sharedProcessReady: o, sharedProcessClient: a } = this.U(s, r, n),
+            c = await this.W(s, r, n, o);
+          this.B(c.createInstance(kf)),
+            this.B(c.createInstance(Lp)),
+            this.B(c.createInstance(Wp, s)),
+            c.invokeFunction((h) => h.get(Ed)),
+            this.B(c.createInstance(wp)),
+            this.B(c.createInstance(Tp)),
+            c.invokeFunction((h) => this.X(h, i, a)),
+            (this.a = await c.invokeFunction((h) => this.N(h, i))),
+            this.O(i),
+            (this.y.phase = 2),
+            this.C.setItem(Ib, !0),
+            this.cb(),
+            await c.invokeFunction(async (h) => {
+              (this.f = h.get(zt)), (this.g = h.get(Ea)), (this.c = h.get(Ob));
+              const d = h.get(fr),
+                p = h.get(op),
+                g = h.get(St),
+                m = h.get(fo),
+                b = h.get(cc),
+                S = h.get(Wi),
+                k = h.get(br);
+              De.handle("vscode:installMarscodeCli", async (F) => {
+                this.t.info("installMarscodeCli");
                 try {
-                  return { uri: L.parse(c), originalUrl: c };
-                } catch {
-                  this.t.trace("app#resolveInitialProtocolUrls() protocol url failed to parse:", c);
-                  return;
+                  await d.installShellCommand(void 0);
+                } catch (z) {
+                  this.t.info(z);
                 }
               }),
-              o = [],
-              a = [];
-            for (const c of n) {
-              if (!c) continue;
-              const l = this.R(c.uri);
-              if (l)
-                if (await this.Q(l, e, i)) {
-                  this.t.trace("app#resolveInitialProtocolUrls() protocol url was blocked:", c.uri.toString(!0));
-                  continue;
-                } else this.t.trace("app#resolveInitialProtocolUrls() protocol url will be handled as window to open:", c.uri.toString(!0), l), o.push(l);
-              else this.t.trace("app#resolveInitialProtocolUrls() protocol url will be passed to active window for handling:", c.uri.toString(!0)), a.push(c);
-            }
-            return { urls: a, openables: o };
-          }
+                De.handle("vscode:setupTheme", async (F, z) => {
+                  this.t.info("setup page getTheme", z);
+                  const ne = await new ib(this.D).getColorTheme(z);
+                  if (ne)
+                    return (
+                      m.applicationStorage.init(),
+                      m.applicationStorage.set(Uf.STORAGE_KEY, Uf.getToStorageData(ne.currentTheme)),
+                      JSON.stringify({
+                        id: ne.currentTheme.id,
+                        css: ne.css,
+                      })
+                    );
+                }),
+                De.handle("vscode:login", async (F, z) => {
+                  this.t.info("login"), await k.login(z);
+                });
+              const D = h.get(xo);
+              await k.initialize({
+                broadcastToCodeWindows: this.M.bind(this),
+                nativeHostMainService: d,
+                telemetryService: g,
+                onLogout: () => {
+                  this.M(Dt.EVENT_MAIN_TO_SANDBOX_LOGOUT), D.refreshRegion();
+                },
+                onLoginSuccess: (F) => {
+                  this.M(Dt.EVENT_MAIN_TO_SANDBOX_LOGIN, F), D.refreshRegion();
+                },
+                iCubeEventReportService: S,
+              }),
+                D.initialize({
+                  broadcastToCodeWindows: this.M.bind(this),
+                  mainICubeAuthManagementService: k,
+                }),
+                D.refreshRegion();
+              const x = await k.getAuthUserInfo({ forceLogin: !1 }),
+                C = await p.get();
+              if ((this.t.info("[Startup]", "check setup state", C), C !== ic.DONE))
+                return this.c.openSetup({
+                  skipLogin: !!x,
+                  machineId: g.machineId,
+                  deviceId: b.n,
+                });
+              this.Y();
+            }),
+            (this.y.phase = 3),
+            this.Z(),
+            this.B(
+              new gs(() => {
+                this.B(Lg(() => (this.y.phase = 4), 2500));
+              }, 2500),
+            ).schedule();
+        }
 
-          async Q(e, i, s) {
-            let r, n;
-            if (
-              (P0(e)
-                ? ((r = e.workspaceUri),
+        M(e, ...i) {
+          const s = this.c?.getWindow();
+          s && s.webContents.send(e, ...i);
+          const r = this.f?.getWindows();
+          if (r) for (const n of r) n.win?.webContents.send(e, ...i);
+        }
+
+        async N(e, i) {
+          const s = (this.f = e.get(zt)),
+            r = e.get(Hl),
+            n = (this.h = e.get(fr)),
+            o = e.get(dr),
+            a = this;
+          r.registerHandler({
+            async handleURL(g, m) {
+              return a.S(s, o, r, g, m);
+            },
+          });
+          const c = this.B(
+              new LS({
+                onDidOpenMainWindow: n.onDidOpenMainWindow,
+                onDidFocusMainWindow: n.onDidFocusMainWindow,
+                getActiveWindowId: () => n.getActiveWindowId(-1),
+              }),
+            ),
+            l = new d5((g) => c.getActiveClientId().then((m) => g === m)),
+            h = new ES(l, this.t),
+            d = i.getChannel("urlHandler", h);
+          r.registerHandler(new SS(d));
+          const p = await this.P(s, o);
+          return this.B(new xS(p?.urls, r, s, this.w, this.F, this.t)), p;
+        }
+
+        O(e) {
+          const i = () => ({ statusCode: 404, data: "Not found" }),
+            s = new ln(() => e.getChannel(DE, new CE()));
+          protocol.registerBufferProtocol(O.vscodeManagedRemoteResource, (r, n) => {
+            const o = L.parse(r.url);
+            if (!o.authority.startsWith("window:")) return n(i());
+            s.value.call(kb, [o]).then(
+              (a) => n({ ...a, data: Buffer.from(a.body, "base64") }),
+              (a) => {
+                this.t.warn("error dispatching remote resource call", a), n({ statusCode: 500, data: String(a) });
+              },
+            );
+          });
+        }
+
+        async P(e, i) {
+          const s = this.w.args["open-url"] ? this.w.args._urls || [] : [];
+          s.length > 0 && this.t.trace("app#resolveInitialProtocolUrls() protocol urls from command line:", s);
+          const r = global.getOpenUrls() || [];
+          if ((r.length > 0 && this.t.trace("app#resolveInitialProtocolUrls() protocol urls from macOS 'open-url' event:", r), s.length + r.length === 0)) return;
+          const n = [...s, ...r].map((c) => {
+              try {
+                return { uri: L.parse(c), originalUrl: c };
+              } catch {
+                this.t.trace("app#resolveInitialProtocolUrls() protocol url failed to parse:", c);
+                return;
+              }
+            }),
+            o = [],
+            a = [];
+          for (const c of n) {
+            if (!c) continue;
+            const l = this.R(c.uri);
+            if (l)
+              if (await this.Q(l, e, i)) {
+                this.t.trace("app#resolveInitialProtocolUrls() protocol url was blocked:", c.uri.toString(!0));
+                continue;
+              } else this.t.trace("app#resolveInitialProtocolUrls() protocol url will be handled as window to open:", c.uri.toString(!0), l), o.push(l);
+            else this.t.trace("app#resolveInitialProtocolUrls() protocol url will be passed to active window for handling:", c.uri.toString(!0)), a.push(c);
+          }
+          return { urls: a, openables: o };
+        }
+
+        async Q(e, i, s) {
+          let r, n;
+          if (
+            (P0(e)
+              ? ((r = e.workspaceUri),
+                (n = u(
+                  150,
+                  null,
+                  r.scheme === O.file
+                    ? ia(r, {
+                        os: rs,
+                        tildify: this.w,
+                      })
+                    : r.toString(!0),
+                  this.F.nameShort,
+                )))
+              : hy(e)
+                ? ((r = e.folderUri),
                   (n = u(
-                    150,
+                    151,
                     null,
                     r.scheme === O.file
                       ? ia(r, {
@@ -48120,441 +48081,433 @@ var Mb,
                       : r.toString(!0),
                     this.F.nameShort,
                   )))
-                : hy(e)
-                  ? ((r = e.folderUri),
-                    (n = u(
-                      151,
-                      null,
-                      r.scheme === O.file
-                        ? ia(r, {
-                            os: rs,
-                            tildify: this.w,
-                          })
-                        : r.toString(!0),
-                      this.F.nameShort,
-                    )))
-                  : ((r = e.fileUri),
-                    (n = u(
-                      152,
-                      null,
-                      r.scheme === O.file
-                        ? ia(r, {
-                            os: rs,
-                            tildify: this.w,
-                          })
-                        : r.toString(!0),
-                      this.F.nameShort,
-                    ))),
-              (r.scheme !== O.file && r.scheme !== O.vscodeRemote) || this.z.getValue(Mb.b[r.scheme]) === !1)
-            )
-              return !1;
-            const { response: a, checkboxChecked: c } = await s.showMessageBox({
-              type: "warning",
-              buttons: [u(153, null), u(154, null)],
-              message: n,
-              detail: u(155, null),
-              checkboxLabel: r.scheme === O.file ? u(156, null) : u(157, null),
-              cancelId: 1,
-            });
-            if (a !== 0) return !0;
-            if (c) {
-              const l = {
-                channel: "vscode:disablePromptForProtocolHandling",
-                args: r.scheme === O.file ? "local" : "remote",
-              };
-              i.sendToFocused(l.channel, l.args), i.sendToOpeningWindow(l.channel, l.args);
-            }
+                : ((r = e.fileUri),
+                  (n = u(
+                    152,
+                    null,
+                    r.scheme === O.file
+                      ? ia(r, {
+                          os: rs,
+                          tildify: this.w,
+                        })
+                      : r.toString(!0),
+                    this.F.nameShort,
+                  ))),
+            (r.scheme !== O.file && r.scheme !== O.vscodeRemote) || this.z.getValue(Mb.b[r.scheme]) === !1)
+          )
             return !1;
+          const { response: a, checkboxChecked: c } = await s.showMessageBox({
+            type: "warning",
+            buttons: [u(153, null), u(154, null)],
+            message: n,
+            detail: u(155, null),
+            checkboxLabel: r.scheme === O.file ? u(156, null) : u(157, null),
+            cancelId: 1,
+          });
+          if (a !== 0) return !0;
+          if (c) {
+            const l = {
+              channel: "vscode:disablePromptForProtocolHandling",
+              args: r.scheme === O.file ? "local" : "remote",
+            };
+            i.sendToFocused(l.channel, l.args), i.sendToOpeningWindow(l.channel, l.args);
           }
+          return !1;
+        }
 
-          R(e) {
-            if (e.path) {
-              if (e.authority === O.file) {
-                const i = L.file(e.fsPath);
-                return uo(i) ? { workspaceUri: i } : { fileUri: i };
-              } else if (e.authority === O.vscodeRemote) {
-                const i = e.path.indexOf(ye.sep, 1);
-                let s, r;
-                i !== -1 ? ((s = e.path.substring(1, i)), (r = e.path.substring(i))) : ((s = e.path.substring(1)), (r = "/"));
-                let n = e.query;
-                const o = new URLSearchParams(e.query);
-                o.get("windowId") === "_blank" && (o.delete("windowId"), (n = o.toString()));
-                const a = L.from({ scheme: O.vscodeRemote, authority: s, path: r, query: n, fragment: e.fragment });
-                return uo(r) ? { workspaceUri: a } : /:[\d]+$/.test(r) ? { fileUri: a } : { folderUri: a };
-              }
+        R(e) {
+          if (e.path) {
+            if (e.authority === O.file) {
+              const i = L.file(e.fsPath);
+              return uo(i) ? { workspaceUri: i } : { fileUri: i };
+            } else if (e.authority === O.vscodeRemote) {
+              const i = e.path.indexOf(ye.sep, 1);
+              let s, r;
+              i !== -1 ? ((s = e.path.substring(1, i)), (r = e.path.substring(i))) : ((s = e.path.substring(1)), (r = "/"));
+              let n = e.query;
+              const o = new URLSearchParams(e.query);
+              o.get("windowId") === "_blank" && (o.delete("windowId"), (n = o.toString()));
+              const a = L.from({ scheme: O.vscodeRemote, authority: s, path: r, query: n, fragment: e.fragment });
+              return uo(r) ? { workspaceUri: a } : /:[\d]+$/.test(r) ? { fileUri: a } : { folderUri: a };
             }
           }
+        }
 
-          async S(e, i, s, r, n) {
-            this.t.trace("app#handleProtocolUrl():", r.toString(!0), n),
-              r.scheme === this.F.urlProtocol &&
-                r.path === "workspace" &&
-                (r = r.with({
-                  authority: "file",
-                  path: L.parse(r.query).path,
-                  query: "",
-                }));
-            let o = !1;
-            const a = new URLSearchParams(r.query);
-            a.get("windowId") === "_blank"
-              ? (this.t.trace("app#handleProtocolUrl() found 'windowId=_blank' as parameter, setting shouldOpenInNewWindow=true:", r.toString(!0)), a.delete("windowId"), (r = r.with({ query: a.toString() })), (o = !0))
-              : q && e.getWindowCount() === 0 && (this.t.trace("app#handleProtocolUrl() running on macOS with no window open, setting shouldOpenInNewWindow=true:", r.toString(!0)), (o = !0));
-            const c = a.get("continueOn");
-            c !== null && (this.t.trace("app#handleProtocolUrl() found 'continueOn' as parameter:", r.toString(!0)), a.delete("continueOn"), (r = r.with({ query: a.toString() })), (this.w.continueOn = c ?? void 0));
-            const l = this.R(r);
-            return l
-              ? (await this.Q(l, e, i))
-                ? (this.t.trace("app#handleProtocolUrl() protocol url was blocked:", r.toString(!0)), !0)
-                : (this.t.trace("app#handleProtocolUrl() opening protocol url as window:", l, r.toString(!0)),
-                  (
-                    await e.open({
-                      context: 6,
-                      cli: { ...this.w.args },
-                      urisToOpen: [l],
-                      forceNewWindow: o,
-                      gotoLineMode: !0,
-                    })
-                  )
-                    .at(0)
-                    ?.focus(),
-                  !0)
-              : o
-                ? (this.t.trace("app#handleProtocolUrl() opening empty window and passing in protocol url:", r.toString(!0)),
-                  await (
-                    await e.open({
-                      context: 6,
-                      cli: { ...this.w.args },
+        async S(e, i, s, r, n) {
+          this.t.trace("app#handleProtocolUrl():", r.toString(!0), n),
+            r.scheme === this.F.urlProtocol &&
+              r.path === "workspace" &&
+              (r = r.with({
+                authority: "file",
+                path: L.parse(r.query).path,
+                query: "",
+              }));
+          let o = !1;
+          const a = new URLSearchParams(r.query);
+          a.get("windowId") === "_blank"
+            ? (this.t.trace("app#handleProtocolUrl() found 'windowId=_blank' as parameter, setting shouldOpenInNewWindow=true:", r.toString(!0)), a.delete("windowId"), (r = r.with({ query: a.toString() })), (o = !0))
+            : q && e.getWindowCount() === 0 && (this.t.trace("app#handleProtocolUrl() running on macOS with no window open, setting shouldOpenInNewWindow=true:", r.toString(!0)), (o = !0));
+          const c = a.get("continueOn");
+          c !== null && (this.t.trace("app#handleProtocolUrl() found 'continueOn' as parameter:", r.toString(!0)), a.delete("continueOn"), (r = r.with({ query: a.toString() })), (this.w.continueOn = c ?? void 0));
+          const l = this.R(r);
+          return l
+            ? (await this.Q(l, e, i))
+              ? (this.t.trace("app#handleProtocolUrl() protocol url was blocked:", r.toString(!0)), !0)
+              : (this.t.trace("app#handleProtocolUrl() opening protocol url as window:", l, r.toString(!0)),
+                (
+                  await e.open({
+                    context: 6,
+                    cli: { ...this.w.args },
+                    urisToOpen: [l],
+                    forceNewWindow: o,
+                    gotoLineMode: !0,
+                  })
+                )
+                  .at(0)
+                  ?.focus(),
+                !0)
+            : o
+              ? (this.t.trace("app#handleProtocolUrl() opening empty window and passing in protocol url:", r.toString(!0)),
+                await (
+                  await e.open({
+                    context: 6,
+                    cli: { ...this.w.args },
+                    forceNewWindow: !0,
+                    forceEmpty: !0,
+                    gotoLineMode: !0,
+                    remoteAuthority: Ia(r),
+                  })
+                )
+                  .at(0)
+                  ?.ready(),
+                s.open(r, n))
+              : (this.t.trace("app#handleProtocolUrl(): not handled", r.toString(!0), n), !1);
+        }
+
+        U(e, i, s) {
+          const r = this.B(this.s.createInstance(pf, e, i, s));
+          this.B(r.onDidCrash(() => this.f?.sendToFocused("vscode:reportSharedProcessCrash")));
+          const n = (async () => {
+            this.t.trace("Main->SharedProcess#connect");
+            const a = await r.connect();
+            return this.t.trace("Main->SharedProcess#connect: connection established"), new Vg(a, "main");
+          })();
+          return { sharedProcessReady: (async () => (await r.whenReady(), n))(), sharedProcessClient: n };
+        }
+
+        async W(e, i, s, r) {
+          const n = new serviceCollection(),
+            o = new _p(this.t, this.C, this.F, this.w, this.M.bind(this));
+          switch ((n.set(cc, o), process.platform)) {
+            case "win32":
+              n.set(So, new Descriptors(vu));
+              break;
+            case "linux":
+              V1 ? n.set(So, new Descriptors(Xf, [process.env.SNAP, process.env.SNAP_REVISION])) : n.set(So, new Descriptors(Zf));
+              break;
+            case "darwin":
+              n.set(So, new Descriptors(Jr));
+              break;
+          }
+          const a = Qt();
+          n.set(zt, new Descriptors(hp, [e, i, s, a, this.m], !1)), n.set(Ea, new Descriptors(Ip, void 0, !1));
+          const c = new Pd(this.t, this.F);
+          n.set(dr, c),
+            n.set(Nm, new Descriptors(of, void 0, !1)),
+            n.set(Il, new Descriptors(Td, void 0, !1)),
+            n.set(W0, Qe.toService(Rh(r.then((x) => x.getChannel("diagnostics"))))),
+            n.set(ym, new Descriptors(ef, [this.m])),
+            n.set(km, new Descriptors(rf, [this.m])),
+            n.set(Sm, new Descriptors(Np)),
+            n.set(Hh, new Descriptors(Nd)),
+            n.set(Tm, new Descriptors(nf)),
+            n.set(fr, new Descriptors(Bl, void 0, !1)),
+            n.set(ab, new Descriptors(sp)),
+            n.set(Bm, new Descriptors(df)),
+            n.set(rm, new Descriptors(Hd)),
+            n.set(fo, new Descriptors(wd)),
+            n.set(bl, new Descriptors(bd));
+          const l = new CubeAuthManagement(this.F, this.C, this.t, this.w, this.D, this.z),
+            h = this.s.createInstance(vf);
+          n.set(xo, h), n.set(br, l);
+          const d = new Op(l, h, o, this.F, this.z, e, a),
+            p = new Bp(d),
+            g = new jp(d);
+          n.set(Wi, d), n.set(xb, p), n.set(KE, g);
+          const m = new kp(
+              {
+                graceTime: 6e4,
+                shortGraceTime: 6e3,
+                scrollback: this.z.getValue("terminal.integrated.persistentSessionScrollback") ?? 100,
+              },
+              this.z,
+              this.w,
+              this.y,
+              this.t,
+              d,
+            ),
+            b = new xp(m, this.z, this.t, this.u);
+          n.set(wb, b), J ? n.set(Fl, new Descriptors(Vd)) : q ? n.set(Fl, new Descriptors(g7)) : Oe && n.set(Fl, new Descriptors(cm));
+          const S = new xd(this.w, this.z, this.t, this.C);
+          n.set(Da, S);
+          const k = new Od(this.w, this.t, this.G, S, c);
+          if ((n.set(Cn, k), n.set(K0, new Descriptors(dp, void 0, !1)), n.set(zl, new Descriptors(af, void 0, !1)), n.set(Hl, new Descriptors(ip, void 0, !1)), _9(this.F, this.w))) {
+            const x = DF(this.F, this.z),
+              C = Rh(r.then((tt) => tt.getChannel("telemetryAppender"))),
+              F = new N9(C),
+              { memory: z, cpu: X, memoryUsagePercentage: ne, usage: B } = xE(),
+              pe = SF($os.release(), $os.hostname(), process.arch, this.F.commit, this.F.version, e, i, s, x, void 0, this.F.tronBuildVersion, JSON.stringify(z), JSON.stringify(X), ne, B, this.F.quality, o.n),
+              Be = CF(this.w),
+              te = { appenders: [F], commonProperties: pe, piiPaths: Be, sendErrorTelemetry: !0 };
+            n.set(St, new Descriptors(gf, [te], !1));
+          } else n.set(St, Gl);
+          n.set(nc, new Descriptors(bp, void 0, !0)),
+            n.set(VS, new Descriptors(mp, void 0, !0)),
+            n.set(mb, new Descriptors(vp, void 0, !0)),
+            n.set(Ed, new Descriptors(Dd)),
+            n.set(jl, new Descriptors(Qd, void 0, !0)),
+            this.F.quality !== "stable" && n.set(Sb, new Descriptors(Ap, void 0, !0));
+          const D = new Fp(this.F, this.w, this.t, this.C, p);
+          return n.set(Eb, D), n.set(Ob, this.s.createInstance(Hp, D)), await si.settled([S.initialize(), k.initialize()]), this.s.createChild(n);
+        }
+
+        X(e, i, s) {
+          const r = this.B(new Ne()),
+            n = Qe.fromService(e.get(Nm), r, { disableMarshalling: !0 });
+          this.j.registerChannel("launch", n);
+          const o = Qe.fromService(e.get(Il), r, { disableMarshalling: !0 });
+          this.j.registerChannel("diagnostics", o);
+          const a = r.add(new PS(e.get(Do)));
+          i.registerChannel("policy", a), s.then((fe) => fe.registerChannel("policy", a));
+          const c = this.D.getProvider(O.file);
+          Sx(c instanceof qd);
+          const l = r.add(new Q7(c, this.t, this.w));
+          i.registerChannel(gm, l), s.then((fe) => fe.registerChannel(gm, l));
+          const h = Qe.fromService(e.get(cr), r);
+          if ((i.registerChannel("userDataProfiles", h), s.then((fe) => fe.registerChannel("userDataProfiles", h)), this.F.quality !== "stable")) {
+            const fe = e.get(Sb);
+            s.then((Er) => Er.registerChannel("signatureVerificationService", Qe.fromService(fe, r)));
+          }
+          const d = new B9(e.get(So));
+          i.registerChannel("update", d);
+          const p = Qe.fromService(e.get(ym), r);
+          i.registerChannel("issue", p);
+          const g = Qe.fromService(e.get(km), r);
+          i.registerChannel("process", g);
+          const m = Qe.fromService(e.get(Hh), r);
+          i.registerChannel("encryption", m);
+          const b = Qe.fromService(e.get(Ua), r);
+          i.registerChannel("sign", b);
+          const S = Qe.fromService(e.get(Tm), r);
+          i.registerChannel("keyboardLayout", S), (this.h = e.get(fr));
+          const k = Qe.fromService(this.h, r);
+          i.registerChannel("nativeHost", k), s.then((fe) => fe.registerChannel("nativeHost", k));
+          const D = Qe.fromService(e.get(K0), r);
+          i.registerChannel("workspaces", D);
+          const x = Qe.fromService(e.get(Bm), r);
+          i.registerChannel("menubar", x);
+          const C = Qe.fromService(e.get(Hl), r);
+          i.registerChannel("url", C);
+          const F = Qe.fromService(e.get(ab), r);
+          i.registerChannel("webview", F);
+          const z = r.add(new T9(this.t, e.get(fo)));
+          i.registerChannel("storage", z), s.then((fe) => fe.registerChannel("storage", z));
+          const X = r.add(new JS(e.get(fo), e.get(cr), this.t));
+          s.then((fe) => fe.registerChannel("profileStorageListener", X));
+          const ne = Qe.fromService(e.get(wb), r);
+          i.registerChannel(ac.LocalPty, ne);
+          const B = Qe.fromService(e.get(Fl), r);
+          i.registerChannel("externalTerminal", B);
+          const pe = new YS(e.get(ja));
+          i.registerChannel("logger", pe), s.then((fe) => fe.registerChannel("logger", pe));
+          const Be = e.get(cc),
+            te = Qe.fromService(Be, r);
+          i.registerChannel("deviceRegister", te), s.then((fe) => fe.registerChannel("deviceRegister", te));
+          const tt = e.get(br),
+            j = e.get(xo),
+            M = Qe.fromService(tt, r),
+            V = Qe.fromService(j, r);
+          i.registerChannel("userInfo", M),
+            i.registerChannel("region", V),
+            s.then((fe) => {
+              fe.registerChannel("userInfo", M), fe.registerChannel("region", V);
+            });
+          const W = e.get(Sm),
+            oe = Qe.fromService(W, r);
+          i.registerChannel("processDiagnosis", oe), s.then((fe) => fe.registerChannel("processDiagnosis", oe));
+          const Se = new Py(e.get(zt));
+          i.registerChannel("extensionhostdebugservice", Se);
+          const Ie = Qe.fromService(e.get(rm), r);
+          i.registerChannel(p7, Ie);
+          const _ = Qe.fromService(e.get(mb), r);
+          i.registerChannel(KS, _);
+          const Ee = new IE(e.get(Eb));
+          i.registerChannel("iCubeVSImportChannel", Ee);
+        }
+
+        async Y() {
+          const e = this.f,
+            i = yo(process.env) ? 0 : 4,
+            s = this.w.args,
+            r = this.a;
+          if (r) {
+            if (r.openables.length > 0)
+              return e?.open({
+                context: i,
+                cli: s,
+                urisToOpen: r.openables,
+                gotoLineMode: !0,
+                initialStartup: !0,
+              });
+            if (r.urls.length > 0)
+              for (const m of r.urls) {
+                const b = new URLSearchParams(m.uri.query);
+                if (b.get("windowId") === "_blank")
+                  return (
+                    b.delete("windowId"),
+                    (m.originalUrl = m.uri.toString(!0)),
+                    (m.uri = m.uri.with({ query: b.toString() })),
+                    e?.open({
+                      context: i,
+                      cli: s,
                       forceNewWindow: !0,
                       forceEmpty: !0,
                       gotoLineMode: !0,
-                      remoteAuthority: Ia(r),
+                      initialStartup: !0,
                     })
-                  )
-                    .at(0)
-                    ?.ready(),
-                  s.open(r, n))
-                : (this.t.trace("app#handleProtocolUrl(): not handled", r.toString(!0), n), !1);
-          }
-
-          U(e, i, s) {
-            const r = this.B(this.s.createInstance(pf, e, i, s));
-            this.B(r.onDidCrash(() => this.f?.sendToFocused("vscode:reportSharedProcessCrash")));
-            const n = (async () => {
-              this.t.trace("Main->SharedProcess#connect");
-              const a = await r.connect();
-              return this.t.trace("Main->SharedProcess#connect: connection established"), new Vg(a, "main");
-            })();
-            return { sharedProcessReady: (async () => (await r.whenReady(), n))(), sharedProcessClient: n };
-          }
-
-          async W(e, i, s, r) {
-            const n = new Gd(),
-              o = new _p(this.t, this.C, this.F, this.w, this.M.bind(this));
-            switch ((n.set(cc, o), process.platform)) {
-              case "win32":
-                n.set(So, new ke(vu));
-                break;
-              case "linux":
-                V1 ? n.set(So, new ke(Xf, [process.env.SNAP, process.env.SNAP_REVISION])) : n.set(So, new ke(Zf));
-                break;
-              case "darwin":
-                n.set(So, new ke(Jr));
-                break;
-            }
-            const a = Qt();
-            n.set(zt, new ke(hp, [e, i, s, a, this.m], !1)), n.set(Ea, new ke(Ip, void 0, !1));
-            const c = new Pd(this.t, this.F);
-            n.set(dr, c),
-              n.set(Nm, new ke(of, void 0, !1)),
-              n.set(Il, new ke(Td, void 0, !1)),
-              n.set(W0, Qe.toService(Rh(r.then((x) => x.getChannel("diagnostics"))))),
-              n.set(ym, new ke(ef, [this.m])),
-              n.set(km, new ke(rf, [this.m])),
-              n.set(Sm, new ke(Np)),
-              n.set(Hh, new ke(Nd)),
-              n.set(Tm, new ke(nf)),
-              n.set(fr, new ke(Bl, void 0, !1)),
-              n.set(ab, new ke(sp)),
-              n.set(Bm, new ke(df)),
-              n.set(rm, new ke(Hd)),
-              n.set(fo, new ke(wd)),
-              n.set(bl, new ke(bd));
-            const l = new bu(this.F, this.C, this.t, this.w, this.D, this.z),
-              h = this.s.createInstance(vf);
-            n.set(xo, h), n.set(br, l);
-            const d = new Op(l, h, o, this.F, this.z, e, a),
-              p = new Bp(d),
-              g = new jp(d);
-            n.set(Wi, d), n.set(xb, p), n.set(KE, g);
-            const m = new kp(
-                {
-                  graceTime: 6e4,
-                  shortGraceTime: 6e3,
-                  scrollback: this.z.getValue("terminal.integrated.persistentSessionScrollback") ?? 100,
-                },
-                this.z,
-                this.w,
-                this.y,
-                this.t,
-                d,
-              ),
-              b = new xp(m, this.z, this.t, this.u);
-            n.set(wb, b), J ? n.set(Fl, new ke(Vd)) : q ? n.set(Fl, new ke(g7)) : Oe && n.set(Fl, new ke(cm));
-            const S = new xd(this.w, this.z, this.t, this.C);
-            n.set(Da, S);
-            const k = new Od(this.w, this.t, this.G, S, c);
-            if ((n.set(Cn, k), n.set(K0, new ke(dp, void 0, !1)), n.set(zl, new ke(af, void 0, !1)), n.set(Hl, new ke(ip, void 0, !1)), _9(this.F, this.w))) {
-              const x = DF(this.F, this.z),
-                C = Rh(r.then((tt) => tt.getChannel("telemetryAppender"))),
-                F = new N9(C),
-                { memory: z, cpu: X, memoryUsagePercentage: ne, usage: B } = xE(),
-                pe = SF($os.release(), $os.hostname(), process.arch, this.F.commit, this.F.version, e, i, s, x, void 0, this.F.tronBuildVersion, JSON.stringify(z), JSON.stringify(X), ne, B, this.F.quality, o.n),
-                Be = CF(this.w),
-                te = { appenders: [F], commonProperties: pe, piiPaths: Be, sendErrorTelemetry: !0 };
-              n.set(St, new ke(gf, [te], !1));
-            } else n.set(St, Gl);
-            n.set(nc, new ke(bp, void 0, !0)), n.set(VS, new ke(mp, void 0, !0)), n.set(mb, new ke(vp, void 0, !0)), n.set(Ed, new ke(Dd)), n.set(jl, new ke(Qd, void 0, !0)), this.F.quality !== "stable" && n.set(Sb, new ke(Ap, void 0, !0));
-            const D = new Fp(this.F, this.w, this.t, this.C, p);
-            return n.set(Eb, D), n.set(Ob, this.s.createInstance(Hp, D)), await si.settled([S.initialize(), k.initialize()]), this.s.createChild(n);
-          }
-
-          X(e, i, s) {
-            const r = this.B(new Ne()),
-              n = Qe.fromService(e.get(Nm), r, { disableMarshalling: !0 });
-            this.j.registerChannel("launch", n);
-            const o = Qe.fromService(e.get(Il), r, { disableMarshalling: !0 });
-            this.j.registerChannel("diagnostics", o);
-            const a = r.add(new PS(e.get(Do)));
-            i.registerChannel("policy", a), s.then((fe) => fe.registerChannel("policy", a));
-            const c = this.D.getProvider(O.file);
-            Sx(c instanceof qd);
-            const l = r.add(new Q7(c, this.t, this.w));
-            i.registerChannel(gm, l), s.then((fe) => fe.registerChannel(gm, l));
-            const h = Qe.fromService(e.get(cr), r);
-            if ((i.registerChannel("userDataProfiles", h), s.then((fe) => fe.registerChannel("userDataProfiles", h)), this.F.quality !== "stable")) {
-              const fe = e.get(Sb);
-              s.then((Er) => Er.registerChannel("signatureVerificationService", Qe.fromService(fe, r)));
-            }
-            const d = new B9(e.get(So));
-            i.registerChannel("update", d);
-            const p = Qe.fromService(e.get(ym), r);
-            i.registerChannel("issue", p);
-            const g = Qe.fromService(e.get(km), r);
-            i.registerChannel("process", g);
-            const m = Qe.fromService(e.get(Hh), r);
-            i.registerChannel("encryption", m);
-            const b = Qe.fromService(e.get(Ua), r);
-            i.registerChannel("sign", b);
-            const S = Qe.fromService(e.get(Tm), r);
-            i.registerChannel("keyboardLayout", S), (this.h = e.get(fr));
-            const k = Qe.fromService(this.h, r);
-            i.registerChannel("nativeHost", k), s.then((fe) => fe.registerChannel("nativeHost", k));
-            const D = Qe.fromService(e.get(K0), r);
-            i.registerChannel("workspaces", D);
-            const x = Qe.fromService(e.get(Bm), r);
-            i.registerChannel("menubar", x);
-            const C = Qe.fromService(e.get(Hl), r);
-            i.registerChannel("url", C);
-            const F = Qe.fromService(e.get(ab), r);
-            i.registerChannel("webview", F);
-            const z = r.add(new T9(this.t, e.get(fo)));
-            i.registerChannel("storage", z), s.then((fe) => fe.registerChannel("storage", z));
-            const X = r.add(new JS(e.get(fo), e.get(cr), this.t));
-            s.then((fe) => fe.registerChannel("profileStorageListener", X));
-            const ne = Qe.fromService(e.get(wb), r);
-            i.registerChannel(ac.LocalPty, ne);
-            const B = Qe.fromService(e.get(Fl), r);
-            i.registerChannel("externalTerminal", B);
-            const pe = new YS(e.get(ja));
-            i.registerChannel("logger", pe), s.then((fe) => fe.registerChannel("logger", pe));
-            const Be = e.get(cc),
-              te = Qe.fromService(Be, r);
-            i.registerChannel("deviceRegister", te), s.then((fe) => fe.registerChannel("deviceRegister", te));
-            const tt = e.get(br),
-              j = e.get(xo),
-              M = Qe.fromService(tt, r),
-              V = Qe.fromService(j, r);
-            i.registerChannel("userInfo", M),
-              i.registerChannel("region", V),
-              s.then((fe) => {
-                fe.registerChannel("userInfo", M), fe.registerChannel("region", V);
-              });
-            const W = e.get(Sm),
-              oe = Qe.fromService(W, r);
-            i.registerChannel("processDiagnosis", oe), s.then((fe) => fe.registerChannel("processDiagnosis", oe));
-            const Se = new Py(e.get(zt));
-            i.registerChannel("extensionhostdebugservice", Se);
-            const Ie = Qe.fromService(e.get(rm), r);
-            i.registerChannel(p7, Ie);
-            const _ = Qe.fromService(e.get(mb), r);
-            i.registerChannel(KS, _);
-            const Ee = new IE(e.get(Eb));
-            i.registerChannel("iCubeVSImportChannel", Ee);
-          }
-
-          async Y() {
-            const e = this.f,
-              i = yo(process.env) ? 0 : 4,
-              s = this.w.args,
-              r = this.a;
-            if (r) {
-              if (r.openables.length > 0)
-                return e?.open({
-                  context: i,
-                  cli: s,
-                  urisToOpen: r.openables,
-                  gotoLineMode: !0,
-                  initialStartup: !0,
-                });
-              if (r.urls.length > 0)
-                for (const m of r.urls) {
-                  const b = new URLSearchParams(m.uri.query);
-                  if (b.get("windowId") === "_blank")
-                    return (
-                      b.delete("windowId"),
-                      (m.originalUrl = m.uri.toString(!0)),
-                      (m.uri = m.uri.with({ query: b.toString() })),
-                      e?.open({
-                        context: i,
-                        cli: s,
-                        forceNewWindow: !0,
-                        forceEmpty: !0,
-                        gotoLineMode: !0,
-                        initialStartup: !0,
-                      })
-                    );
-                }
-            }
-            const n = global.macOpenFiles,
-              o = s._.length,
-              a = !!s["folder-uri"],
-              c = !!s["file-uri"],
-              l = s["skip-add-to-recently-opened"] === !0,
-              h = s.wait && s.waitMarkerFilePath ? L.file(s.waitMarkerFilePath) : void 0,
-              d = s.remote || void 0,
-              p = s.profile,
-              g = s["profile-temp"];
-            if (!o && !a && !c) {
-              if (s["new-window"] || p || g)
-                return e?.open({
-                  context: i,
-                  cli: s,
-                  forceNewWindow: !0,
-                  forceEmpty: !0,
-                  noRecentEntry: l,
-                  waitMarkerFileURI: h,
-                  initialStartup: !0,
-                  remoteAuthority: d,
-                  forceProfile: p,
-                  forceTempProfile: g,
-                });
-              if (n.length)
-                return e?.open({
-                  context: 1,
-                  cli: s,
-                  urisToOpen: n.map((m) => ((m = sa(m)), uo(m) ? { workspaceUri: L.file(m) } : { fileUri: L.file(m) })),
-                  noRecentEntry: l,
-                  waitMarkerFileURI: h,
-                  initialStartup: !0,
-                });
-            }
-            return e?.open({
-              context: i,
-              cli: s,
-              forceNewWindow: s["new-window"],
-              diffMode: s.diff,
-              mergeMode: s.merge,
-              noRecentEntry: l,
-              waitMarkerFileURI: h,
-              gotoLineMode: s.goto,
-              initialStartup: !0,
-              remoteAuthority: d,
-              forceProfile: p,
-              forceTempProfile: g,
-            });
-          }
-
-          Z() {
-            this.$(),
-              protocol.registerHttpProtocol(O.vscodeRemoteResource, (e, i) => {
-                i({ url: e.url.replace(/^vscode-remote-resource:/, "http:"), method: e.method });
-              }),
-              this.ab(this.w.args, process.env, !0),
-              this.bb(),
-              this.cb(),
-              q && app.runningUnderARM64Translation && this.f?.sendToFocused("vscode:showTranslatedBuildWarning");
-          }
-
-          async $() {
-            const e = this.F.win32MutexName;
-            if (J && e)
-              try {
-                const i = await import("@vscode/windows-mutex"),
-                  s = new i.Mutex(e);
-                I.once(this.y.onWillShutdown)(() => s.release());
-              } catch (i) {
-                this.t.error(i);
-              }
-          }
-
-          async ab(e, i, s) {
-            try {
-              return await im(this.z, this.t, e, i);
-            } catch (r) {
-              const n = fi(r);
-              s ? this.f?.sendToFocused("vscode:showResolveShellEnvError", n) : this.t.error(n);
-            }
-            return {};
-          }
-
-          async bb() {
-            try {
-              const i = (await this.D.readFile(this.w.argvResource)).value.toString(),
-                s = C4(i),
-                n = Wm(this.z) >= 1;
-              if (s["enable-crash-reporter"] === void 0) {
-                const o = [
-                    "",
-                    "	// Allows to disable crash reporting.",
-                    "	// Should restart the app if the value is changed.",
-                    `	"enable-crash-reporter": ${n},`,
-                    "",
-                    "	// Unique id used for correlating crash reports sent from this instance.",
-                    "	// Do not edit this value.",
-                    `	"crash-reporter-id": "${Qt()}"`,
-                    "}",
-                  ],
-                  a = i.substring(0, i.length - 2).concat(
-                    `,
-`,
-                    o.join(`
-`),
                   );
-                await this.D.writeFile(this.w.argvResource, ee.fromString(a));
-              } else {
-                const o = i.replace(/"enable-crash-reporter": .*,/, `"enable-crash-reporter": ${n},`);
-                o !== i && (await this.D.writeFile(this.w.argvResource, ee.fromString(o)));
               }
-            } catch (e) {
-              this.t.error(e), this.f?.sendToFocused("vscode:showArgvParseWarning");
-            }
           }
+          const n = global.macOpenFiles,
+            o = s._.length,
+            a = !!s["folder-uri"],
+            c = !!s["file-uri"],
+            l = s["skip-add-to-recently-opened"] === !0,
+            h = s.wait && s.waitMarkerFilePath ? L.file(s.waitMarkerFilePath) : void 0,
+            d = s.remote || void 0,
+            p = s.profile,
+            g = s["profile-temp"];
+          if (!o && !a && !c) {
+            if (s["new-window"] || p || g)
+              return e?.open({
+                context: i,
+                cli: s,
+                forceNewWindow: !0,
+                forceEmpty: !0,
+                noRecentEntry: l,
+                waitMarkerFileURI: h,
+                initialStartup: !0,
+                remoteAuthority: d,
+                forceProfile: p,
+                forceTempProfile: g,
+              });
+            if (n.length)
+              return e?.open({
+                context: 1,
+                cli: s,
+                urisToOpen: n.map((m) => ((m = sa(m)), uo(m) ? { workspaceUri: L.file(m) } : { fileUri: L.file(m) })),
+                noRecentEntry: l,
+                waitMarkerFileURI: h,
+                initialStartup: !0,
+              });
+          }
+          return e?.open({
+            context: i,
+            cli: s,
+            forceNewWindow: s["new-window"],
+            diffMode: s.diff,
+            mergeMode: s.merge,
+            noRecentEntry: l,
+            waitMarkerFileURI: h,
+            gotoLineMode: s.goto,
+            initialStartup: !0,
+            remoteAuthority: d,
+            forceProfile: p,
+            forceTempProfile: g,
+          });
+        }
 
-          async cb() {
+        Z() {
+          this.$(),
+            protocol.registerHttpProtocol(O.vscodeRemoteResource, (e, i) => {
+              i({ url: e.url.replace(/^vscode-remote-resource:/, "http:"), method: e.method });
+            }),
+            this.ab(this.w.args, process.env, !0),
+            this.bb(),
+            this.cb(),
+            q && app.runningUnderARM64Translation && this.f?.sendToFocused("vscode:showTranslatedBuildWarning");
+        }
+
+        async $() {
+          const e = this.F.win32MutexName;
+          if (J && e)
             try {
-              const i = (await this.D.readFile(this.w.argvResource)).value.toString();
-              try {
-                JSON.parse(wc(i));
-              } catch {
-                const r = VH(i);
-                await this.D.writeFile(this.w.argvResource, ee.fromString(r));
-              }
-            } catch (e) {
-              console.error(e);
+              const i = await import("@vscode/windows-mutex"),
+                s = new i.Mutex(e);
+              I.once(this.y.onWillShutdown)(() => s.release());
+            } catch (i) {
+              this.t.error(i);
             }
+        }
+
+        async ab(e, i, s) {
+          try {
+            return await im(this.z, this.t, e, i);
+          } catch (r) {
+            const n = fi(r);
+            s ? this.f?.sendToFocused("vscode:showResolveShellEnvError", n) : this.t.error(n);
           }
-        }),
-        (zp = Mb = __decorate([__param(2, Fs), __param(3, K), __param(4, pa), __param(5, ct), __param(6, Xe), __param(7, st), __param(8, Ot), __param(9, yt), __param(10, Je), __param(11, cr)], zp));
+          return {};
+        }
+
+        async bb() {
+          try {
+            const i = (await this.D.readFile(this.w.argvResource)).value.toString(),
+              s = C4(i),
+              n = Wm(this.z) >= 1;
+            if (s["enable-crash-reporter"] === void 0) {
+              const o = [
+                  "",
+                  "	// Allows to disable crash reporting.",
+                  "	// Should restart the app if the value is changed.",
+                  `	"enable-crash-reporter": ${n},`,
+                  "",
+                  "	// Unique id used for correlating crash reports sent from this instance.",
+                  "	// Do not edit this value.",
+                  `	"crash-reporter-id": "${Qt()}"`,
+                  "}",
+                ],
+                a = i.substring(0, i.length - 2).concat(
+                  `,
+`,
+                  o.join(`
+`),
+                );
+              await this.D.writeFile(this.w.argvResource, ee.fromString(a));
+            } else {
+              const o = i.replace(/"enable-crash-reporter": .*,/, `"enable-crash-reporter": ${n},`);
+              o !== i && (await this.D.writeFile(this.w.argvResource, ee.fromString(o)));
+            }
+          } catch (e) {
+            this.t.error(e), this.f?.sendToFocused("vscode:showArgvParseWarning");
+          }
+        }
+
+        async cb() {
+          try {
+            const i = (await this.D.readFile(this.w.argvResource)).value.toString();
+            try {
+              JSON.parse(wc(i));
+            } catch {
+              const r = VH(i);
+              await this.D.writeFile(this.w.argvResource, ee.fromString(r));
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      };
+      zp = Mb = __decorate([__param(2, Fs), __param(3, K), __param(4, pa), __param(5, ct), __param(6, Xe), __param(7, st), __param(8, Ot), __param(9, yt), __param(10, Je), __param(11, cr)], zp);
     },
   });
 
@@ -49539,179 +49492,164 @@ var Lt,
   KH = v({
     "out-build/vs/platform/configuration/common/configurationService.js"() {
       "use strict";
-      ti(),
-        de(),
-        mt(),
-        H(),
-        ur(),
-        zy(),
-        T(),
-        Zi(),
-        Ms(),
-        Z(),
-        nt(),
-        rt(),
-        sD(),
-        cn(),
-        YH(),
-        pr(),
-        (oD = class extends N {
-          constructor(t, e, i, s) {
-            super(),
-              (this.m = t),
-              (this.n = s),
-              (this.h = this.B(new $())),
-              (this.onDidChangeConfiguration = this.h.event),
-              (this.b = this.B(new rD(s))),
-              (this.c = i instanceof Um ? new nD() : this.B(new qp(this.b, i, s))),
-              (this.f = this.B(new eD(this.m, {}, vt, e, s))),
-              (this.a = new Vp(this.b.configurationModel, this.c.configurationModel, Lt.createEmptyModel(s), Lt.createEmptyModel(s), Lt.createEmptyModel(s), Lt.createEmptyModel(s), new li(), Lt.createEmptyModel(s), new li(), s)),
-              (this.j = new aD(t, e, this)),
-              (this.g = this.B(new gs(() => this.reloadConfiguration(), 50))),
-              this.B(this.b.onDidChangeConfiguration(({ defaults: r, properties: n }) => this.s(r, n))),
-              this.B(this.c.onDidChangeConfiguration((r) => this.t(r))),
-              this.B(this.f.onDidChange(() => this.g.schedule()));
-          }
+      ti(), de(), mt(), H(), ur(), zy(), T(), Zi(), Ms(), Z(), nt(), rt(), sD(), cn(), YH(), pr();
+      oD = class extends N {
+        constructor(t, e, i, s) {
+          super(),
+            (this.m = t),
+            (this.n = s),
+            (this.h = this.B(new $())),
+            (this.onDidChangeConfiguration = this.h.event),
+            (this.b = this.B(new rD(s))),
+            (this.c = i instanceof Um ? new nD() : this.B(new qp(this.b, i, s))),
+            (this.f = this.B(new eD(this.m, {}, vt, e, s))),
+            (this.a = new Vp(this.b.configurationModel, this.c.configurationModel, Lt.createEmptyModel(s), Lt.createEmptyModel(s), Lt.createEmptyModel(s), Lt.createEmptyModel(s), new li(), Lt.createEmptyModel(s), new li(), s)),
+            (this.j = new aD(t, e, this)),
+            (this.g = this.B(new gs(() => this.reloadConfiguration(), 50))),
+            this.B(this.b.onDidChangeConfiguration(({ defaults: r, properties: n }) => this.s(r, n))),
+            this.B(this.c.onDidChangeConfiguration((r) => this.t(r))),
+            this.B(this.f.onDidChange(() => this.g.schedule()));
+        }
 
-          async initialize() {
-            const [t, e, i] = await Promise.all([this.b.initialize(), this.c.initialize(), this.f.loadConfiguration()]);
-            this.a = new Vp(t, e, Lt.createEmptyModel(this.n), i, Lt.createEmptyModel(this.n), Lt.createEmptyModel(this.n), new li(), Lt.createEmptyModel(this.n), new li(), this.n);
-          }
+        async initialize() {
+          const [t, e, i] = await Promise.all([this.b.initialize(), this.c.initialize(), this.f.loadConfiguration()]);
+          this.a = new Vp(t, e, Lt.createEmptyModel(this.n), i, Lt.createEmptyModel(this.n), Lt.createEmptyModel(this.n), new li(), Lt.createEmptyModel(this.n), new li(), this.n);
+        }
 
-          getConfigurationData() {
-            return this.a.toData();
-          }
+        getConfigurationData() {
+          return this.a.toData();
+        }
 
-          getValue(t, e) {
-            const i = typeof t == "string" ? t : void 0;
-            switch (i) {
-              case "window.titleBarStyle":
-                return "custom";
-            }
-            const s = ug(t) ? t : ug(e) ? e : {};
-            return this.a.getValue(i, s, void 0);
+        getValue(t, e) {
+          const i = typeof t == "string" ? t : void 0;
+          switch (i) {
+            case "window.titleBarStyle":
+              return "custom";
           }
+          const s = ug(t) ? t : ug(e) ? e : {};
+          return this.a.getValue(i, s, void 0);
+        }
 
-          async updateValue(t, e, i, s, r) {
-            const n = Mx(i)
-                ? i
-                : ug(i)
-                  ? {
-                      resource: i.resource,
-                      overrideIdentifiers: i.overrideIdentifier ? [i.overrideIdentifier] : void 0,
-                    }
-                  : void 0,
-              o = n ? s : i;
-            if (o !== void 0 && o !== 3 && o !== 2) throw new Error(`Unable to write ${t} to target ${o}.`);
-            n?.overrideIdentifiers && ((n.overrideIdentifiers = As(n.overrideIdentifiers)), (n.overrideIdentifiers = n.overrideIdentifiers.length ? n.overrideIdentifiers : void 0));
-            const a = this.inspect(t, {
-              resource: n?.resource,
-              overrideIdentifier: n?.overrideIdentifiers ? n.overrideIdentifiers[0] : void 0,
-            });
-            if (a.policyValue !== void 0) throw new Error(`Unable to write ${t} because it is configured in system policy.`);
-            if ((hr(e, a.defaultValue) && (e = void 0), n?.overrideIdentifiers?.length && n.overrideIdentifiers.length > 1)) {
-              const l = n.overrideIdentifiers.sort(),
-                h = this.a.localUserConfiguration.overrides.find((d) => xc([...d.identifiers].sort(), l));
-              h && (n.overrideIdentifiers = h.identifiers);
-            }
-            const c = n?.overrideIdentifiers?.length ? [Hx(n.overrideIdentifiers), t] : [t];
-            await this.j.write(c, e), await this.reloadConfiguration();
+        async updateValue(t, e, i, s, r) {
+          const n = Mx(i)
+              ? i
+              : ug(i)
+                ? {
+                    resource: i.resource,
+                    overrideIdentifiers: i.overrideIdentifier ? [i.overrideIdentifier] : void 0,
+                  }
+                : void 0,
+            o = n ? s : i;
+          if (o !== void 0 && o !== 3 && o !== 2) throw new Error(`Unable to write ${t} to target ${o}.`);
+          n?.overrideIdentifiers && ((n.overrideIdentifiers = As(n.overrideIdentifiers)), (n.overrideIdentifiers = n.overrideIdentifiers.length ? n.overrideIdentifiers : void 0));
+          const a = this.inspect(t, {
+            resource: n?.resource,
+            overrideIdentifier: n?.overrideIdentifiers ? n.overrideIdentifiers[0] : void 0,
+          });
+          if (a.policyValue !== void 0) throw new Error(`Unable to write ${t} because it is configured in system policy.`);
+          if ((hr(e, a.defaultValue) && (e = void 0), n?.overrideIdentifiers?.length && n.overrideIdentifiers.length > 1)) {
+            const l = n.overrideIdentifiers.sort(),
+              h = this.a.localUserConfiguration.overrides.find((d) => xc([...d.identifiers].sort(), l));
+            h && (n.overrideIdentifiers = h.identifiers);
           }
+          const c = n?.overrideIdentifiers?.length ? [Hx(n.overrideIdentifiers), t] : [t];
+          await this.j.write(c, e), await this.reloadConfiguration();
+        }
 
-          inspect(t, e = {}) {
-            return this.a.inspect(t, e, void 0);
-          }
+        inspect(t, e = {}) {
+          return this.a.inspect(t, e, void 0);
+        }
 
-          keys() {
-            return this.a.keys(void 0);
-          }
+        keys() {
+          return this.a.keys(void 0);
+        }
 
-          async reloadConfiguration() {
-            const t = await this.f.loadConfiguration();
-            this.r(t);
-          }
+        async reloadConfiguration() {
+          const t = await this.f.loadConfiguration();
+          this.r(t);
+        }
 
-          r(t) {
-            const e = this.a.toData(),
-              i = this.a.compareAndUpdateLocalUserConfiguration(t);
-            this.u(i, e, 2);
-          }
+        r(t) {
+          const e = this.a.toData(),
+            i = this.a.compareAndUpdateLocalUserConfiguration(t);
+          this.u(i, e, 2);
+        }
 
-          s(t, e) {
-            const i = this.a.toData(),
-              s = this.a.compareAndUpdateDefaultConfiguration(t, e);
-            this.u(s, i, 7);
-          }
+        s(t, e) {
+          const i = this.a.toData(),
+            s = this.a.compareAndUpdateDefaultConfiguration(t, e);
+          this.u(s, i, 7);
+        }
 
-          t(t) {
-            const e = this.a.toData(),
-              i = this.a.compareAndUpdatePolicyConfiguration(t);
-            this.u(i, e, 7);
-          }
+        t(t) {
+          const e = this.a.toData(),
+            i = this.a.compareAndUpdatePolicyConfiguration(t);
+          this.u(i, e, 7);
+        }
 
-          u(t, e, i) {
-            const s = new iD(t, { data: e }, this.a, void 0, this.n);
-            (s.source = i), this.h.fire(s);
-          }
-        }),
-        (aD = class {
-          constructor(t, e, i) {
-            (this.b = t), (this.c = e), (this.d = i), (this.a = new ta());
-          }
+        u(t, e, i) {
+          const s = new iD(t, { data: e }, this.a, void 0, this.n);
+          (s.source = i), this.h.fire(s);
+        }
+      };
+      aD = class {
+        constructor(t, e, i) {
+          (this.b = t), (this.c = e), (this.d = i), (this.a = new ta());
+        }
 
-          write(t, e) {
-            return this.a.queue(() => this.e(t, e));
-          }
+        write(t, e) {
+          return this.a.queue(() => this.e(t, e));
+        }
 
-          async e(t, e) {
-            let i;
-            try {
-              i = (await this.c.readFile(this.b)).value.toString();
-            } catch (n) {
-              if (n.fileOperationResult === 1) i = "{}";
-              else throw n;
-            }
-            const s = [];
-            if (
-              (lr(i, s, {
-                allowTrailingComma: !0,
-                allowEmptyContent: !0,
-              }),
-              s.length > 0)
-            )
-              throw new Error("Unable to write into the settings file. Please open the file to correct errors/warnings in the file and try again.");
-            const r = this.f(i, t, e);
-            (i = TA(i, r)), await this.c.writeFile(this.b, ee.fromString(i));
+        async e(t, e) {
+          let i;
+          try {
+            i = (await this.c.readFile(this.b)).value.toString();
+          } catch (n) {
+            if (n.fileOperationResult === 1) i = "{}";
+            else throw n;
           }
+          const s = [];
+          if (
+            (lr(i, s, {
+              allowTrailingComma: !0,
+              allowEmptyContent: !0,
+            }),
+            s.length > 0)
+          )
+            throw new Error("Unable to write into the settings file. Please open the file to correct errors/warnings in the file and try again.");
+          const r = this.f(i, t, e);
+          (i = TA(i, r)), await this.c.writeFile(this.b, ee.fromString(i));
+        }
 
-          f(t, e, i) {
-            const { tabSize: s, insertSpaces: r, eol: n } = this.h;
-            if (!e.length) {
-              const o = JSON.stringify(i, null, r ? " ".repeat(s) : "	");
-              return [{ content: o, length: o.length, offset: 0 }];
-            }
-            return RA(t, e, i, { tabSize: s, insertSpaces: r, eol: n });
+        f(t, e, i) {
+          const { tabSize: s, insertSpaces: r, eol: n } = this.h;
+          if (!e.length) {
+            const o = JSON.stringify(i, null, r ? " ".repeat(s) : "	");
+            return [{ content: o, length: o.length, offset: 0 }];
           }
+          return RA(t, e, i, { tabSize: s, insertSpaces: r, eol: n });
+        }
 
-          get h() {
-            if (!this.g) {
-              let t =
-                rs === 3 || rs === 2
-                  ? `
+        get h() {
+          if (!this.g) {
+            let t =
+              rs === 3 || rs === 2
+                ? `
 `
-                  : `\r
+                : `\r
 `;
-              const e = this.d.getValue("files.eol", { overrideIdentifier: "jsonc" });
-              e && typeof e == "string" && e !== "auto" && (t = e),
-                (this.g = {
-                  eol: t,
-                  insertSpaces: !!this.d.getValue("editor.insertSpaces", { overrideIdentifier: "jsonc" }),
-                  tabSize: this.d.getValue("editor.tabSize", { overrideIdentifier: "jsonc" }),
-                });
-            }
-            return this.g;
+            const e = this.d.getValue("files.eol", { overrideIdentifier: "jsonc" });
+            e && typeof e == "string" && e !== "auto" && (t = e),
+              (this.g = {
+                eol: t,
+                insertSpaces: !!this.d.getValue("editor.insertSpaces", { overrideIdentifier: "jsonc" }),
+                tabSize: this.d.getValue("editor.tabSize", { overrideIdentifier: "jsonc" }),
+              });
           }
-        });
+          return this.g;
+        }
+      };
     },
   });
 
@@ -50202,816 +50140,798 @@ var rz = v({
   nz = v({
     "out-build/vs/platform/files/common/fileService.js"() {
       "use strict";
-      ti(),
-        de(),
-        mt(),
-        jt(),
-        H(),
-        bn(),
-        Ic(),
-        T(),
-        ga(),
-        Re(),
-        xr(),
-        nt(),
-        el(),
-        le(),
-        lt(),
-        N7(),
-        Q(),
-        We(),
-        sn(),
-        (Jp = class extends N {
-          static {
-            jb = this;
-          }
+      ti(), de(), mt(), jt(), H(), bn(), Ic(), T(), ga(), Re(), xr(), nt(), el(), le(), lt(), N7(), Q(), We(), sn();
+      Jp = class extends N {
+        static {
+          jb = this;
+        }
 
-          set telemetryService(e) {
-            (this.b = e),
-              this.c.forEach(([i, s]) => {
-                e.publicLog2(i, s);
+        set telemetryService(e) {
+          (this.b = e),
+            this.c.forEach(([i, s]) => {
+              e.publicLog2(i, s);
+            }),
+            (this.c = []);
+        }
+
+        f(e, i) {
+          this.b ? this.b.publicLog2(e, i) : this.c.push([e, i]);
+        }
+
+        constructor(e) {
+          super(),
+            (this.g = e),
+            (this.a = 256 * 1024),
+            (this.c = []),
+            (this.h = this.B(new $())),
+            (this.onDidChangeFileSystemProviderRegistrations = this.h.event),
+            (this.j = this.B(new $())),
+            (this.onWillActivateFileSystemProvider = this.j.event),
+            (this.m = this.B(new $())),
+            (this.onDidChangeFileSystemProviderCapabilities = this.m.event),
+            (this.n = new Map()),
+            (this.u = this.B(new $())),
+            (this.onDidRunOperation = this.u.event),
+            (this.$ = this.B(new $())),
+            (this.ab = this.B(new $())),
+            (this.onDidFilesChange = this.ab.event),
+            (this.bb = this.B(new $())),
+            (this.onDidWatchError = this.bb.event),
+            (this.cb = new Map()),
+            (this.fb = this.B(new Ag()));
+        }
+
+        registerProvider(e, i) {
+          if (this.n.has(e)) throw new Error(`A filesystem provider for the scheme '${e}' is already registered.`);
+          qe(`code/registerFilesystem/${e}`);
+          const s = new Ne();
+          return (
+            this.n.set(e, i),
+            this.h.fire({ added: !0, scheme: e, provider: i }),
+            s.add(
+              i.onDidChangeFile((r) => {
+                const n = new _6(r, !this.X(i));
+                this.$.fire(n), n.hasCorrelation() || this.ab.fire(n);
               }),
-              (this.c = []);
-          }
-
-          f(e, i) {
-            this.b ? this.b.publicLog2(e, i) : this.c.push([e, i]);
-          }
-
-          constructor(e) {
-            super(),
-              (this.g = e),
-              (this.a = 256 * 1024),
-              (this.c = []),
-              (this.h = this.B(new $())),
-              (this.onDidChangeFileSystemProviderRegistrations = this.h.event),
-              (this.j = this.B(new $())),
-              (this.onWillActivateFileSystemProvider = this.j.event),
-              (this.m = this.B(new $())),
-              (this.onDidChangeFileSystemProviderCapabilities = this.m.event),
-              (this.n = new Map()),
-              (this.u = this.B(new $())),
-              (this.onDidRunOperation = this.u.event),
-              (this.$ = this.B(new $())),
-              (this.ab = this.B(new $())),
-              (this.onDidFilesChange = this.ab.event),
-              (this.bb = this.B(new $())),
-              (this.onDidWatchError = this.bb.event),
-              (this.cb = new Map()),
-              (this.fb = this.B(new Ag()));
-          }
-
-          registerProvider(e, i) {
-            if (this.n.has(e)) throw new Error(`A filesystem provider for the scheme '${e}' is already registered.`);
-            qe(`code/registerFilesystem/${e}`);
-            const s = new Ne();
-            return (
-              this.n.set(e, i),
-              this.h.fire({ added: !0, scheme: e, provider: i }),
-              s.add(
-                i.onDidChangeFile((r) => {
-                  const n = new _6(r, !this.X(i));
-                  this.$.fire(n), n.hasCorrelation() || this.ab.fire(n);
+            ),
+            typeof i.onDidWatchError == "function" && s.add(i.onDidWatchError((r) => this.bb.fire(new Error(r)))),
+            s.add(
+              i.onDidChangeCapabilities(() =>
+                this.m.fire({
+                  provider: i,
+                  scheme: e,
                 }),
               ),
-              typeof i.onDidWatchError == "function" && s.add(i.onDidWatchError((r) => this.bb.fire(new Error(r)))),
-              s.add(
-                i.onDidChangeCapabilities(() =>
-                  this.m.fire({
-                    provider: i,
-                    scheme: e,
-                  }),
-                ),
-              ),
-              Pe(() => {
-                this.h.fire({ added: !1, scheme: e, provider: i }), this.n.delete(e), Bt(s);
-              })
-            );
-          }
+            ),
+            Pe(() => {
+              this.h.fire({ added: !1, scheme: e, provider: i }), this.n.delete(e), Bt(s);
+            })
+          );
+        }
 
-          getProvider(e) {
-            return this.n.get(e);
-          }
+        getProvider(e) {
+          return this.n.get(e);
+        }
 
-          async activateProvider(e) {
-            const i = [];
-            if (
-              (this.j.fire({
-                scheme: e,
-                join(r) {
-                  i.push(r);
-                },
-              }),
-              this.n.has(e))
-            )
-              return;
-            const s = new $r();
-            this.f("fileServiceActivateProvider:start", {
-              time: Date.now(),
+        async activateProvider(e) {
+          const i = [];
+          if (
+            (this.j.fire({
               scheme: e,
+              join(r) {
+                i.push(r);
+              },
             }),
-              await si.settled(i),
-              this.f("fileServiceActivateProvider:end", {
-                scheme: e,
-                elapsed: s.elapsed(),
-              }),
-              this.g.info(`Activate provider for scheme ${e} took ${s.elapsed()}ms.`);
-          }
+            this.n.has(e))
+          )
+            return;
+          const s = new $r();
+          this.f("fileServiceActivateProvider:start", {
+            time: Date.now(),
+            scheme: e,
+          }),
+            await si.settled(i),
+            this.f("fileServiceActivateProvider:end", {
+              scheme: e,
+              elapsed: s.elapsed(),
+            }),
+            this.g.info(`Activate provider for scheme ${e} took ${s.elapsed()}ms.`);
+        }
 
-          async canHandleResource(e) {
-            return await this.activateProvider(e.scheme), this.hasProvider(e);
-          }
+        async canHandleResource(e) {
+          return await this.activateProvider(e.scheme), this.hasProvider(e);
+        }
 
-          hasProvider(e) {
-            return this.n.has(e.scheme);
-          }
+        hasProvider(e) {
+          return this.n.has(e.scheme);
+        }
 
-          hasCapability(e, i) {
-            const s = this.n.get(e.scheme);
-            return !!(s && s.capabilities & i);
-          }
+        hasCapability(e, i) {
+          const s = this.n.get(e.scheme);
+          return !!(s && s.capabilities & i);
+        }
 
-          listCapabilities() {
-            return tn.map(this.n, ([e, i]) => ({ scheme: e, capabilities: i.capabilities }));
-          }
+        listCapabilities() {
+          return tn.map(this.n, ([e, i]) => ({ scheme: e, capabilities: i.capabilities }));
+        }
 
-          async r(e) {
-            if (!P2(e)) throw new $i(u(1913, null, this.vb(e)), 8);
-            await this.activateProvider(e.scheme);
-            const i = this.n.get(e.scheme);
-            if (!i) {
-              const s = new en();
-              throw ((s.message = u(1914, null, e.toString())), s);
-            }
-            return i;
+        async r(e) {
+          if (!P2(e)) throw new $i(u(1913, null, this.vb(e)), 8);
+          await this.activateProvider(e.scheme);
+          const i = this.n.get(e.scheme);
+          if (!i) {
+            const s = new en();
+            throw ((s.message = u(1914, null, e.toString())), s);
           }
+          return i;
+        }
 
-          async s(e) {
-            const i = await this.r(e);
-            if (yn(i) || ws(i) || a0(i)) return i;
-            throw new Error(`Filesystem provider for scheme '${e.scheme}' neither has FileReadWrite, FileReadStream nor FileOpenReadWriteClose capability which is needed for the read operation.`);
+        async s(e) {
+          const i = await this.r(e);
+          if (yn(i) || ws(i) || a0(i)) return i;
+          throw new Error(`Filesystem provider for scheme '${e.scheme}' neither has FileReadWrite, FileReadStream nor FileOpenReadWriteClose capability which is needed for the read operation.`);
+        }
+
+        async t(e) {
+          const i = await this.r(e);
+          if (yn(i) || ws(i)) return i;
+          throw new Error(`Filesystem provider for scheme '${e.scheme}' neither has FileReadWrite nor FileOpenReadWriteClose capability which is needed for the write operation.`);
+        }
+
+        async resolve(e, i) {
+          try {
+            return await this.w(e, i);
+          } catch (s) {
+            throw td(s) === ve.FileNotFound ? new $i(u(1915, null, this.vb(e)), 1) : ao(s);
           }
+        }
 
-          async t(e) {
-            const i = await this.r(e);
-            if (yn(i) || ws(i)) return i;
-            throw new Error(`Filesystem provider for scheme '${e.scheme}' neither has FileReadWrite nor FileOpenReadWriteClose capability which is needed for the write operation.`);
-          }
+        async w(e, i) {
+          const s = await this.r(e),
+            r = this.X(s),
+            n = i?.resolveTo,
+            o = i?.resolveSingleChildDescendants,
+            a = i?.resolveMetadata,
+            c = i?.cachedStat ?? (await s.stat(e));
+          let l;
+          return this.z(
+            s,
+            e,
+            c,
+            void 0,
+            !!a,
+            (h, d) => (
+              l || ((l = vn.forUris(() => !r)), l.set(e, !0), n && l.fill(!0, n)),
+              l.get(h.resource) ||
+              l.findSuperstr(
+                h.resource.with({
+                  query: null,
+                  fragment: null,
+                }),
+              )
+                ? !0
+                : h.isDirectory && o
+                  ? d === 1
+                  : !1
+            ),
+          );
+        }
 
-          async resolve(e, i) {
+        async z(e, i, s, r, n, o) {
+          const { providerExtUri: a } = this.W(e),
+            c = {
+              resource: i,
+              name: a.basename(i),
+              isFile: (s.type & Xt.File) !== 0,
+              isDirectory: (s.type & Xt.Directory) !== 0,
+              isSymbolicLink: (s.type & Xt.SymbolicLink) !== 0,
+              mtime: s.mtime,
+              ctime: s.ctime,
+              size: s.size,
+              readonly: !!((s.permissions ?? 0) & ma.Readonly) || !!(e.capabilities & 2048),
+              locked: !!((s.permissions ?? 0) & ma.Locked),
+              etag: I6({ mtime: s.mtime, size: s.size }),
+              children: void 0,
+            };
+          if (c.isDirectory && o(c, r)) {
             try {
-              return await this.w(e, i);
-            } catch (s) {
-              throw td(s) === ve.FileNotFound ? new $i(u(1915, null, this.vb(e)), 1) : ao(s);
-            }
-          }
-
-          async w(e, i) {
-            const s = await this.r(e),
-              r = this.X(s),
-              n = i?.resolveTo,
-              o = i?.resolveSingleChildDescendants,
-              a = i?.resolveMetadata,
-              c = i?.cachedStat ?? (await s.stat(e));
-            let l;
-            return this.z(
-              s,
-              e,
-              c,
-              void 0,
-              !!a,
-              (h, d) => (
-                l || ((l = vn.forUris(() => !r)), l.set(e, !0), n && l.fill(!0, n)),
-                l.get(h.resource) ||
-                l.findSuperstr(
-                  h.resource.with({
-                    query: null,
-                    fragment: null,
+              const l = await e.readdir(i),
+                h = await si.settled(
+                  l.map(async ([d, p]) => {
+                    try {
+                      const g = a.joinPath(i, d),
+                        m = n ? await e.stat(g) : { type: p };
+                      return await this.z(e, g, m, l.length, n, o);
+                    } catch (g) {
+                      return this.g.trace(g), null;
+                    }
                   }),
-                )
-                  ? !0
-                  : h.isDirectory && o
-                    ? d === 1
-                    : !1
-              ),
-            );
-          }
-
-          async z(e, i, s, r, n, o) {
-            const { providerExtUri: a } = this.W(e),
-              c = {
-                resource: i,
-                name: a.basename(i),
-                isFile: (s.type & Xt.File) !== 0,
-                isDirectory: (s.type & Xt.Directory) !== 0,
-                isSymbolicLink: (s.type & Xt.SymbolicLink) !== 0,
-                mtime: s.mtime,
-                ctime: s.ctime,
-                size: s.size,
-                readonly: !!((s.permissions ?? 0) & ma.Readonly) || !!(e.capabilities & 2048),
-                locked: !!((s.permissions ?? 0) & ma.Locked),
-                etag: I6({ mtime: s.mtime, size: s.size }),
-                children: void 0,
-              };
-            if (c.isDirectory && o(c, r)) {
-              try {
-                const l = await e.readdir(i),
-                  h = await si.settled(
-                    l.map(async ([d, p]) => {
-                      try {
-                        const g = a.joinPath(i, d),
-                          m = n ? await e.stat(g) : { type: p };
-                        return await this.z(e, g, m, l.length, n, o);
-                      } catch (g) {
-                        return this.g.trace(g), null;
-                      }
-                    }),
-                  );
-                c.children = Yt(h);
-              } catch (l) {
-                this.g.trace(l), (c.children = []);
-              }
-              return c;
+                );
+              c.children = Yt(h);
+            } catch (l) {
+              this.g.trace(l), (c.children = []);
             }
             return c;
           }
+          return c;
+        }
 
-          async resolveAll(e) {
-            return si.settled(
-              e.map(async (i) => {
-                try {
-                  return { stat: await this.w(i.resource, i.options), success: !0 };
-                } catch (s) {
-                  return this.g.trace(s), { stat: void 0, success: !1 };
-                }
-              }),
-            );
+        async resolveAll(e) {
+          return si.settled(
+            e.map(async (i) => {
+              try {
+                return { stat: await this.w(i.resource, i.options), success: !0 };
+              } catch (s) {
+                return this.g.trace(s), { stat: void 0, success: !1 };
+              }
+            }),
+          );
+        }
+
+        async stat(e) {
+          const i = await this.r(e),
+            s = await i.stat(e);
+          return this.z(i, e, s, void 0, !0, () => !1);
+        }
+
+        async exists(e) {
+          const i = await this.r(e);
+          try {
+            return !!(await i.stat(e));
+          } catch {
+            return !1;
           }
+        }
 
-          async stat(e) {
-            const i = await this.r(e),
-              s = await i.stat(e);
-            return this.z(i, e, s, void 0, !0, () => !1);
+        async canCreateFile(e, i) {
+          try {
+            await this.C(e, i);
+          } catch (s) {
+            return s;
           }
+          return !0;
+        }
 
-          async exists(e) {
-            const i = await this.r(e);
-            try {
-              return !!(await i.stat(e));
-            } catch {
-              return !1;
-            }
+        async C(e, i) {
+          if (!i?.overwrite && (await this.exists(e))) throw new $i(u(1916, null, this.vb(e)), 3, i);
+        }
+
+        async createFile(e, i = ee.fromString(""), s) {
+          await this.C(e, s);
+          const r = await this.writeFile(e, i);
+          return this.u.fire(new co(e, 0, r)), r;
+        }
+
+        async writeFile(e, i, s) {
+          const r = this.tb(await this.t(e), e),
+            { providerExtUri: n } = this.W(r);
+          let o = s;
+          if ($6(r) && !o?.atomic) {
+            const a = r.enforceAtomicWriteFile?.(e);
+            a && (o = { ...s, atomic: a });
           }
-
-          async canCreateFile(e, i) {
-            try {
-              await this.C(e, i);
-            } catch (s) {
-              return s;
-            }
-            return !0;
-          }
-
-          async C(e, i) {
-            if (!i?.overwrite && (await this.exists(e))) throw new $i(u(1916, null, this.vb(e)), 3, i);
-          }
-
-          async createFile(e, i = ee.fromString(""), s) {
-            await this.C(e, s);
-            const r = await this.writeFile(e, i);
-            return this.u.fire(new co(e, 0, r)), r;
-          }
-
-          async writeFile(e, i, s) {
-            const r = this.tb(await this.t(e), e),
-              { providerExtUri: n } = this.W(r);
-            let o = s;
-            if ($6(r) && !o?.atomic) {
-              const a = r.enforceAtomicWriteFile?.(e);
-              a && (o = { ...s, atomic: a });
-            }
-            try {
-              (await this.D(r, e, o)) || (await this.Y(r, n.dirname(e)));
-              let c;
-              if (ws(r) && !(i instanceof ee))
-                if (Ph(i)) {
-                  const l = await z$(i, 3);
-                  l.ended ? (c = ee.concat(l.buffer)) : (c = l);
-                } else c = H$(i, (l) => ee.concat(l), 3);
-              else c = i;
-              !yn(r) || (ws(r) && c instanceof ee) || (ws(r) && $6(r) && o?.atomic) ? await this.kb(r, e, o, c) : await this.gb(r, e, o, c instanceof ee ? eI(c) : c), this.u.fire(new co(e, 4));
-            } catch (a) {
-              throw new $i(u(1917, null, this.vb(e), ao(a).toString()), sr(a), o);
-            }
-            return this.resolve(e, { resolveMetadata: !0 });
-          }
-
-          async D(e, i, s) {
-            const r = !!s?.unlock;
-            if (r && !(e.capabilities & 8192)) throw new Error(u(1918, null, this.vb(i)));
-            if (!!s?.atomic) {
-              if (!(e.capabilities & 32768)) throw new Error(u(1919, null, this.vb(i)));
-              if (!(e.capabilities & 2)) throw new Error(u(1920, null, this.vb(i)));
-              if (r) throw new Error(u(1921, null, this.vb(i)));
-            }
-            let o;
-            try {
-              o = await e.stat(i);
-            } catch {
-              return;
-            }
-            if (o.type & Xt.Directory) throw new $i(u(1922, null, this.vb(i)), 0, s);
-            if (
-              (this.ub(i, o),
-              typeof s?.mtime == "number" &&
-                typeof s.etag == "string" &&
-                s.etag !== od &&
-                typeof o.mtime == "number" &&
-                typeof o.size == "number" &&
-                s.mtime < o.mtime &&
-                s.etag !==
-                  I6({
-                    mtime: s.mtime,
-                    size: o.size,
-                  }))
-            )
-              throw new $i(u(1923, null), 3, s);
-            return o;
-          }
-
-          async readFile(e, i, s) {
-            const r = await this.s(e);
-            return i?.atomic ? this.F(r, e, i, s) : this.G(r, e, i, s);
-          }
-
-          async F(e, i, s, r) {
-            return new Promise((n, o) => {
-              this.fb.queueFor(
-                i,
-                async () => {
-                  try {
-                    const a = await this.G(e, i, s, r);
-                    n(a);
-                  } catch (a) {
-                    o(a);
-                  }
-                },
-                this.W(e).providerExtUri,
-              );
-            });
-          }
-
-          async G(e, i, s, r) {
-            const n = await this.H(e, i, { ...s, preferUnbuffered: !0 }, r);
-            return { ...n, value: await tl(n.value) };
-          }
-
-          async readFileStream(e, i, s) {
-            const r = await this.s(e);
-            return this.H(r, e, i, s);
-          }
-
-          async H(e, i, s, r) {
-            const n = new ps(r);
-            let o = s;
-            c0(e) && e.enforceAtomicReadFile?.(i) && (o = { ...s, atomic: !0 });
-            const a = this.N(i, o).then(
-              (l) => l,
-              (l) => {
-                throw (n.dispose(!0), l);
-              },
-            );
+          try {
+            (await this.D(r, e, o)) || (await this.Y(r, n.dirname(e)));
             let c;
-            try {
-              return (
-                typeof o?.etag == "string" && o.etag !== od && (await a),
-                (o?.atomic && c0(e)) || !(yn(e) || a0(e)) || (ws(e) && o?.preferUnbuffered) ? (c = this.M(e, i, o)) : a0(e) ? (c = this.J(e, i, n.token, o)) : (c = this.L(e, i, n.token, o)),
-                c.on("end", () => n.dispose()),
-                c.on("error", () => n.dispose()),
-                {
-                  ...(await a),
-                  value: c,
-                }
-              );
-            } catch (l) {
-              throw (c && (await s5(c)), this.I(l, i, o));
-            }
+            if (ws(r) && !(i instanceof ee))
+              if (Ph(i)) {
+                const l = await z$(i, 3);
+                l.ended ? (c = ee.concat(l.buffer)) : (c = l);
+              } else c = H$(i, (l) => ee.concat(l), 3);
+            else c = i;
+            !yn(r) || (ws(r) && c instanceof ee) || (ws(r) && $6(r) && o?.atomic) ? await this.kb(r, e, o, c) : await this.gb(r, e, o, c instanceof ee ? eI(c) : c), this.u.fire(new co(e, 4));
+          } catch (a) {
+            throw new $i(u(1917, null, this.vb(e), ao(a).toString()), sr(a), o);
           }
+          return this.resolve(e, { resolveMetadata: !0 });
+        }
 
-          I(e, i, s) {
-            const r = u(1924, null, this.vb(i), ao(e).toString());
-            return e instanceof rd ? new rd(r, e.stat, s) : e instanceof sd ? new sd(r, e.fileOperationResult, e.size, e.options) : new $i(r, sr(e), s);
+        async D(e, i, s) {
+          const r = !!s?.unlock;
+          if (r && !(e.capabilities & 8192)) throw new Error(u(1918, null, this.vb(i)));
+          if (!!s?.atomic) {
+            if (!(e.capabilities & 32768)) throw new Error(u(1919, null, this.vb(i)));
+            if (!(e.capabilities & 2)) throw new Error(u(1920, null, this.vb(i)));
+            if (r) throw new Error(u(1921, null, this.vb(i)));
           }
-
-          J(e, i, s, r = Object.create(null)) {
-            const n = e.readFileStream(i, r, s);
-            return r5(n, { data: (o) => (o instanceof ee ? o : ee.wrap(o)), error: (o) => this.I(o, i, r) }, (o) => ee.concat(o));
+          let o;
+          try {
+            o = await e.stat(i);
+          } catch {
+            return;
           }
+          if (o.type & Xt.Directory) throw new $i(u(1922, null, this.vb(i)), 0, s);
+          if (
+            (this.ub(i, o),
+            typeof s?.mtime == "number" &&
+              typeof s.etag == "string" &&
+              s.etag !== od &&
+              typeof o.mtime == "number" &&
+              typeof o.size == "number" &&
+              s.mtime < o.mtime &&
+              s.etag !==
+                I6({
+                  mtime: s.mtime,
+                  size: o.size,
+                }))
+          )
+            throw new $i(u(1923, null), 3, s);
+          return o;
+        }
 
-          L(e, i, s, r = Object.create(null)) {
-            const n = sI();
-            return T7(e, i, n, (o) => o, { ...r, bufferSize: this.a, errorTransformer: (o) => this.I(o, i, r) }, s), n;
-          }
+        async readFile(e, i, s) {
+          const r = await this.s(e);
+          return i?.atomic ? this.F(r, e, i, s) : this.G(r, e, i, s);
+        }
 
-          M(e, i, s) {
-            const r = Fh((n) => ee.concat(n));
-            return (
-              (async () => {
-                try {
-                  let n;
-                  s?.atomic && c0(e) ? (n = await e.readFile(i, { atomic: !0 })) : (n = await e.readFile(i)),
-                    typeof s?.position == "number" && (n = n.slice(s.position)),
-                    typeof s?.length == "number" && (n = n.slice(0, s.length)),
-                    this.O(i, n.byteLength, s),
-                    r.end(ee.wrap(n));
-                } catch (n) {
-                  r.error(n), r.end();
-                }
-              })(),
-              r
-            );
-          }
-
-          async N(e, i) {
-            const s = await this.resolve(e, { resolveMetadata: !0 });
-            if (s.isDirectory) throw new $i(u(1925, null, this.vb(e)), 0, i);
-            if (typeof i?.etag == "string" && i.etag !== od && i.etag === s.etag) throw new rd(u(1926, null), s, i);
-            return this.O(e, s.size, i), s;
-          }
-
-          O(e, i, s) {
-            if (typeof s?.limits?.size == "number" && i > s.limits.size) throw new sd(u(1927, null, this.vb(e)), 7, i, s);
-          }
-
-          async canMove(e, i, s) {
-            return this.P(e, i, "move", s);
-          }
-
-          async canCopy(e, i, s) {
-            return this.P(e, i, "copy", s);
-          }
-
-          async P(e, i, s, r) {
-            if (e.toString() !== i.toString())
-              try {
-                const n = s === "move" ? this.tb(await this.t(e), e) : await this.s(e),
-                  o = this.tb(await this.t(i), i);
-                await this.U(n, e, o, i, s, r);
-              } catch (n) {
-                return n;
-              }
-            return !0;
-          }
-
-          async move(e, i, s) {
-            const r = this.tb(await this.t(e), e),
-              n = this.tb(await this.t(i), i),
-              o = await this.Q(r, e, n, i, "move", !!s),
-              a = await this.resolve(i, { resolveMetadata: !0 });
-            return this.u.fire(new co(e, o === "move" ? 2 : 3, a)), a;
-          }
-
-          async copy(e, i, s) {
-            const r = await this.s(e),
-              n = this.tb(await this.t(i), i),
-              o = await this.Q(r, e, n, i, "copy", !!s),
-              a = await this.resolve(i, { resolveMetadata: !0 });
-            return this.u.fire(new co(e, o === "copy" ? 3 : 2, a)), a;
-          }
-
-          async Q(e, i, s, r, n, o) {
-            if (i.toString() === r.toString()) return n;
-            const { exists: a, isSameResourceWithDifferentPathCase: c } = await this.U(e, i, s, r, n, o);
-            if ((a && !c && o && (await this.del(r, { recursive: !0 })), await this.Y(s, this.W(s).providerExtUri.dirname(r)), n === "copy")) {
-              if (e === s && o0(e)) await e.copy(i, r, { overwrite: o });
-              else {
-                const l = await this.resolve(i);
-                l.isDirectory ? await this.S(e, l, s, r) : await this.R(e, i, s, r);
-              }
-              return n;
-            } else return e === s ? (await e.rename(i, r, { overwrite: o }), n) : (await this.Q(e, i, s, r, "copy", o), await this.del(i, { recursive: !0 }), "copy");
-          }
-
-          async R(e, i, s, r) {
-            if (yn(e) && yn(s)) return this.mb(e, i, s, r);
-            if (yn(e) && ws(s)) return this.sb(e, i, s, r);
-            if (ws(e) && yn(s)) return this.qb(e, i, s, r);
-            if (ws(e) && ws(s)) return this.ob(e, i, s, r);
-          }
-
-          async S(e, i, s, r) {
-            await s.mkdir(r),
-              Array.isArray(i.children) &&
-                (await si.settled(
-                  i.children.map(async (n) => {
-                    const o = this.W(s).providerExtUri.joinPath(r, n.name);
-                    return n.isDirectory ? this.S(e, await this.resolve(n.resource), s, o) : this.R(e, n.resource, s, o);
-                  }),
-                ));
-          }
-
-          async U(e, i, s, r, n, o) {
-            let a = !1;
-            if (e === s) {
-              const { providerExtUri: l, isPathCaseSensitive: h } = this.W(e);
-              if ((h || (a = l.isEqual(i, r)), a && n === "copy")) throw new Error(u(1928, null, this.vb(i), this.vb(r)));
-              if (!a && l.isEqualOrParent(r, i)) throw new Error(u(1929, null, this.vb(i), this.vb(r)));
-            }
-            const c = await this.exists(r);
-            if (c && !a) {
-              if (!o) throw new $i(u(1930, null, this.vb(i), this.vb(r)), 4);
-              if (e === s) {
-                const { providerExtUri: l } = this.W(e);
-                if (l.isEqualOrParent(i, r)) throw new Error(u(1931, null, this.vb(i), this.vb(r)));
-              }
-            }
-            return { exists: c, isSameResourceWithDifferentPathCase: a };
-          }
-
-          W(e) {
-            const i = this.X(e);
-            return { providerExtUri: i ? Te : kg, isPathCaseSensitive: i };
-          }
-
-          X(e) {
-            return !!(e.capabilities & 1024);
-          }
-
-          async createFolder(e) {
-            const i = this.tb(await this.r(e), e);
-            await this.Y(i, e);
-            const s = await this.resolve(e, { resolveMetadata: !0 });
-            return this.u.fire(new co(e, 0, s)), s;
-          }
-
-          async Y(e, i) {
-            const s = [],
-              { providerExtUri: r } = this.W(e);
-            for (; !r.isEqual(i, r.dirname(i)); )
-              try {
-                if (!((await e.stat(i)).type & Xt.Directory)) throw new Error(u(1932, null, this.vb(i)));
-                break;
-              } catch (n) {
-                if (td(n) !== ve.FileNotFound) throw n;
-                s.push(r.basename(i)), (i = r.dirname(i));
-              }
-            for (let n = s.length - 1; n >= 0; n--) {
-              i = r.joinPath(i, s[n]);
-              try {
-                await e.mkdir(i);
-              } catch (o) {
-                if (td(o) !== ve.FileExists) throw o;
-              }
-            }
-          }
-
-          async canDelete(e, i) {
-            try {
-              await this.Z(e, i);
-            } catch (s) {
-              return s;
-            }
-            return !0;
-          }
-
-          async Z(e, i) {
-            const s = this.tb(await this.r(e), e),
-              r = !!i?.useTrash;
-            if (r && !(s.capabilities & 4096)) throw new Error(u(1933, null, this.vb(e)));
-            const n = i?.atomic;
-            if (n && !(s.capabilities & 65536)) throw new Error(u(1934, null, this.vb(e)));
-            if (r && n) throw new Error(u(1935, null, this.vb(e)));
-            let o;
-            try {
-              o = await s.stat(e);
-            } catch {}
-            if (o) this.ub(e, o);
-            else throw new $i(u(1936, null, this.vb(e)), 1);
-            if (!!!i?.recursive) {
-              const c = await this.resolve(e);
-              if (c.isDirectory && Array.isArray(c.children) && c.children.length > 0) throw new Error(u(1937, null, this.vb(e)));
-            }
-            return s;
-          }
-
-          async del(e, i) {
-            const s = await this.Z(e, i);
-            let r = i;
-            if (qI(s) && !r?.atomic) {
-              const c = s.enforceAtomicDelete?.(e);
-              c && (r = { ...i, atomic: c });
-            }
-            const n = !!r?.useTrash,
-              o = !!r?.recursive,
-              a = r?.atomic ?? !1;
-            await s.delete(e, { recursive: o, useTrash: n, atomic: a }), this.u.fire(new co(e, 1));
-          }
-
-          async cloneFile(e, i) {
-            const s = await this.r(e),
-              r = this.tb(await this.t(i), i);
-            if (!(s === r && this.W(s).providerExtUri.isEqual(e, i)))
-              return s === r && x6(s)
-                ? s.cloneFile(e, i)
-                : (await this.Y(r, this.W(r).providerExtUri.dirname(i)),
-                  s === r && o0(s) ? this.fb.queueFor(e, () => s.copy(e, i, { overwrite: !0 }), this.W(s).providerExtUri) : this.fb.queueFor(e, () => this.R(s, e, r, i), this.W(s).providerExtUri));
-          }
-
-          static {
-            this.db = 0;
-          }
-
-          createWatcher(e, i) {
-            return this.watch(e, { ...i, correlationId: jb.db++ });
-          }
-
-          watch(e, i = { recursive: !1, excludes: [] }) {
-            const s = new Ne();
-            let r = !1,
-              n = () => {
-                r = !0;
-              };
-            s.add(Pe(() => n())),
-              (async () => {
-                try {
-                  const a = await this.eb(e, i);
-                  r ? Bt(a) : (n = () => Bt(a));
-                } catch (a) {
-                  this.g.error(a);
-                }
-              })();
-            const o = i.correlationId;
-            if (typeof o == "number") {
-              const a = s.add(new $());
-              return (
-                s.add(
-                  this.$.event((l) => {
-                    l.correlates(o) && a.fire(l);
-                  }),
-                ),
-                { onDidChange: a.event, dispose: () => s.dispose() }
-              );
-            }
-            return s;
-          }
-
-          async eb(e, i) {
-            const s = await this.r(e),
-              r = Or([this.W(s).providerExtUri.getComparisonKey(e), i]);
-            let n = this.cb.get(r);
-            return (
-              n || ((n = { count: 0, disposable: s.watch(e, i) }), this.cb.set(r, n)),
-              (n.count += 1),
-              Pe(() => {
-                n && (n.count--, n.count === 0 && (Bt(n.disposable), this.cb.delete(r)));
-              })
-            );
-          }
-
-          dispose() {
-            super.dispose();
-            for (const [, e] of this.cb) Bt(e.disposable);
-            this.cb.clear();
-          }
-
-          async gb(e, i, s, r) {
-            return this.fb.queueFor(
+        async F(e, i, s, r) {
+          return new Promise((n, o) => {
+            this.fb.queueFor(
               i,
               async () => {
-                const n = await e.open(i, { create: !0, unlock: s?.unlock ?? !1 });
                 try {
-                  Ph(r) || Rg(r) ? await this.hb(e, n, r) : await this.ib(e, n, r);
-                } catch (o) {
-                  throw ao(o);
-                } finally {
-                  await e.close(n);
+                  const a = await this.G(e, i, s, r);
+                  n(a);
+                } catch (a) {
+                  o(a);
                 }
               },
               this.W(e).providerExtUri,
             );
-          }
+          });
+        }
 
-          async hb(e, i, s) {
-            let r = 0,
-              n;
-            if (Rg(s)) {
-              if (s.buffer.length > 0) {
-                const o = ee.concat(s.buffer);
-                await this.jb(e, i, o, o.byteLength, r, 0), (r += o.byteLength);
+        async G(e, i, s, r) {
+          const n = await this.H(e, i, { ...s, preferUnbuffered: !0 }, r);
+          return { ...n, value: await tl(n.value) };
+        }
+
+        async readFileStream(e, i, s) {
+          const r = await this.s(e);
+          return this.H(r, e, i, s);
+        }
+
+        async H(e, i, s, r) {
+          const n = new ps(r);
+          let o = s;
+          c0(e) && e.enforceAtomicReadFile?.(i) && (o = { ...s, atomic: !0 });
+          const a = this.N(i, o).then(
+            (l) => l,
+            (l) => {
+              throw (n.dispose(!0), l);
+            },
+          );
+          let c;
+          try {
+            return (
+              typeof o?.etag == "string" && o.etag !== od && (await a),
+              (o?.atomic && c0(e)) || !(yn(e) || a0(e)) || (ws(e) && o?.preferUnbuffered) ? (c = this.M(e, i, o)) : a0(e) ? (c = this.J(e, i, n.token, o)) : (c = this.L(e, i, n.token, o)),
+              c.on("end", () => n.dispose()),
+              c.on("error", () => n.dispose()),
+              {
+                ...(await a),
+                value: c,
               }
-              if (s.ended) return;
-              n = s.stream;
-            } else n = s;
-            return new Promise((o, a) => {
-              _h(n, {
-                onData: async (c) => {
-                  n.pause();
-                  try {
-                    await this.jb(e, i, c, c.byteLength, r, 0);
-                  } catch (l) {
-                    return a(l);
-                  }
-                  (r += c.byteLength), setTimeout(() => n.resume());
-                },
-                onError: (c) => a(c),
-                onEnd: () => o(),
-              });
-            });
+            );
+          } catch (l) {
+            throw (c && (await s5(c)), this.I(l, i, o));
           }
+        }
 
-          async ib(e, i, s) {
-            let r = 0,
-              n;
-            for (; (n = s.read()) !== null; ) await this.jb(e, i, n, n.byteLength, r, 0), (r += n.byteLength);
+        I(e, i, s) {
+          const r = u(1924, null, this.vb(i), ao(e).toString());
+          return e instanceof rd ? new rd(r, e.stat, s) : e instanceof sd ? new sd(r, e.fileOperationResult, e.size, e.options) : new $i(r, sr(e), s);
+        }
+
+        J(e, i, s, r = Object.create(null)) {
+          const n = e.readFileStream(i, r, s);
+          return r5(n, { data: (o) => (o instanceof ee ? o : ee.wrap(o)), error: (o) => this.I(o, i, r) }, (o) => ee.concat(o));
+        }
+
+        L(e, i, s, r = Object.create(null)) {
+          const n = sI();
+          return T7(e, i, n, (o) => o, { ...r, bufferSize: this.a, errorTransformer: (o) => this.I(o, i, r) }, s), n;
+        }
+
+        M(e, i, s) {
+          const r = Fh((n) => ee.concat(n));
+          return (
+            (async () => {
+              try {
+                let n;
+                s?.atomic && c0(e) ? (n = await e.readFile(i, { atomic: !0 })) : (n = await e.readFile(i)),
+                  typeof s?.position == "number" && (n = n.slice(s.position)),
+                  typeof s?.length == "number" && (n = n.slice(0, s.length)),
+                  this.O(i, n.byteLength, s),
+                  r.end(ee.wrap(n));
+              } catch (n) {
+                r.error(n), r.end();
+              }
+            })(),
+            r
+          );
+        }
+
+        async N(e, i) {
+          const s = await this.resolve(e, { resolveMetadata: !0 });
+          if (s.isDirectory) throw new $i(u(1925, null, this.vb(e)), 0, i);
+          if (typeof i?.etag == "string" && i.etag !== od && i.etag === s.etag) throw new rd(u(1926, null), s, i);
+          return this.O(e, s.size, i), s;
+        }
+
+        O(e, i, s) {
+          if (typeof s?.limits?.size == "number" && i > s.limits.size) throw new sd(u(1927, null, this.vb(e)), 7, i, s);
+        }
+
+        async canMove(e, i, s) {
+          return this.P(e, i, "move", s);
+        }
+
+        async canCopy(e, i, s) {
+          return this.P(e, i, "copy", s);
+        }
+
+        async P(e, i, s, r) {
+          if (e.toString() !== i.toString())
+            try {
+              const n = s === "move" ? this.tb(await this.t(e), e) : await this.s(e),
+                o = this.tb(await this.t(i), i);
+              await this.U(n, e, o, i, s, r);
+            } catch (n) {
+              return n;
+            }
+          return !0;
+        }
+
+        async move(e, i, s) {
+          const r = this.tb(await this.t(e), e),
+            n = this.tb(await this.t(i), i),
+            o = await this.Q(r, e, n, i, "move", !!s),
+            a = await this.resolve(i, { resolveMetadata: !0 });
+          return this.u.fire(new co(e, o === "move" ? 2 : 3, a)), a;
+        }
+
+        async copy(e, i, s) {
+          const r = await this.s(e),
+            n = this.tb(await this.t(i), i),
+            o = await this.Q(r, e, n, i, "copy", !!s),
+            a = await this.resolve(i, { resolveMetadata: !0 });
+          return this.u.fire(new co(e, o === "copy" ? 3 : 2, a)), a;
+        }
+
+        async Q(e, i, s, r, n, o) {
+          if (i.toString() === r.toString()) return n;
+          const { exists: a, isSameResourceWithDifferentPathCase: c } = await this.U(e, i, s, r, n, o);
+          if ((a && !c && o && (await this.del(r, { recursive: !0 })), await this.Y(s, this.W(s).providerExtUri.dirname(r)), n === "copy")) {
+            if (e === s && o0(e)) await e.copy(i, r, { overwrite: o });
+            else {
+              const l = await this.resolve(i);
+              l.isDirectory ? await this.S(e, l, s, r) : await this.R(e, i, s, r);
+            }
+            return n;
+          } else return e === s ? (await e.rename(i, r, { overwrite: o }), n) : (await this.Q(e, i, s, r, "copy", o), await this.del(i, { recursive: !0 }), "copy");
+        }
+
+        async R(e, i, s, r) {
+          if (yn(e) && yn(s)) return this.mb(e, i, s, r);
+          if (yn(e) && ws(s)) return this.sb(e, i, s, r);
+          if (ws(e) && yn(s)) return this.qb(e, i, s, r);
+          if (ws(e) && ws(s)) return this.ob(e, i, s, r);
+        }
+
+        async S(e, i, s, r) {
+          await s.mkdir(r),
+            Array.isArray(i.children) &&
+              (await si.settled(
+                i.children.map(async (n) => {
+                  const o = this.W(s).providerExtUri.joinPath(r, n.name);
+                  return n.isDirectory ? this.S(e, await this.resolve(n.resource), s, o) : this.R(e, n.resource, s, o);
+                }),
+              ));
+        }
+
+        async U(e, i, s, r, n, o) {
+          let a = !1;
+          if (e === s) {
+            const { providerExtUri: l, isPathCaseSensitive: h } = this.W(e);
+            if ((h || (a = l.isEqual(i, r)), a && n === "copy")) throw new Error(u(1928, null, this.vb(i), this.vb(r)));
+            if (!a && l.isEqualOrParent(r, i)) throw new Error(u(1929, null, this.vb(i), this.vb(r)));
           }
-
-          async jb(e, i, s, r, n, o) {
-            let a = 0;
-            for (; a < r; ) {
-              const c = await e.write(i, n + a, s.buffer, o + a, r - a);
-              a += c;
+          const c = await this.exists(r);
+          if (c && !a) {
+            if (!o) throw new $i(u(1930, null, this.vb(i), this.vb(r)), 4);
+            if (e === s) {
+              const { providerExtUri: l } = this.W(e);
+              if (l.isEqualOrParent(i, r)) throw new Error(u(1931, null, this.vb(i), this.vb(r)));
             }
           }
+          return { exists: c, isSameResourceWithDifferentPathCase: a };
+        }
 
-          async kb(e, i, s, r) {
-            return this.fb.queueFor(i, () => this.lb(e, i, s, r), this.W(e).providerExtUri);
-          }
+        W(e) {
+          const i = this.X(e);
+          return { providerExtUri: i ? Te : kg, isPathCaseSensitive: i };
+        }
 
-          async lb(e, i, s, r) {
-            let n;
-            r instanceof ee ? (n = r) : Ph(r) ? (n = await tl(r)) : Rg(r) ? (n = await tI(r)) : (n = X$(r)),
-              await e.writeFile(i, n.buffer, {
-                create: !0,
-                overwrite: !0,
-                unlock: s?.unlock ?? !1,
-                atomic: s?.atomic ?? !1,
-              });
-          }
+        X(e) {
+          return !!(e.capabilities & 1024);
+        }
 
-          async mb(e, i, s, r) {
-            return this.fb.queueFor(r, () => this.nb(e, i, s, r), this.W(s).providerExtUri);
-          }
+        async createFolder(e) {
+          const i = this.tb(await this.r(e), e);
+          await this.Y(i, e);
+          const s = await this.resolve(e, { resolveMetadata: !0 });
+          return this.u.fire(new co(e, 0, s)), s;
+        }
 
-          async nb(e, i, s, r) {
-            let n, o;
+        async Y(e, i) {
+          const s = [],
+            { providerExtUri: r } = this.W(e);
+          for (; !r.isEqual(i, r.dirname(i)); )
             try {
-              (n = await e.open(i, { create: !1 })), (o = await s.open(r, { create: !0, unlock: !1 }));
-              const a = ee.alloc(this.a);
-              let c = 0,
-                l = 0,
-                h = 0;
-              do (h = await e.read(n, c, a.buffer, l, a.byteLength - l)), await this.jb(s, o, a, h, c, l), (c += h), (l += h), l === a.byteLength && (l = 0);
-              while (h > 0);
-            } catch (a) {
-              throw ao(a);
-            } finally {
-              await si.settled([typeof n == "number" ? e.close(n) : Promise.resolve(), typeof o == "number" ? s.close(o) : Promise.resolve()]);
+              if (!((await e.stat(i)).type & Xt.Directory)) throw new Error(u(1932, null, this.vb(i)));
+              break;
+            } catch (n) {
+              if (td(n) !== ve.FileNotFound) throw n;
+              s.push(r.basename(i)), (i = r.dirname(i));
             }
-          }
-
-          async ob(e, i, s, r) {
-            return this.fb.queueFor(r, () => this.pb(e, i, s, r), this.W(s).providerExtUri);
-          }
-
-          async pb(e, i, s, r) {
-            return s.writeFile(r, await e.readFile(i), { create: !0, overwrite: !0, unlock: !1, atomic: !1 });
-          }
-
-          async qb(e, i, s, r) {
-            return this.fb.queueFor(r, () => this.rb(e, i, s, r), this.W(s).providerExtUri);
-          }
-
-          async rb(e, i, s, r) {
-            const n = await s.open(r, { create: !0, unlock: !1 });
+          for (let n = s.length - 1; n >= 0; n--) {
+            i = r.joinPath(i, s[n]);
             try {
-              const o = await e.readFile(i);
-              await this.jb(s, n, ee.wrap(o), o.byteLength, 0, 0);
+              await e.mkdir(i);
             } catch (o) {
-              throw ao(o);
-            } finally {
-              await s.close(n);
+              if (td(o) !== ve.FileExists) throw o;
             }
           }
+        }
 
-          async sb(e, i, s, r) {
-            const n = await tl(this.L(e, i, ft.None));
-            await this.kb(s, r, void 0, n);
+        async canDelete(e, i) {
+          try {
+            await this.Z(e, i);
+          } catch (s) {
+            return s;
           }
+          return !0;
+        }
 
-          tb(e, i) {
-            if (e.capabilities & 2048) throw new $i(u(1938, null, this.vb(i)), 6);
-            return e;
+        async Z(e, i) {
+          const s = this.tb(await this.r(e), e),
+            r = !!i?.useTrash;
+          if (r && !(s.capabilities & 4096)) throw new Error(u(1933, null, this.vb(e)));
+          const n = i?.atomic;
+          if (n && !(s.capabilities & 65536)) throw new Error(u(1934, null, this.vb(e)));
+          if (r && n) throw new Error(u(1935, null, this.vb(e)));
+          let o;
+          try {
+            o = await s.stat(e);
+          } catch {}
+          if (o) this.ub(e, o);
+          else throw new $i(u(1936, null, this.vb(e)), 1);
+          if (!!!i?.recursive) {
+            const c = await this.resolve(e);
+            if (c.isDirectory && Array.isArray(c.children) && c.children.length > 0) throw new Error(u(1937, null, this.vb(e)));
           }
+          return s;
+        }
 
-          ub(e, i) {
-            if ((i.permissions ?? 0) & ma.Readonly) throw new $i(u(1939, null, this.vb(e)), 6);
+        async del(e, i) {
+          const s = await this.Z(e, i);
+          let r = i;
+          if (qI(s) && !r?.atomic) {
+            const c = s.enforceAtomicDelete?.(e);
+            c && (r = { ...i, atomic: c });
           }
+          const n = !!r?.useTrash,
+            o = !!r?.recursive,
+            a = r?.atomic ?? !1;
+          await s.delete(e, { recursive: o, useTrash: n, atomic: a }), this.u.fire(new co(e, 1));
+        }
 
-          vb(e) {
-            return e.scheme === O.file ? e.fsPath : e.toString(!0);
+        async cloneFile(e, i) {
+          const s = await this.r(e),
+            r = this.tb(await this.t(i), i);
+          if (!(s === r && this.W(s).providerExtUri.isEqual(e, i)))
+            return s === r && x6(s)
+              ? s.cloneFile(e, i)
+              : (await this.Y(r, this.W(r).providerExtUri.dirname(i)),
+                s === r && o0(s) ? this.fb.queueFor(e, () => s.copy(e, i, { overwrite: !0 }), this.W(s).providerExtUri) : this.fb.queueFor(e, () => this.R(s, e, r, i), this.W(s).providerExtUri));
+        }
+
+        static {
+          this.db = 0;
+        }
+
+        createWatcher(e, i) {
+          return this.watch(e, { ...i, correlationId: jb.db++ });
+        }
+
+        watch(e, i = { recursive: !1, excludes: [] }) {
+          const s = new Ne();
+          let r = !1,
+            n = () => {
+              r = !0;
+            };
+          s.add(Pe(() => n())),
+            (async () => {
+              try {
+                const a = await this.eb(e, i);
+                r ? Bt(a) : (n = () => Bt(a));
+              } catch (a) {
+                this.g.error(a);
+              }
+            })();
+          const o = i.correlationId;
+          if (typeof o == "number") {
+            const a = s.add(new $());
+            return (
+              s.add(
+                this.$.event((l) => {
+                  l.correlates(o) && a.fire(l);
+                }),
+              ),
+              { onDidChange: a.event, dispose: () => s.dispose() }
+            );
           }
-        }),
-        (Jp = jb = __decorate([__param(0, K)], Jp));
+          return s;
+        }
+
+        async eb(e, i) {
+          const s = await this.r(e),
+            r = Or([this.W(s).providerExtUri.getComparisonKey(e), i]);
+          let n = this.cb.get(r);
+          return (
+            n || ((n = { count: 0, disposable: s.watch(e, i) }), this.cb.set(r, n)),
+            (n.count += 1),
+            Pe(() => {
+              n && (n.count--, n.count === 0 && (Bt(n.disposable), this.cb.delete(r)));
+            })
+          );
+        }
+
+        dispose() {
+          super.dispose();
+          for (const [, e] of this.cb) Bt(e.disposable);
+          this.cb.clear();
+        }
+
+        async gb(e, i, s, r) {
+          return this.fb.queueFor(
+            i,
+            async () => {
+              const n = await e.open(i, { create: !0, unlock: s?.unlock ?? !1 });
+              try {
+                Ph(r) || Rg(r) ? await this.hb(e, n, r) : await this.ib(e, n, r);
+              } catch (o) {
+                throw ao(o);
+              } finally {
+                await e.close(n);
+              }
+            },
+            this.W(e).providerExtUri,
+          );
+        }
+
+        async hb(e, i, s) {
+          let r = 0,
+            n;
+          if (Rg(s)) {
+            if (s.buffer.length > 0) {
+              const o = ee.concat(s.buffer);
+              await this.jb(e, i, o, o.byteLength, r, 0), (r += o.byteLength);
+            }
+            if (s.ended) return;
+            n = s.stream;
+          } else n = s;
+          return new Promise((o, a) => {
+            _h(n, {
+              onData: async (c) => {
+                n.pause();
+                try {
+                  await this.jb(e, i, c, c.byteLength, r, 0);
+                } catch (l) {
+                  return a(l);
+                }
+                (r += c.byteLength), setTimeout(() => n.resume());
+              },
+              onError: (c) => a(c),
+              onEnd: () => o(),
+            });
+          });
+        }
+
+        async ib(e, i, s) {
+          let r = 0,
+            n;
+          for (; (n = s.read()) !== null; ) await this.jb(e, i, n, n.byteLength, r, 0), (r += n.byteLength);
+        }
+
+        async jb(e, i, s, r, n, o) {
+          let a = 0;
+          for (; a < r; ) {
+            const c = await e.write(i, n + a, s.buffer, o + a, r - a);
+            a += c;
+          }
+        }
+
+        async kb(e, i, s, r) {
+          return this.fb.queueFor(i, () => this.lb(e, i, s, r), this.W(e).providerExtUri);
+        }
+
+        async lb(e, i, s, r) {
+          let n;
+          r instanceof ee ? (n = r) : Ph(r) ? (n = await tl(r)) : Rg(r) ? (n = await tI(r)) : (n = X$(r)),
+            await e.writeFile(i, n.buffer, {
+              create: !0,
+              overwrite: !0,
+              unlock: s?.unlock ?? !1,
+              atomic: s?.atomic ?? !1,
+            });
+        }
+
+        async mb(e, i, s, r) {
+          return this.fb.queueFor(r, () => this.nb(e, i, s, r), this.W(s).providerExtUri);
+        }
+
+        async nb(e, i, s, r) {
+          let n, o;
+          try {
+            (n = await e.open(i, { create: !1 })), (o = await s.open(r, { create: !0, unlock: !1 }));
+            const a = ee.alloc(this.a);
+            let c = 0,
+              l = 0,
+              h = 0;
+            do (h = await e.read(n, c, a.buffer, l, a.byteLength - l)), await this.jb(s, o, a, h, c, l), (c += h), (l += h), l === a.byteLength && (l = 0);
+            while (h > 0);
+          } catch (a) {
+            throw ao(a);
+          } finally {
+            await si.settled([typeof n == "number" ? e.close(n) : Promise.resolve(), typeof o == "number" ? s.close(o) : Promise.resolve()]);
+          }
+        }
+
+        async ob(e, i, s, r) {
+          return this.fb.queueFor(r, () => this.pb(e, i, s, r), this.W(s).providerExtUri);
+        }
+
+        async pb(e, i, s, r) {
+          return s.writeFile(r, await e.readFile(i), { create: !0, overwrite: !0, unlock: !1, atomic: !1 });
+        }
+
+        async qb(e, i, s, r) {
+          return this.fb.queueFor(r, () => this.rb(e, i, s, r), this.W(s).providerExtUri);
+        }
+
+        async rb(e, i, s, r) {
+          const n = await s.open(r, { create: !0, unlock: !1 });
+          try {
+            const o = await e.readFile(i);
+            await this.jb(s, n, ee.wrap(o), o.byteLength, 0, 0);
+          } catch (o) {
+            throw ao(o);
+          } finally {
+            await s.close(n);
+          }
+        }
+
+        async sb(e, i, s, r) {
+          const n = await tl(this.L(e, i, ft.None));
+          await this.kb(s, r, void 0, n);
+        }
+
+        tb(e, i) {
+          if (e.capabilities & 2048) throw new $i(u(1938, null, this.vb(i)), 6);
+          return e;
+        }
+
+        ub(e, i) {
+          if ((i.permissions ?? 0) & ma.Readonly) throw new $i(u(1939, null, this.vb(e)), 6);
+        }
+
+        vb(e) {
+          return e.scheme === O.file ? e.fsPath : e.toString(!0);
+        }
+      };
+      Jp = jb = __decorate([__param(0, K)], Jp);
     },
   }),
   cD,
@@ -51019,77 +50939,77 @@ var rz = v({
   oz = v({
     "out-build/vs/platform/instantiation/common/graph.js"() {
       "use strict";
-      (cD = class {
+      cD = class {
         constructor(t, e) {
           (this.key = t), (this.data = e), (this.incoming = new Map()), (this.outgoing = new Map());
         }
-      }),
-        (Ub = class {
-          constructor(t) {
-            (this.b = t), (this.a = new Map());
-          }
+      };
+      Ub = class {
+        constructor(t) {
+          (this.b = t), (this.a = new Map());
+        }
 
-          roots() {
-            const t = [];
-            for (const e of this.a.values()) e.outgoing.size === 0 && t.push(e);
-            return t;
-          }
+        roots() {
+          const t = [];
+          for (const e of this.a.values()) e.outgoing.size === 0 && t.push(e);
+          return t;
+        }
 
-          insertEdge(t, e) {
-            const i = this.lookupOrInsertNode(t),
-              s = this.lookupOrInsertNode(e);
-            i.outgoing.set(s.key, s), s.incoming.set(i.key, i);
-          }
+        insertEdge(t, e) {
+          const i = this.lookupOrInsertNode(t),
+            s = this.lookupOrInsertNode(e);
+          i.outgoing.set(s.key, s), s.incoming.set(i.key, i);
+        }
 
-          removeNode(t) {
-            const e = this.b(t);
-            this.a.delete(e);
-            for (const i of this.a.values()) i.outgoing.delete(e), i.incoming.delete(e);
-          }
+        removeNode(t) {
+          const e = this.b(t);
+          this.a.delete(e);
+          for (const i of this.a.values()) i.outgoing.delete(e), i.incoming.delete(e);
+        }
 
-          lookupOrInsertNode(t) {
-            const e = this.b(t);
-            let i = this.a.get(e);
-            return i || ((i = new cD(e, t)), this.a.set(e, i)), i;
-          }
+        lookupOrInsertNode(t) {
+          const e = this.b(t);
+          let i = this.a.get(e);
+          return i || ((i = new cD(e, t)), this.a.set(e, i)), i;
+        }
 
-          lookup(t) {
-            return this.a.get(this.b(t));
-          }
+        lookup(t) {
+          return this.a.get(this.b(t));
+        }
 
-          isEmpty() {
-            return this.a.size === 0;
-          }
+        isEmpty() {
+          return this.a.size === 0;
+        }
 
-          toString() {
-            const t = [];
-            for (const [e, i] of this.a)
-              t.push(`${e}
+        toString() {
+          const t = [];
+          for (const [e, i] of this.a)
+            t.push(`${e}
 	(-> incoming)[${[...i.incoming.keys()].join(", ")}]
 	(outgoing ->)[${[...i.outgoing.keys()].join(",")}]
 `);
-            return t.join(`
+          return t.join(`
 `);
-          }
+        }
 
-          findCycleSlow() {
-            for (const [t, e] of this.a) {
-              const i = new Set([t]),
-                s = this.c(e, i);
-              if (s) return s;
-            }
+        findCycleSlow() {
+          for (const [t, e] of this.a) {
+            const i = new Set([t]),
+              s = this.c(e, i);
+            if (s) return s;
           }
+        }
 
-          c(t, e) {
-            for (const [i, s] of t.outgoing) {
-              if (e.has(i)) return [...e, i].join(" -> ");
-              e.add(i);
-              const r = this.c(s, e);
-              if (r) return r;
-              e.delete(i);
-            }
+        c(t, e) {
+          for (const [i, s] of t.outgoing) {
+            if (e.has(i)) return [...e, i].join(" -> ");
+            e.add(i);
+            const r = this.c(s, e);
+            if (r) return r;
+            e.delete(i);
           }
-        });
+        }
+      };
     },
   }),
   lD,
@@ -51100,305 +51020,305 @@ var rz = v({
   az = v({
     "out-build/vs/platform/instantiation/common/instantiationService.js"() {
       "use strict";
-      de(),
-        We(),
-        T(),
-        Ra(),
-        oz(),
-        G(),
-        vm(),
-        Z1(),
-        (lD = !1),
-        (Wb = class extends Error {
-          constructor(t) {
-            super("cyclic dependency between services"),
-              (this.message =
-                t.findCycleSlow() ??
-                `UNABLE to detect cycle, dumping graph: 
+      de();
+      We();
+      T();
+      Ra();
+      oz();
+      G();
+      vm();
+      Z1();
+      lD = !1;
+      Wb = class extends Error {
+        constructor(t) {
+          super("cyclic dependency between services"),
+            (this.message =
+              t.findCycleSlow() ??
+              `UNABLE to detect cycle, dumping graph: 
 ${t.toString()}`);
-          }
-        }),
-        (uD = class p4 {
-          constructor(e = new Gd(), i = !1, s, r = lD) {
-            (this.i = e),
-              (this.j = i),
-              (this.k = s),
-              (this.l = r),
-              (this.f = !1),
-              (this.g = new Set()),
-              (this.h = new Set()),
-              (this.t = new Set()),
-              this.i.set(Fs, this),
-              (this._globalGraph = r ? (s?._globalGraph ?? new Ub((n) => n)) : void 0);
-          }
+        }
+      };
+      uD = class p4 {
+        constructor(e = new serviceCollection(), i = !1, s, r = lD) {
+          (this.i = e),
+            (this.j = i),
+            (this.k = s),
+            (this.l = r),
+            (this.f = !1),
+            (this.g = new Set()),
+            (this.h = new Set()),
+            (this.t = new Set()),
+            this.i.set(Fs, this),
+            (this._globalGraph = r ? (s?._globalGraph ?? new Ub((n) => n)) : void 0);
+        }
 
-          dispose() {
-            if (!this.f) {
-              (this.f = !0), Bt(this.h), this.h.clear();
-              for (const e of this.g) bx(e) && e.dispose();
-              this.g.clear();
-            }
+        dispose() {
+          if (!this.f) {
+            (this.f = !0), Bt(this.h), this.h.clear();
+            for (const e of this.g) bx(e) && e.dispose();
+            this.g.clear();
           }
+        }
 
-          m() {
-            if (this.f) throw new Error("InstantiationService has been disposed");
-          }
+        m() {
+          if (this.f) throw new Error("InstantiationService has been disposed");
+        }
 
-          createChild(e, i) {
-            this.m();
-            const s = this,
-              r = new (class extends p4 {
-                dispose() {
-                  s.h.delete(r), super.dispose();
-                }
-              })(e, this.j, this, this.l);
-            return this.h.add(r), i?.add(r), r;
-          }
+        createChild(e, i) {
+          this.m();
+          const s = this,
+            r = new (class extends p4 {
+              dispose() {
+                s.h.delete(r), super.dispose();
+              }
+            })(e, this.j, this, this.l);
+          return this.h.add(r), i?.add(r), r;
+        }
 
-          invokeFunction(e, ...i) {
-            this.m();
-            const s = Yp.traceInvocation(this.l, e);
-            let r = !1;
-            try {
-              return e(
-                {
-                  get: (o) => {
-                    if (r) throw cv("service accessor is only valid during the invocation of its target method");
-                    const a = this.s(o, s);
-                    if (!a) throw new Error(`[invokeFunction] unknown service '${o}'`);
-                    return a;
-                  },
+        invokeFunction(e, ...i) {
+          this.m();
+          const s = Yp.traceInvocation(this.l, e);
+          let r = !1;
+          try {
+            return e(
+              {
+                get: (o) => {
+                  if (r) throw cv("service accessor is only valid during the invocation of its target method");
+                  const a = this.s(o, s);
+                  if (!a) throw new Error(`[invokeFunction] unknown service '${o}'`);
+                  return a;
                 },
-                ...i,
-              );
-            } finally {
-              (r = !0), s.stop();
-            }
+              },
+              ...i,
+            );
+          } finally {
+            (r = !0), s.stop();
           }
+        }
 
-          createInstance(e, ...i) {
-            this.m();
-            let s, r;
-            return e instanceof ke ? ((s = Yp.traceCreation(this.l, e.ctor)), (r = this.o(e.ctor, e.staticArguments.concat(i), s))) : ((s = Yp.traceCreation(this.l, e)), (r = this.o(e, i, s))), s.stop(), r;
+        createInstance(e, ...i) {
+          this.m();
+          let s, r;
+          return e instanceof Descriptors ? ((s = Yp.traceCreation(this.l, e.ctor)), (r = this.o(e.ctor, e.staticArguments.concat(i), s))) : ((s = Yp.traceCreation(this.l, e)), (r = this.o(e, i, s))), s.stop(), r;
+        }
+
+        o(e, i = [], s) {
+          const r = Ps.getServiceDependencies(e).sort((a, c) => a.index - c.index),
+            n = [];
+          for (const a of r) {
+            const c = this.s(a.id, s);
+            c || this.y(`[createInstance] ${e.name} depends on UNKNOWN service ${a.id}.`, !1), n.push(c);
           }
-
-          o(e, i = [], s) {
-            const r = Ps.getServiceDependencies(e).sort((a, c) => a.index - c.index),
-              n = [];
-            for (const a of r) {
-              const c = this.s(a.id, s);
-              c || this.y(`[createInstance] ${e.name} depends on UNKNOWN service ${a.id}.`, !1), n.push(c);
-            }
-            const o = r.length > 0 ? r[0].index : i.length;
-            if (i.length !== o) {
-              console.trace(`[createInstance] First service dependency of ${e.name} at position ${o + 1} conflicts with ${i.length} static arguments`);
-              const a = o - i.length;
-              a > 0 ? (i = i.concat(new Array(a))) : (i = i.slice(0, o));
-            }
-            return Reflect.construct(e, i.concat(n));
+          const o = r.length > 0 ? r[0].index : i.length;
+          if (i.length !== o) {
+            console.trace(`[createInstance] First service dependency of ${e.name} at position ${o + 1} conflicts with ${i.length} static arguments`);
+            const a = o - i.length;
+            a > 0 ? (i = i.concat(new Array(a))) : (i = i.slice(0, o));
           }
+          return Reflect.construct(e, i.concat(n));
+        }
 
-          q(e, i) {
-            if (this.i.get(e) instanceof ke) this.i.set(e, i);
-            else if (this.k) this.k.q(e, i);
-            else throw new Error("illegalState - setting UNKNOWN service instance");
+        q(e, i) {
+          if (this.i.get(e) instanceof Descriptors) this.i.set(e, i);
+          else if (this.k) this.k.q(e, i);
+          else throw new Error("illegalState - setting UNKNOWN service instance");
+        }
+
+        r(e) {
+          const i = this.i.get(e);
+          return !i && this.k ? this.k.r(e) : i;
+        }
+
+        s(e, i) {
+          this._globalGraph && this.c && this._globalGraph.insertEdge(this.c, String(e));
+          const s = this.r(e);
+          return s instanceof Descriptors ? this.u(e, s, i.branch(e, !0)) : (i.branch(e, !1), s);
+        }
+
+        u(e, i, s) {
+          if (this.t.has(e)) throw new Error(`illegal state - RECURSIVELY instantiating service '${e}'`);
+          this.t.add(e);
+          try {
+            return this.v(e, i, s);
+          } finally {
+            this.t.delete(e);
           }
+        }
 
-          r(e) {
-            const i = this.i.get(e);
-            return !i && this.k ? this.k.r(e) : i;
-          }
-
-          s(e, i) {
-            this._globalGraph && this.c && this._globalGraph.insertEdge(this.c, String(e));
-            const s = this.r(e);
-            return s instanceof ke ? this.u(e, s, i.branch(e, !0)) : (i.branch(e, !1), s);
-          }
-
-          u(e, i, s) {
-            if (this.t.has(e)) throw new Error(`illegal state - RECURSIVELY instantiating service '${e}'`);
-            this.t.add(e);
-            try {
-              return this.v(e, i, s);
-            } finally {
-              this.t.delete(e);
-            }
-          }
-
-          v(e, i, s) {
-            const r = new Ub((c) => c.id.toString());
-            let n = 0;
-            const o = [{ id: e, desc: i, _trace: s }],
-              a = new Set();
-            for (; o.length; ) {
-              const c = o.pop();
-              if (!a.has(String(c.id))) {
-                if ((a.add(String(c.id)), r.lookupOrInsertNode(c), n++ > 1e3)) throw new Wb(r);
-                for (const l of Ps.getServiceDependencies(c.desc.ctor)) {
-                  const h = this.r(l.id);
-                  if ((h || this.y(`[createInstance] ${e} depends on ${l.id} which is NOT registered.`, !0), this._globalGraph?.insertEdge(String(c.id), String(l.id)), h instanceof ke)) {
-                    const d = { id: l.id, desc: h, _trace: c._trace.branch(l.id, !0) };
-                    r.insertEdge(c, d), o.push(d);
-                  }
+        v(e, i, s) {
+          const r = new Ub((c) => c.id.toString());
+          let n = 0;
+          const o = [{ id: e, desc: i, _trace: s }],
+            a = new Set();
+          for (; o.length; ) {
+            const c = o.pop();
+            if (!a.has(String(c.id))) {
+              if ((a.add(String(c.id)), r.lookupOrInsertNode(c), n++ > 1e3)) throw new Wb(r);
+              for (const l of Ps.getServiceDependencies(c.desc.ctor)) {
+                const h = this.r(l.id);
+                if ((h || this.y(`[createInstance] ${e} depends on ${l.id} which is NOT registered.`, !0), this._globalGraph?.insertEdge(String(c.id), String(l.id)), h instanceof Descriptors)) {
+                  const d = { id: l.id, desc: h, _trace: c._trace.branch(l.id, !0) };
+                  r.insertEdge(c, d), o.push(d);
                 }
               }
             }
-            for (;;) {
-              const c = r.roots();
-              if (c.length === 0) {
-                if (!r.isEmpty()) throw new Wb(r);
-                break;
-              }
-              for (const { data: l } of c) {
-                if (this.r(l.id) instanceof ke) {
-                  const d = this.w(l.id, l.desc.ctor, l.desc.staticArguments, l.desc.supportsDelayedInstantiation, l._trace);
-                  this.q(l.id, d);
-                }
-                r.removeNode(l);
-              }
+          }
+          for (;;) {
+            const c = r.roots();
+            if (c.length === 0) {
+              if (!r.isEmpty()) throw new Wb(r);
+              break;
             }
-            return this.r(e);
+            for (const { data: l } of c) {
+              if (this.r(l.id) instanceof Descriptors) {
+                const d = this.w(l.id, l.desc.ctor, l.desc.staticArguments, l.desc.supportsDelayedInstantiation, l._trace);
+                this.q(l.id, d);
+              }
+              r.removeNode(l);
+            }
           }
+          return this.r(e);
+        }
 
-          w(e, i, s = [], r, n) {
-            if (this.i.get(e) instanceof ke) return this.x(e, i, s, r, n, this.g);
-            if (this.k) return this.k.w(e, i, s, r, n);
-            throw new Error(`illegalState - creating UNKNOWN service instance ${i.name}`);
-          }
+        w(e, i, s = [], r, n) {
+          if (this.i.get(e) instanceof Descriptors) return this.x(e, i, s, r, n, this.g);
+          if (this.k) return this.k.w(e, i, s, r, n);
+          throw new Error(`illegalState - creating UNKNOWN service instance ${i.name}`);
+        }
 
-          x(e, i, s = [], r, n, o) {
-            if (r) {
-              const a = new p4(void 0, this.j, this, this.l);
-              a.c = String(e);
-              const c = new Map(),
-                l = new U2(() => {
-                  const h = a.o(i, s, n);
-                  for (const [d, p] of c) {
-                    const g = h[d];
-                    if (typeof g == "function") for (const m of p) m.disposable = g.apply(h, m.listener);
-                  }
-                  return c.clear(), o.add(h), h;
-                });
-              return new Proxy(Object.create(null), {
-                get(h, d) {
-                  if (!l.isInitialized && typeof d == "string" && (d.startsWith("onDid") || d.startsWith("onWill"))) {
-                    let m = c.get(d);
-                    return (
-                      m || ((m = new uh()), c.set(d, m)),
-                      (S, k, D) => {
-                        if (l.isInitialized) return l.value[d](S, k, D);
-                        {
-                          const x = { listener: [S, k, D], disposable: void 0 },
-                            C = m.push(x);
-                          return Pe(() => {
-                            C(), x.disposable?.dispose();
-                          });
-                        }
-                      }
-                    );
-                  }
-                  if (d in h) return h[d];
-                  const p = l.value;
-                  let g = p[d];
-                  return typeof g != "function" || ((g = g.bind(p)), (h[d] = g)), g;
-                },
-                set(h, d, p) {
-                  return (l.value[d] = p), !0;
-                },
-                getPrototypeOf(h) {
-                  return i.prototype;
-                },
+        x(e, i, s = [], r, n, o) {
+          if (r) {
+            const a = new p4(void 0, this.j, this, this.l);
+            a.c = String(e);
+            const c = new Map(),
+              l = new U2(() => {
+                const h = a.o(i, s, n);
+                for (const [d, p] of c) {
+                  const g = h[d];
+                  if (typeof g == "function") for (const m of p) m.disposable = g.apply(h, m.listener);
+                }
+                return c.clear(), o.add(h), h;
               });
-            } else {
-              const a = this.o(i, s, n);
-              return o.add(a), a;
+            return new Proxy(Object.create(null), {
+              get(h, d) {
+                if (!l.isInitialized && typeof d == "string" && (d.startsWith("onDid") || d.startsWith("onWill"))) {
+                  let m = c.get(d);
+                  return (
+                    m || ((m = new uh()), c.set(d, m)),
+                    (S, k, D) => {
+                      if (l.isInitialized) return l.value[d](S, k, D);
+                      {
+                        const x = { listener: [S, k, D], disposable: void 0 },
+                          C = m.push(x);
+                        return Pe(() => {
+                          C(), x.disposable?.dispose();
+                        });
+                      }
+                    }
+                  );
+                }
+                if (d in h) return h[d];
+                const p = l.value;
+                let g = p[d];
+                return typeof g != "function" || ((g = g.bind(p)), (h[d] = g)), g;
+              },
+              set(h, d, p) {
+                return (l.value[d] = p), !0;
+              },
+              getPrototypeOf(h) {
+                return i.prototype;
+              },
+            });
+          } else {
+            const a = this.o(i, s, n);
+            return o.add(a), a;
+          }
+        }
+
+        y(e, i) {
+          if ((i && console.warn(e), this.j)) throw new Error(e);
+        }
+      };
+      (function (t) {
+        (t[(t.None = 0)] = "None"), (t[(t.Creation = 1)] = "Creation"), (t[(t.Invocation = 2)] = "Invocation"), (t[(t.Branch = 3)] = "Branch");
+      })(hD || (hD = {}));
+      Yp = class Sr {
+        static {
+          this.all = new Set();
+        }
+        static {
+          this.c = new (class extends Sr {
+            constructor() {
+              super(0, null);
             }
-          }
 
-          y(e, i) {
-            if ((i && console.warn(e), this.j)) throw new Error(e);
-          }
-        }),
-        (function (t) {
-          (t[(t.None = 0)] = "None"), (t[(t.Creation = 1)] = "Creation"), (t[(t.Invocation = 2)] = "Invocation"), (t[(t.Branch = 3)] = "Branch");
-        })(hD || (hD = {})),
-        (Yp = class Sr {
-          static {
-            this.all = new Set();
-          }
-          static {
-            this.c = new (class extends Sr {
-              constructor() {
-                super(0, null);
-              }
+            stop() {}
 
-              stop() {}
+            branch() {
+              return this;
+            }
+          })();
+        }
 
-              branch() {
-                return this;
-              }
-            })();
-          }
-
-          static traceInvocation(e, i) {
-            return e
-              ? new Sr(
-                  2,
-                  i.name ||
-                    new Error().stack
-                      .split(
-                        `
+        static traceInvocation(e, i) {
+          return e
+            ? new Sr(
+                2,
+                i.name ||
+                  new Error().stack
+                    .split(
+                      `
 `,
-                      )
-                      .slice(3, 4).join(`
+                    )
+                    .slice(3, 4).join(`
 `),
-                )
-              : Sr.c;
-          }
+              )
+            : Sr.c;
+        }
 
-          static traceCreation(e, i) {
-            return e ? new Sr(1, i.name) : Sr.c;
-          }
+        static traceCreation(e, i) {
+          return e ? new Sr(1, i.name) : Sr.c;
+        }
 
-          static {
-            this.f = 0;
-          }
+        static {
+          this.f = 0;
+        }
 
-          constructor(e, i) {
-            (this.type = e), (this.name = i), (this.g = Date.now()), (this.h = []);
-          }
+        constructor(e, i) {
+          (this.type = e), (this.name = i), (this.g = Date.now()), (this.h = []);
+        }
 
-          branch(e, i) {
-            const s = new Sr(3, e.toString());
-            return this.h.push([e, i, s]), s;
-          }
+        branch(e, i) {
+          const s = new Sr(3, e.toString());
+          return this.h.push([e, i, s]), s;
+        }
 
-          stop() {
-            const e = Date.now() - this.g;
-            Sr.f += e;
-            let i = !1;
+        stop() {
+          const e = Date.now() - this.g;
+          Sr.f += e;
+          let i = !1;
 
-            function s(n, o) {
-              const a = [],
-                c = new Array(n + 1).join("	");
-              for (const [l, h, d] of o.h)
-                if (h && d) {
-                  (i = !0), a.push(`${c}CREATES -> ${l}`);
-                  const p = s(n + 1, d);
-                  p && a.push(p);
-                } else a.push(`${c}uses -> ${l}`);
-              return a.join(`
+          function s(n, o) {
+            const a = [],
+              c = new Array(n + 1).join("	");
+            for (const [l, h, d] of o.h)
+              if (h && d) {
+                (i = !0), a.push(`${c}CREATES -> ${l}`);
+                const p = s(n + 1, d);
+                p && a.push(p);
+              } else a.push(`${c}uses -> ${l}`);
+            return a.join(`
 `);
-            }
-
-            const r = [`${this.type === 1 ? "CREATE" : "CALL"} ${this.name}`, `${s(1, this)}`, `DONE, took ${e.toFixed(2)}ms (grand total ${Sr.f.toFixed(2)}ms)`];
-            (e > 2 || i) &&
-              Sr.all.add(
-                r.join(`
-`),
-              );
           }
-        });
+
+          const r = [`${this.type === 1 ? "CREATE" : "CALL"} ${this.name}`, `${s(1, this)}`, `DONE, took ${e.toFixed(2)}ms (grand total ${Sr.f.toFixed(2)}ms)`];
+          (e > 2 || i) &&
+            Sr.all.add(
+              r.join(`
+`),
+            );
+        }
+      };
     },
   }),
   dD,
@@ -51433,113 +51353,113 @@ ${t.toString()}`);
     },
   });
 
-var Kp,
+var ProtocolMainService,
   uz = v({
     "out-build/vs/platform/protocol/electron-main/protocolMainService.js"() {
       "use strict";
-      T(),
-        Re(),
-        Ae(),
-        Z(),
-        ga(),
-        ge(),
-        ri(),
-        Ci(),
-        ns(),
-        Q(),
-        ar(),
-        (Kp = class extends N {
-          constructor(e, i, s) {
-            super(),
-              (this.c = e),
-              (this.f = s),
-              (this.a = vn.forPaths(!Oe)),
-              (this.b = new Set([".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp", ".mp4"])),
-              this.addValidFileRoot(e.appRoot),
-              this.addValidFileRoot(e.extensionsPath),
-              this.addValidFileRoot(i.defaultProfile.globalStorageHome.with({ scheme: O.file }).fsPath),
-              this.addValidFileRoot(e.workspaceStorageHome.with({ scheme: O.file }).fsPath),
-              this.g();
-          }
+      T();
+      Re();
+      Ae();
+      Z();
+      ga();
+      ge();
+      ri();
+      Ci();
+      ns();
+      Q();
+      ar();
+      ProtocolMainService = class extends N {
+        constructor(e, i, s) {
+          super(),
+            (this.c = e),
+            (this.f = s),
+            (this.a = vn.forPaths(!Oe)),
+            (this.b = new Set([".svg", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp", ".mp4"])),
+            this.addValidFileRoot(e.appRoot),
+            this.addValidFileRoot(e.extensionsPath),
+            this.addValidFileRoot(i.defaultProfile.globalStorageHome.with({ scheme: O.file }).fsPath),
+            this.addValidFileRoot(e.workspaceStorageHome.with({ scheme: O.file }).fsPath),
+            this.g();
+        }
 
-          g() {
-            const { defaultSession: e } = session;
-            e.protocol.registerFileProtocol(O.vscodeFileResource, (i, s) => this.j(i, s)),
-              e.protocol.interceptFileProtocol(O.file, (i, s) => this.h(i, s)),
-              this.B(
-                Pe(() => {
-                  e.protocol.unregisterProtocol(O.vscodeFileResource), e.protocol.uninterceptProtocol(O.file);
-                }),
-              );
-          }
+        g() {
+          const { defaultSession: e } = session;
+          e.protocol.registerFileProtocol(O.vscodeFileResource, (i, s) => this.j(i, s)),
+            e.protocol.interceptFileProtocol(O.file, (i, s) => this.h(i, s)),
+            this.B(
+              Pe(() => {
+                e.protocol.unregisterProtocol(O.vscodeFileResource), e.protocol.uninterceptProtocol(O.file);
+              }),
+            );
+        }
 
-          addValidFileRoot(e) {
-            const i = Mi(e);
-            return this.a.get(i) ? N.None : (this.a.set(i, !0), Pe(() => this.a.delete(i)));
-          }
+        addValidFileRoot(e) {
+          const i = Mi(e);
+          return this.a.get(i) ? N.None : (this.a.set(i, !0), Pe(() => this.a.delete(i)));
+        }
 
-          h(e, i) {
-            const s = L.parse(e.url);
-            return this.f.error(`Refused to load resource ${s.fsPath} from ${O.file}: protocol (original URL: ${e.url})`), i({ error: -3 });
-          }
+        h(e, i) {
+          const s = L.parse(e.url);
+          return this.f.error(`Refused to load resource ${s.fsPath} from ${O.file}: protocol (original URL: ${e.url})`), i({ error: -3 });
+        }
 
-          j(e, i) {
-            const s = this.m(e);
-            let r;
-            if (this.c.crossOriginIsolated) {
-              const n = Ke(s);
-              n === "workbench.html" || n === "workbench-dev.html" ? (r = Kc.CoopAndCoep) : (r = Kc.getHeadersFromQuery(e.url));
+        j(e, i) {
+          const s = this.m(e);
+          let r;
+          if (this.c.crossOriginIsolated) {
+            const n = Ke(s);
+            n === "workbench.html" || n === "workbench-dev.html" ? (r = Kc.CoopAndCoep) : (r = Kc.getHeadersFromQuery(e.url));
+          }
+          return this.a.findSubstr(s)
+            ? i({
+                path: s,
+                headers: r,
+              })
+            : this.b.has(wh(s).toLowerCase())
+              ? i({ path: s })
+              : (this.f.error(`${O.vscodeFileResource}: Refused to load resource ${s} from ${O.vscodeFileResource}: protocol (original URL: ${e.url})`), i({ error: -3 }));
+        }
+
+        m(e) {
+          const i = L.parse(e.url),
+            s = It.uriToFileUri(i);
+          return Mi(s.fsPath);
+        }
+
+        createIPCObjectUrl() {
+          let e;
+          const i = L.from({ scheme: "vscode", path: Qt() }),
+            s = i.toString(),
+            r = async () => e;
+          return (
+            De.handle(s, r),
+            this.f.trace(`IPC Object URL: Registered new channel ${s}.`),
+            {
+              resource: i,
+              update: (n) => (e = n),
+              dispose: () => {
+                this.f.trace(`IPC Object URL: Removed channel ${s}.`), De.removeHandler(s);
+              },
             }
-            return this.a.findSubstr(s)
-              ? i({
-                  path: s,
-                  headers: r,
-                })
-              : this.b.has(wh(s).toLowerCase())
-                ? i({ path: s })
-                : (this.f.error(`${O.vscodeFileResource}: Refused to load resource ${s} from ${O.vscodeFileResource}: protocol (original URL: ${e.url})`), i({ error: -3 }));
-          }
+          );
+        }
 
-          m(e) {
-            const i = L.parse(e.url),
-              s = It.uriToFileUri(i);
-            return Mi(s.fsPath);
-          }
-
-          createIPCObjectUrl() {
-            let e;
-            const i = L.from({ scheme: "vscode", path: Qt() }),
-              s = i.toString(),
-              r = async () => e;
-            return (
-              De.handle(s, r),
-              this.f.trace(`IPC Object URL: Registered new channel ${s}.`),
-              {
-                resource: i,
-                update: (n) => (e = n),
-                dispose: () => {
-                  this.f.trace(`IPC Object URL: Removed channel ${s}.`), De.removeHandler(s);
-                },
-              }
-            );
-          }
-
-          createIPCObjectUrlHandler(e, i) {
-            const s = L.from({ scheme: "vscode", path: `${e}-${Qt()}` }),
-              r = s.toString();
-            return (
-              De.handle(r, i),
-              this.f.trace(`IPC Object URL: Registered new channel ${r}.`),
-              {
-                resource: s,
-                dispose: () => {
-                  this.f.trace(`IPC Object URL: Removed channel ${r}.`), De.removeHandler(r);
-                },
-              }
-            );
-          }
-        }),
-        (Kp = __decorate([__param(0, tr), __param(1, or), __param(2, K)], Kp));
+        createIPCObjectUrlHandler(e, i) {
+          const s = L.from({ scheme: "vscode", path: `${e}-${Qt()}` }),
+            r = s.toString();
+          return (
+            De.handle(r, i),
+            this.f.trace(`IPC Object URL: Registered new channel ${r}.`),
+            {
+              resource: s,
+              dispose: () => {
+                this.f.trace(`IPC Object URL: Removed channel ${r}.`), De.removeHandler(r);
+              },
+            }
+          );
+        }
+      };
+      ProtocolMainService = __decorate([__param(0, tr), __param(1, or), __param(2, K)], ProtocolMainService);
     },
   });
 
@@ -51987,7 +51907,7 @@ function qb(t, e) {
 function Gt(t, e) {
   const i = zb.serviceCollection?.get(St);
   !i ||
-    i instanceof ke ||
+    i instanceof Descriptors ||
     i.publicLog2("remoteAgentConnectionState", {
       connectionType: typeof e == "string" ? e : yi(e),
       trace: t,
@@ -52598,7 +52518,9 @@ var Yb,
   Lz = v({
     "out-build/vs/platform/remote/common/remoteSocketFactoryService.js"() {
       "use strict";
-      T(), G(), (s1 = U("remoteSocketFactoryService"));
+      T();
+      G();
+      s1 = U("remoteSocketFactoryService");
     },
   });
 
@@ -52615,157 +52537,160 @@ var DD,
   Oz = v({
     "out-build/vs/platform/tunnel/node/tunnelService.js"() {
       "use strict";
-      c9(),
-        Hg(),
-        de(),
-        T(),
-        Z(),
-        rt(),
-        Q(),
-        ut(),
-        Az(),
-        Lz(),
-        Vm(),
-        mD(),
-        mt(),
-        (DD = class extends N {
-          constructor(t, e, i, s, r) {
-            super(),
-              (this.m = e),
-              (this.n = r),
-              (this.privacy = Zp.Private),
-              (this.j = new Map()),
-              (this.a = t),
-              (this.b = $net.createServer()),
-              (this.c = new Xc()),
-              (this.f = () => this.c.open()),
-              this.b.on("listening", this.f),
-              (this.g = (n) => this.r(n)),
-              this.b.on("connection", this.g),
-              (this.h = () => {}),
-              this.b.on("error", this.h),
-              (this.tunnelRemotePort = s),
-              (this.tunnelRemoteHost = i);
-          }
+      c9();
+      Hg();
+      de();
+      T();
+      Z();
+      rt();
+      Q();
+      ut();
+      Az();
+      Lz();
+      Vm();
+      mD();
+      mt();
+      DD = class extends N {
+        constructor(t, e, i, s, r) {
+          super(),
+            (this.m = e),
+            (this.n = r),
+            (this.privacy = Zp.Private),
+            (this.j = new Map()),
+            (this.a = t),
+            (this.b = $net.createServer()),
+            (this.c = new Xc()),
+            (this.f = () => this.c.open()),
+            this.b.on("listening", this.f),
+            (this.g = (n) => this.r(n)),
+            this.b.on("connection", this.g),
+            (this.h = () => {}),
+            this.b.on("error", this.h),
+            (this.tunnelRemotePort = s),
+            (this.tunnelRemoteHost = i);
+        }
 
-          async dispose() {
-            super.dispose(),
-              this.b.removeListener("listening", this.f),
-              this.b.removeListener("connection", this.g),
-              this.b.removeListener("error", this.h),
-              this.b.close(),
-              Array.from(this.j.values()).forEach((e) => {
-                e();
+        async dispose() {
+          super.dispose(),
+            this.b.removeListener("listening", this.f),
+            this.b.removeListener("connection", this.g),
+            this.b.removeListener("error", this.h),
+            this.b.close(),
+            Array.from(this.j.values()).forEach((e) => {
+              e();
+            });
+        }
+
+        async waitForReady() {
+          const t = this.n ?? this.tunnelRemotePort,
+            e = Ou(this.m) ? "0.0.0.0" : "127.0.0.1";
+          let i = await EP(t, 2, 1e3, e),
+            s = null;
+          return (
+            this.b.listen(i, this.m),
+            await this.c.wait(),
+            (s = this.b.address()),
+            s || ((i = 0), this.b.listen(i, this.m), await this.c.wait(), (s = this.b.address())),
+            (this.tunnelLocalPort = s.port),
+            (this.localAddress = `${this.tunnelRemoteHost === "127.0.0.1" ? "127.0.0.1" : "localhost"}:${s.port}`),
+            this
+          );
+        }
+
+        async r(t) {
+          t.pause();
+          const e = Hb(this.tunnelRemoteHost) || Ou(this.tunnelRemoteHost) ? "localhost" : this.tunnelRemoteHost,
+            i = await Dz(this.a, e, this.tunnelRemotePort),
+            s = i.getSocket(),
+            r = i.readEntireBuffer();
+          i.dispose(),
+            r.byteLength > 0 && t.write(r.buffer),
+            t.on("end", () => {
+              t.localAddress && this.j.delete(t.localAddress), s.end();
+            }),
+            t.on("close", () => s.end()),
+            t.on("error", () => {
+              t.localAddress && this.j.delete(t.localAddress), s instanceof rl ? s.socket.destroy() : s.end();
+            }),
+            s instanceof rl ? this.t(t, s) : this.s(t, s),
+            t.localAddress &&
+              this.j.set(t.localAddress, () => {
+                t.end(), s.end();
+              });
+        }
+
+        s(t, e) {
+          e.onClose(() => t.destroy()), e.onEnd(() => t.end()), e.onData((i) => t.write(i.buffer)), t.on("data", (i) => e.write(ee.wrap(i))), t.resume();
+        }
+
+        t(t, e) {
+          const i = e.socket;
+          i.on("end", () => t.end()),
+            i.on("close", () => t.end()),
+            i.on("error", () => {
+              t.destroy();
+            }),
+            i.pipe(t),
+            t.pipe(i);
+        }
+      };
+
+      r1 = class extends e1 {
+        constructor(e, i, s, r, n) {
+          super(i, n), (this.H = e), (this.I = s), (this.J = r);
+        }
+
+        isPortPrivileged(e) {
+          return fz(e, this.t, rs, $os.release());
+        }
+
+        F(e, i, s, r, n, o, a, c) {
+          const l = this.D(i, s);
+          if (l) return ++l.refcount, l.value;
+          if (hz(e)) return this.G(e, i, s, n, o, a, c);
+          {
+            this.r.trace(`ForwardedPorts: (TunnelService) Creating tunnel without provider ${i}:${s} on local port ${n}.`);
+            const h = {
+                commit: this.J.commit,
+                quality: this.J.quality,
+                addressProvider: e,
+                remoteSocketFactoryService: this.H,
+                signService: this.I,
+                logService: this.r,
+                ipcLogger: null,
+              },
+              d = _z(h, r, i, s, n);
+            return this.r.trace("ForwardedPorts: (TunnelService) Tunnel created without provider."), this.z(i, s, d), d;
+          }
+        }
+      };
+      r1 = __decorate([__param(0, s1), __param(1, K), __param(2, Ua), __param(3, Je), __param(4, st)], r1);
+
+      Ru = class extends r1 {
+        constructor(e, i, s, r, n) {
+          super(e, i, s, r, n);
+        }
+      };
+      Ru = __decorate([__param(0, s1), __param(1, K), __param(2, Ua), __param(3, Je), __param(4, st)], Ru);
+
+      e4 = class extends N {
+        constructor(e, i, s, r, n) {
+          super(), (this.b = e), (this.c = i), (this.f = s), (this.g = r), (this.h = n), (this.a = new Map());
+        }
+
+        async openTunnel(e, i, s, r, n, o, a, c, l) {
+          if ((this.c.trace(`ForwardedPorts: (SharedTunnelService) openTunnel request for ${s}:${r} on local port ${o}.`), !this.a.has(e))) {
+            const h = new Ru(this.b, this.c, this.g, this.f, this.h);
+            this.B(h),
+              this.a.set(e, h),
+              h.onTunnelClosed(async () => {
+                (await h.tunnels).length === 0 && (h.dispose(), this.a.delete(e));
               });
           }
-
-          async waitForReady() {
-            const t = this.n ?? this.tunnelRemotePort,
-              e = Ou(this.m) ? "0.0.0.0" : "127.0.0.1";
-            let i = await EP(t, 2, 1e3, e),
-              s = null;
-            return (
-              this.b.listen(i, this.m),
-              await this.c.wait(),
-              (s = this.b.address()),
-              s || ((i = 0), this.b.listen(i, this.m), await this.c.wait(), (s = this.b.address())),
-              (this.tunnelLocalPort = s.port),
-              (this.localAddress = `${this.tunnelRemoteHost === "127.0.0.1" ? "127.0.0.1" : "localhost"}:${s.port}`),
-              this
-            );
-          }
-
-          async r(t) {
-            t.pause();
-            const e = Hb(this.tunnelRemoteHost) || Ou(this.tunnelRemoteHost) ? "localhost" : this.tunnelRemoteHost,
-              i = await Dz(this.a, e, this.tunnelRemotePort),
-              s = i.getSocket(),
-              r = i.readEntireBuffer();
-            i.dispose(),
-              r.byteLength > 0 && t.write(r.buffer),
-              t.on("end", () => {
-                t.localAddress && this.j.delete(t.localAddress), s.end();
-              }),
-              t.on("close", () => s.end()),
-              t.on("error", () => {
-                t.localAddress && this.j.delete(t.localAddress), s instanceof rl ? s.socket.destroy() : s.end();
-              }),
-              s instanceof rl ? this.t(t, s) : this.s(t, s),
-              t.localAddress &&
-                this.j.set(t.localAddress, () => {
-                  t.end(), s.end();
-                });
-          }
-
-          s(t, e) {
-            e.onClose(() => t.destroy()), e.onEnd(() => t.end()), e.onData((i) => t.write(i.buffer)), t.on("data", (i) => e.write(ee.wrap(i))), t.resume();
-          }
-
-          t(t, e) {
-            const i = e.socket;
-            i.on("end", () => t.end()),
-              i.on("close", () => t.end()),
-              i.on("error", () => {
-                t.destroy();
-              }),
-              i.pipe(t),
-              t.pipe(i);
-          }
-        }),
-        (r1 = class extends e1 {
-          constructor(e, i, s, r, n) {
-            super(i, n), (this.H = e), (this.I = s), (this.J = r);
-          }
-
-          isPortPrivileged(e) {
-            return fz(e, this.t, rs, $os.release());
-          }
-
-          F(e, i, s, r, n, o, a, c) {
-            const l = this.D(i, s);
-            if (l) return ++l.refcount, l.value;
-            if (hz(e)) return this.G(e, i, s, n, o, a, c);
-            {
-              this.r.trace(`ForwardedPorts: (TunnelService) Creating tunnel without provider ${i}:${s} on local port ${n}.`);
-              const h = {
-                  commit: this.J.commit,
-                  quality: this.J.quality,
-                  addressProvider: e,
-                  remoteSocketFactoryService: this.H,
-                  signService: this.I,
-                  logService: this.r,
-                  ipcLogger: null,
-                },
-                d = _z(h, r, i, s, n);
-              return this.r.trace("ForwardedPorts: (TunnelService) Tunnel created without provider."), this.z(i, s, d), d;
-            }
-          }
-        }),
-        (r1 = __decorate([__param(0, s1), __param(1, K), __param(2, Ua), __param(3, Je), __param(4, st)], r1)),
-        (Ru = class extends r1 {
-          constructor(e, i, s, r, n) {
-            super(e, i, s, r, n);
-          }
-        }),
-        (Ru = __decorate([__param(0, s1), __param(1, K), __param(2, Ua), __param(3, Je), __param(4, st)], Ru)),
-        (e4 = class extends N {
-          constructor(e, i, s, r, n) {
-            super(), (this.b = e), (this.c = i), (this.f = s), (this.g = r), (this.h = n), (this.a = new Map());
-          }
-
-          async openTunnel(e, i, s, r, n, o, a, c, l) {
-            if ((this.c.trace(`ForwardedPorts: (SharedTunnelService) openTunnel request for ${s}:${r} on local port ${o}.`), !this.a.has(e))) {
-              const h = new Ru(this.b, this.c, this.g, this.f, this.h);
-              this.B(h),
-                this.a.set(e, h),
-                h.onTunnelClosed(async () => {
-                  (await h.tunnels).length === 0 && (h.dispose(), this.a.delete(e));
-                });
-            }
-            return this.a.get(e).openTunnel(i, s, r, n, o, a, c, l);
-          }
-        }),
-        (e4 = __decorate([__param(0, s1), __param(1, K), __param(2, Je), __param(3, Ua), __param(4, st)], e4));
+          return this.a.get(e).openTunnel(i, s, r, n, o, a, c, l);
+        }
+      };
+      e4 = __decorate([__param(0, s1), __param(1, K), __param(2, Je), __param(3, Ua), __param(4, st)], e4);
     },
   });
 
@@ -52851,81 +52776,81 @@ async function $D(t, e) {
   });
 }
 
-var n1,
+var NodeRequestService,
   jz = v({
     "out-build/vs/platform/request/node/requestService.js"() {
       "use strict";
-      de(),
-        mt(),
-        We(),
-        Me(),
-        rt(),
-        ns(),
-        sm(),
-        Q(),
-        In(),
-        Tz(),
-        (n1 = class extends h9 {
-          constructor(e, i, s) {
-            super(s),
-              (this.m = e),
-              (this.n = i),
-              this.r(),
-              this.B(
-                e.onDidChangeConfiguration((r) => {
-                  r.affectsConfiguration("http") && this.r();
-                }),
-              );
-          }
-
-          r() {
-            const e = this.m.getValue("http");
-            (this.f = e?.proxy), (this.g = !!e?.proxyStrictSSL), (this.h = e?.proxyAuthorization);
-          }
-
-          async request(e, i) {
-            const { f: s, g: r } = this;
-            let n;
-            try {
-              n = await im(this.m, this.b, this.n.args, process.env);
-            } catch (c) {
-              this.j || ((this.j = !0), this.b.error("resolving shell environment failed", Ks(c)));
-            }
-            const o = { ...process.env, ...n },
-              a = e.agent ? e.agent : await Rz(e.url || "", o, { proxyUrl: s, strictSSL: r });
-            return (
-              (e.agent = a),
-              (e.strictSSL = r),
-              this.h &&
-                (e.headers = {
-                  ...(e.headers || {}),
-                  "Proxy-Authorization": this.h,
-                }),
-              this.c(e, () => $D(e, i))
+      de();
+      mt();
+      We();
+      Me();
+      rt();
+      ns();
+      sm();
+      Q();
+      In();
+      Tz();
+      NodeRequestService = class extends h9 {
+        constructor(e, i, s) {
+          super(s),
+            (this.m = e),
+            (this.n = i),
+            this.r(),
+            this.B(
+              e.onDidChangeConfiguration((r) => {
+                r.affectsConfiguration("http") && this.r();
+              }),
             );
+        }
+
+        r() {
+          const e = this.m.getValue("http");
+          (this.f = e?.proxy), (this.g = !!e?.proxyStrictSSL), (this.h = e?.proxyAuthorization);
+        }
+
+        async request(e, i) {
+          const { f: s, g: r } = this;
+          let n;
+          try {
+            n = await im(this.m, this.b, this.n.args, process.env);
+          } catch (c) {
+            this.j || ((this.j = !0), this.b.error("resolving shell environment failed", Ks(c)));
           }
+          const o = { ...process.env, ...n },
+            a = e.agent ? e.agent : await Rz(e.url || "", o, { proxyUrl: s, strictSSL: r });
+          return (
+            (e.agent = a),
+            (e.strictSSL = r),
+            this.h &&
+              (e.headers = {
+                ...(e.headers || {}),
+                "Proxy-Authorization": this.h,
+              }),
+            this.c(e, () => $D(e, i))
+          );
+        }
 
-          async resolveProxy(e) {}
+        async resolveProxy(e) {}
 
-          async lookupAuthorization(e) {}
+        async lookupAuthorization(e) {}
 
-          async lookupKerberosAuthorization(e) {
-            try {
-              const i = await import("kerberos"),
-                s = new URL(e),
-                r = this.m.getValue("http.proxyKerberosServicePrincipal") || (process.platform === "win32" ? `HTTP/${s.hostname}` : `HTTP@${s.hostname}`);
-              return this.b.debug("RequestService#lookupKerberosAuthorization Kerberos authentication lookup", `proxyURL:${s}`, `spn:${r}`), "Negotiate " + (await (await i.initializeClient(r)).step(""));
-            } catch (i) {
-              this.b.debug("RequestService#lookupKerberosAuthorization Kerberos authentication failed", i);
-              return;
-            }
+        async lookupKerberosAuthorization(e) {
+          try {
+            const i = await import("kerberos"),
+              s = new URL(e),
+              r = this.m.getValue("http.proxyKerberosServicePrincipal") || (process.platform === "win32" ? `HTTP/${s.hostname}` : `HTTP@${s.hostname}`);
+            return this.b.debug("RequestService#lookupKerberosAuthorization Kerberos authentication lookup", `proxyURL:${s}`, `spn:${r}`), "Negotiate " + (await (await i.initializeClient(r)).step(""));
+          } catch (i) {
+            this.b.debug("RequestService#lookupKerberosAuthorization Kerberos authentication failed", i);
+            return;
           }
+        }
 
-          async loadCertificates() {
-            return (await import("@vscode/proxy-agent")).loadSystemCertificates({ log: this.b });
-          }
-        }),
-        (n1 = __decorate([__param(0, st), __param(1, tr), __param(2, K)], n1));
+        async loadCertificates() {
+          return (await import("@vscode/proxy-agent")).loadSystemCertificates({ log: this.b });
+        }
+      };
+      NodeRequestService = __decorate([__param(0, st), __param(1, tr), __param(2, K)], NodeRequestService);
     },
   });
 
@@ -52933,23 +52858,23 @@ function Wz(t) {
   return net.request;
 }
 
-var ID,
+var RequestService,
   Hz = v({
     "out-build/vs/platform/request/electron-utility/requestService.js"() {
       "use strict";
-      jz(),
-        (ID = class extends n1 {
-          request(t, e) {
-            return super.request({ ...(t || {}), getRawRequest: Wz, isChromiumNetwork: !0 }, e);
-          }
-        });
+      jz();
+      RequestService = class extends NodeRequestService {
+        request(t, e) {
+          return super.request({ ...(t || {}), getRawRequest: Wz, isChromiumNetwork: !0 }, e);
+        }
+      };
     },
-  }),
-  AD,
+  });
+var AbstractSignService,
   zz = v({
     "out-build/vs/platform/sign/common/abstractSignService.js"() {
       "use strict";
-      AD = class PC {
+      AbstractSignService = class PC {
         constructor() {
           this.b = new Map();
         }
@@ -52991,69 +52916,70 @@ var ID,
         }
       };
     },
-  }),
-  LD,
+  });
+var SignService,
   Vz = v({
     "out-build/vs/platform/sign/node/signService.js"() {
       "use strict";
-      zz(),
-        (LD = class extends AD {
-          c() {
-            return this.h().then((t) => new t.validator());
-          }
+      zz();
+      SignService = class extends AbstractSignService {
+        c() {
+          return this.h().then((t) => new t.validator());
+        }
 
-          d(t) {
-            return this.h().then((e) => new e.signer().sign(t));
-          }
+        d(t) {
+          return this.h().then((e) => new e.signer().sign(t));
+        }
 
-          async h() {
-            const t = "vsda",
-              { default: e } = await import(t);
-            return e;
-          }
-        });
+        async h() {
+          const t = "vsda",
+            { default: e } = await import(t);
+          return e;
+        }
+      };
     },
-  }),
-  o1,
+  });
+
+var NativePolicyService,
   qz = v({
     "out-build/vs/platform/policy/node/nativePolicyService.js"() {
       "use strict";
-      pr(),
-        de(),
-        T(),
-        Q(),
-        (o1 = class extends jm {
-          constructor(e, i) {
-            super(), (this.m = e), (this.n = i), (this.a = new $g()), (this.b = this.B(new Zn()));
-          }
+      pr();
+      de();
+      T();
+      Q();
+      NativePolicyService = class extends jm {
+        constructor(e, i) {
+          super(), (this.m = e), (this.n = i), (this.a = new $g()), (this.b = this.B(new Zn()));
+        }
 
-          async j(e) {
-            this.m.trace(`NativePolicyService#_updatePolicyDefinitions - Found ${Object.keys(e).length} policy definitions`);
-            const { createWatcher: i } = await import("@vscode/policy-watcher");
-            await this.a.queue(
-              () =>
-                new Promise((s, r) => {
-                  try {
-                    this.b.value = i(this.n, e, (n) => {
-                      this.t(n), s();
-                    });
-                  } catch (n) {
-                    this.m.error("NativePolicyService#_updatePolicyDefinitions - Error creating watcher:", n), r(n);
-                  }
-                }),
-            );
-          }
+        async j(e) {
+          this.m.trace(`NativePolicyService#_updatePolicyDefinitions - Found ${Object.keys(e).length} policy definitions`);
+          const { createWatcher: i } = await import("@vscode/policy-watcher");
+          await this.a.queue(
+            () =>
+              new Promise((s, r) => {
+                try {
+                  this.b.value = i(this.n, e, (n) => {
+                    this.t(n), s();
+                  });
+                } catch (n) {
+                  this.m.error("NativePolicyService#_updatePolicyDefinitions - Error creating watcher:", n), r(n);
+                }
+              }),
+          );
+        }
 
-          t(e) {
-            this.m.trace(`NativePolicyService#_onDidPolicyChange - Updated policy values: ${JSON.stringify(e)}`);
-            for (const i in e) {
-              const s = e[i];
-              s === void 0 ? this.g.delete(i) : this.g.set(i, s);
-            }
-            this.h.fire(Object.keys(e));
+        t(e) {
+          this.m.trace(`NativePolicyService#_onDidPolicyChange - Updated policy values: ${JSON.stringify(e)}`);
+          for (const i in e) {
+            const s = e[i];
+            s === void 0 ? this.g.delete(i) : this.g.set(i, s);
           }
-        }),
-        (o1 = __decorate([__param(0, K)], o1));
+          this.h.fire(Object.keys(e));
+        }
+      };
+      NativePolicyService = __decorate([__param(0, K)], NativePolicyService);
     },
   });
 
@@ -53063,430 +52989,432 @@ function Gz(t, e) {
   return i;
 }
 
-var a1,
+var FilePolicyService,
   Jz = v({
     "out-build/vs/platform/policy/common/filePolicyService.js"() {
       "use strict";
-      de(),
-        H(),
-        Ic(),
-        Me(),
-        lt(),
-        Q(),
-        pr(),
-        (a1 = class extends jm {
-          constructor(e, i, s) {
-            super(), (this.m = e), (this.n = i), (this.s = s), (this.c = this.B(new Pr(500)));
-            const r = I.filter(i.onDidFilesChange, (n) => n.affects(e));
-            this.B(i.watch(e)), this.B(r(() => this.c.trigger(() => this.w())));
-          }
+      de();
+      H();
+      Ic();
+      Me();
+      lt();
+      Q();
+      pr();
+      FilePolicyService = class extends jm {
+        constructor(e, i, s) {
+          super(), (this.m = e), (this.n = i), (this.s = s), (this.c = this.B(new Pr(500)));
+          const r = I.filter(i.onDidFilesChange, (n) => n.affects(e));
+          this.B(i.watch(e)), this.B(r(() => this.c.trigger(() => this.w())));
+        }
 
-          async j() {
-            await this.w();
-          }
+        async j() {
+          await this.w();
+        }
 
-          async u() {
-            const e = new Map();
-            try {
-              const i = await this.n.readFile(this.m),
-                s = JSON.parse(i.value.toString());
-              if (!xt(s)) throw new Error("Policy file isn't a JSON object");
-              for (const r of Object.keys(s)) this.f[r] && e.set(r, s[r]);
-            } catch (i) {
-              i.fileOperationResult !== 1 && this.s.error("[FilePolicyService] Failed to read policies", i);
-            }
-            return e;
+        async u() {
+          const e = new Map();
+          try {
+            const i = await this.n.readFile(this.m),
+              s = JSON.parse(i.value.toString());
+            if (!xt(s)) throw new Error("Policy file isn't a JSON object");
+            for (const r of Object.keys(s)) this.f[r] && e.set(r, s[r]);
+          } catch (i) {
+            i.fileOperationResult !== 1 && this.s.error("[FilePolicyService] Failed to read policies", i);
           }
+          return e;
+        }
 
-          async w() {
-            const e = await this.u(),
-              i = Gz(this.g, e);
-            (this.g = e), i.length > 0 && this.h.fire(i);
-          }
-        }),
-        (a1 = __decorate([__param(1, yt), __param(2, K)], a1));
+        async w() {
+          const e = await this.u(),
+            i = Gz(this.g, e);
+          (this.g = e), i.length > 0 && this.h.fire(i);
+        }
+      };
+      FilePolicyService = __decorate([__param(1, yt), __param(2, K)], FilePolicyService);
     },
   });
 
 function Yz(t, e, i) {
-  e instanceof ke || (e = new ke(e, [], !!i)), PD.push([t, e]);
+  e instanceof Descriptors || (e = new Descriptors(e, [], !!i));
+  PD.push([t, e]);
 }
 
 var PD,
-  FD,
+  Extensions,
   Kz = v({
     "out-build/vs/platform/instantiation/common/extensions.js"() {
       "use strict";
-      Ra(),
-        (PD = []),
-        (function (t) {
-          (t[(t.Eager = 0)] = "Eager"), (t[(t.Delayed = 1)] = "Delayed");
-        })(FD || (FD = {}));
+      Ra();
+      PD = [];
+      (function (t) {
+        t[(t.Eager = 0)] = "Eager";
+        t[(t.Delayed = 1)] = "Delayed";
+      })(Extensions || (Extensions = {}));
     },
   }),
   _D,
   c1,
   uc,
-  OD,
+  SkipList,
   Zz = v({
     "out-build/vs/base/common/skipList.js"() {
       "use strict";
-      (c1 = class {
+      c1 = class {
         constructor(t, e, i) {
           (this.level = t), (this.key = e), (this.value = i), (this.forward = []);
         }
-      }),
-        (uc = void 0),
-        (OD = class fc {
-          constructor(e, i = 2 ** 16) {
-            (this.comparator = e), (this[_D] = "SkipList"), (this.d = 0), (this.f = 0), (this.c = Math.max(1, Math.log2(i) | 0)), (this.e = new c1(this.c, uc, uc));
-          }
+      };
+      uc = void 0;
+      SkipList = class fc {
+        constructor(e, i = 2 ** 16) {
+          (this.comparator = e), (this[_D] = "SkipList"), (this.d = 0), (this.f = 0), (this.c = Math.max(1, Math.log2(i) | 0)), (this.e = new c1(this.c, uc, uc));
+        }
 
-          get size() {
-            return this.f;
-          }
+        get size() {
+          return this.f;
+        }
 
-          clear() {
-            (this.e = new c1(this.c, uc, uc)), (this.f = 0);
-          }
+        clear() {
+          (this.e = new c1(this.c, uc, uc)), (this.f = 0);
+        }
 
-          has(e) {
-            return !!fc.g(this, e, this.comparator);
-          }
+        has(e) {
+          return !!fc.g(this, e, this.comparator);
+        }
 
-          get(e) {
-            return fc.g(this, e, this.comparator)?.value;
-          }
+        get(e) {
+          return fc.g(this, e, this.comparator)?.value;
+        }
 
-          set(e, i) {
-            return fc.h(this, e, i, this.comparator) && (this.f += 1), this;
-          }
+        set(e, i) {
+          return fc.h(this, e, i, this.comparator) && (this.f += 1), this;
+        }
 
-          delete(e) {
-            const i = fc.k(this, e, this.comparator);
-            return i && (this.f -= 1), i;
-          }
+        delete(e) {
+          const i = fc.k(this, e, this.comparator);
+          return i && (this.f -= 1), i;
+        }
 
-          forEach(e, i) {
-            let s = this.e.forward[0];
-            for (; s; ) e.call(i, s.value, s.key, this), (s = s.forward[0]);
-          }
+        forEach(e, i) {
+          let s = this.e.forward[0];
+          for (; s; ) e.call(i, s.value, s.key, this), (s = s.forward[0]);
+        }
 
-          [((_D = Symbol.toStringTag), Symbol.iterator)]() {
-            return this.entries();
-          }
+        [((_D = Symbol.toStringTag), Symbol.iterator)]() {
+          return this.entries();
+        }
 
-          *entries() {
-            let e = this.e.forward[0];
-            for (; e; ) yield [e.key, e.value], (e = e.forward[0]);
-          }
+        *entries() {
+          let e = this.e.forward[0];
+          for (; e; ) yield [e.key, e.value], (e = e.forward[0]);
+        }
 
-          *keys() {
-            let e = this.e.forward[0];
-            for (; e; ) yield e.key, (e = e.forward[0]);
-          }
+        *keys() {
+          let e = this.e.forward[0];
+          for (; e; ) yield e.key, (e = e.forward[0]);
+        }
 
-          *values() {
-            let e = this.e.forward[0];
-            for (; e; ) yield e.value, (e = e.forward[0]);
-          }
+        *values() {
+          let e = this.e.forward[0];
+          for (; e; ) yield e.value, (e = e.forward[0]);
+        }
 
-          toString() {
-            let e = "[SkipList]:",
-              i = this.e.forward[0];
-            for (; i; ) (e += `node(${i.key}, ${i.value}, lvl:${i.level})`), (i = i.forward[0]);
-            return e;
-          }
+        toString() {
+          let e = "[SkipList]:",
+            i = this.e.forward[0];
+          for (; i; ) (e += `node(${i.key}, ${i.value}, lvl:${i.level})`), (i = i.forward[0]);
+          return e;
+        }
 
-          static g(e, i, s) {
-            let r = e.e;
-            for (let n = e.d - 1; n >= 0; n--) for (; r.forward[n] && s(r.forward[n].key, i) < 0; ) r = r.forward[n];
-            if (((r = r.forward[0]), r && s(r.key, i) === 0)) return r;
-          }
+        static g(e, i, s) {
+          let r = e.e;
+          for (let n = e.d - 1; n >= 0; n--) for (; r.forward[n] && s(r.forward[n].key, i) < 0; ) r = r.forward[n];
+          if (((r = r.forward[0]), r && s(r.key, i) === 0)) return r;
+        }
 
-          static h(e, i, s, r) {
-            const n = [];
-            let o = e.e;
-            for (let a = e.d - 1; a >= 0; a--) {
-              for (; o.forward[a] && r(o.forward[a].key, i) < 0; ) o = o.forward[a];
-              n[a] = o;
+        static h(e, i, s, r) {
+          const n = [];
+          let o = e.e;
+          for (let a = e.d - 1; a >= 0; a--) {
+            for (; o.forward[a] && r(o.forward[a].key, i) < 0; ) o = o.forward[a];
+            n[a] = o;
+          }
+          if (((o = o.forward[0]), o && r(o.key, i) === 0)) return (o.value = s), !1;
+          {
+            const a = fc.j(e);
+            if (a > e.d) {
+              for (let c = e.d; c < a; c++) n[c] = e.e;
+              e.d = a;
             }
-            if (((o = o.forward[0]), o && r(o.key, i) === 0)) return (o.value = s), !1;
-            {
-              const a = fc.j(e);
-              if (a > e.d) {
-                for (let c = e.d; c < a; c++) n[c] = e.e;
-                e.d = a;
-              }
-              o = new c1(a, i, s);
-              for (let c = 0; c < a; c++) (o.forward[c] = n[c].forward[c]), (n[c].forward[c] = o);
-              return !0;
-            }
-          }
-
-          static j(e, i = 0.5) {
-            let s = 1;
-            for (; Math.random() < i && s < e.c; ) s += 1;
-            return s;
-          }
-
-          static k(e, i, s) {
-            const r = [];
-            let n = e.e;
-            for (let o = e.d - 1; o >= 0; o--) {
-              for (; n.forward[o] && s(n.forward[o].key, i) < 0; ) n = n.forward[o];
-              r[o] = n;
-            }
-            if (((n = n.forward[0]), !n || s(n.key, i) !== 0)) return !1;
-            for (let o = 0; o < e.d && r[o].forward[o] === n; o++) r[o].forward[o] = n.forward[o];
-            for (; e.d > 0 && e.e.forward[e.d - 1] === uc; ) e.d -= 1;
+            o = new c1(a, i, s);
+            for (let c = 0; c < a; c++) (o.forward[c] = n[c].forward[c]), (n[c].forward[c] = o);
             return !0;
           }
-        });
+        }
+
+        static j(e, i = 0.5) {
+          let s = 1;
+          for (; Math.random() < i && s < e.c; ) s += 1;
+          return s;
+        }
+
+        static k(e, i, s) {
+          const r = [];
+          let n = e.e;
+          for (let o = e.d - 1; o >= 0; o--) {
+            for (; n.forward[o] && s(n.forward[o].key, i) < 0; ) n = n.forward[o];
+            r[o] = n;
+          }
+          if (((n = n.forward[0]), !n || s(n.key, i) !== 0)) return !1;
+          for (let o = 0; o < e.d && r[o].forward[o] === n; o++) r[o].forward[o] = n.forward[o];
+          for (; e.d > 0 && e.e.forward[e.d - 1] === uc; ) e.d -= 1;
+          return !0;
+        }
+      };
     },
   }),
   t4,
-  Tu,
+  UriIdentityService,
   Qz = v({
     "out-build/vs/platform/uriIdentity/common/uriIdentityService.js"() {
       "use strict";
-      nr(),
-        Kz(),
-        lt(),
-        nt(),
-        Zz(),
-        H(),
-        T(),
-        (t4 = class g4 {
-          static {
-            this._clock = 0;
-          }
+      nr();
+      Kz();
+      lt();
+      nt();
+      Zz();
+      H();
+      T();
+      t4 = class g4 {
+        static {
+          this._clock = 0;
+        }
 
-          constructor(e) {
-            (this.uri = e), (this.time = g4._clock++);
-          }
+        constructor(e) {
+          (this.uri = e), (this.time = g4._clock++);
+        }
 
-          touch() {
-            return (this.time = g4._clock++), this;
-          }
-        }),
-        (Tu = class {
-          constructor(e) {
-            (this.g = e), (this.c = new Ne()), (this.f = 2 ** 16);
-            const i = new Map(),
-              s = (r) => {
-                let n = i.get(r.scheme);
-                return n === void 0 && ((n = e.hasProvider(r) && !this.g.hasCapability(r, 1024)), i.set(r.scheme, n)), n;
-              };
-            this.c.add(
-              I.any(
-                e.onDidChangeFileSystemProviderRegistrations,
-                e.onDidChangeFileSystemProviderCapabilities,
-              )((r) => {
-                i.delete(r.scheme);
-              }),
-            ),
-              (this.extUri = new Zc(s)),
-              (this.d = new OD((r, n) => this.extUri.compare(r, n, !0), this.f));
-          }
+        touch() {
+          return (this.time = g4._clock++), this;
+        }
+      };
+      UriIdentityService = class {
+        constructor(e) {
+          (this.g = e), (this.c = new Ne()), (this.f = 2 ** 16);
+          const i = new Map(),
+            s = (r) => {
+              let n = i.get(r.scheme);
+              return n === void 0 && ((n = e.hasProvider(r) && !this.g.hasCapability(r, 1024)), i.set(r.scheme, n)), n;
+            };
+          this.c.add(
+            I.any(
+              e.onDidChangeFileSystemProviderRegistrations,
+              e.onDidChangeFileSystemProviderCapabilities,
+            )((r) => {
+              i.delete(r.scheme);
+            }),
+          ),
+            (this.extUri = new Zc(s)),
+            (this.d = new SkipList((r, n) => this.extUri.compare(r, n, !0), this.f));
+        }
 
-          dispose() {
-            this.c.dispose(), this.d.clear();
-          }
+        dispose() {
+          this.c.dispose(), this.d.clear();
+        }
 
-          asCanonicalUri(e) {
-            this.g.hasProvider(e) && (e = Dg(e));
-            const i = this.d.get(e);
-            return i ? i.touch().uri.with({ fragment: e.fragment }) : (this.d.set(e, new t4(e)), this.h(), e);
-          }
+        asCanonicalUri(e) {
+          this.g.hasProvider(e) && (e = Dg(e));
+          const i = this.d.get(e);
+          return i ? i.touch().uri.with({ fragment: e.fragment }) : (this.d.set(e, new t4(e)), this.h(), e);
+        }
 
-          h() {
-            if (this.d.size < this.f) return;
-            const e = [...this.d.entries()].sort((s, r) => (s[1].time < r[1].time ? 1 : s[1].time > r[1].time ? -1 : 0));
-            (t4._clock = 0), this.d.clear();
-            const i = this.f * 0.5;
-            for (let s = 0; s < i; s++) this.d.set(e[s][0], e[s][1].touch());
-          }
-        }),
-        (Tu = __decorate([__param(0, yt)], Tu)),
-        Yz(ji, Tu, 1);
+        h() {
+          if (this.d.size < this.f) return;
+          const e = [...this.d.entries()].sort((s, r) => (s[1].time < r[1].time ? 1 : s[1].time > r[1].time ? -1 : 0));
+          (t4._clock = 0), this.d.clear();
+          const i = this.f * 0.5;
+          for (let s = 0; s < i; s++) this.d.set(e[s][0], e[s][1].touch());
+        }
+      };
+      UriIdentityService = __decorate([__param(0, yt)], UriIdentityService);
+      Yz(ji, UriIdentityService, 1);
     },
   }),
-  MD,
+  LogService,
   Xz = v({
     "out-build/vs/platform/log/common/logService.js"() {
       "use strict";
-      T(),
-        Q(),
-        (MD = class extends N {
-          constructor(t, e = []) {
-            super(), (this.a = new w6([t, ...e])), this.B(t.onDidChangeLogLevel((i) => this.setLevel(i)));
-          }
+      T();
+      Q();
+      LogService = class extends N {
+        constructor(t, e = []) {
+          super(), (this.a = new w6([t, ...e])), this.B(t.onDidChangeLogLevel((i) => this.setLevel(i)));
+        }
 
-          get onDidChangeLogLevel() {
-            return this.a.onDidChangeLogLevel;
-          }
+        get onDidChangeLogLevel() {
+          return this.a.onDidChangeLogLevel;
+        }
 
-          setLevel(t) {
-            this.a.setLevel(t);
-          }
+        setLevel(t) {
+          this.a.setLevel(t);
+        }
 
-          getLevel() {
-            return this.a.getLevel();
-          }
+        getLevel() {
+          return this.a.getLevel();
+        }
 
-          trace(t, ...e) {
-            this.a.trace(t, ...e);
-          }
+        trace(t, ...e) {
+          this.a.trace(t, ...e);
+        }
 
-          debug(t, ...e) {
-            this.a.debug(t, ...e);
-          }
+        debug(t, ...e) {
+          this.a.debug(t, ...e);
+        }
 
-          info(t, ...e) {
-            this.a.info(t, ...e);
-          }
+        info(t, ...e) {
+          this.a.info(t, ...e);
+        }
 
-          warn(t, ...e) {
-            this.a.warn(t, ...e);
-          }
+        warn(t, ...e) {
+          this.a.warn(t, ...e);
+        }
 
-          error(t, ...e) {
-            this.a.error(t, ...e);
-          }
+        error(t, ...e) {
+          this.a.error(t, ...e);
+        }
 
-          flush() {
-            this.a.flush();
-          }
-        });
+        flush() {
+          this.a.flush();
+        }
+      };
     },
   }),
-  RD,
+  FileUserDataProvider,
   eV = v({
     "out-build/vs/platform/userData/common/fileUserDataProvider.js"() {
       "use strict";
-      H(),
-        T(),
-        lt(),
-        ga(),
-        Zi(),
-        (RD = class extends N {
-          constructor(t, e, i, s, r, n) {
-            super(),
-              (this.f = t),
-              (this.g = e),
-              (this.h = i),
-              (this.j = s),
-              (this.m = r),
-              (this.n = n),
-              (this.capabilities = this.g.capabilities),
-              (this.onDidChangeCapabilities = this.g.onDidChangeCapabilities),
-              (this.a = this.B(new $())),
-              (this.onDidChangeFile = this.a.event),
-              (this.b = vn.forUris(() => !(this.capabilities & 1024))),
-              (this.c = new vv((o) => this.m.extUri.getComparisonKey(this.t(o)))),
-              this.r(),
-              this.B(s.onDidChangeProfiles(() => this.r())),
-              this.B(this.g.onDidChangeFile((o) => this.s(o)));
-          }
+      H();
+      T();
+      lt();
+      ga();
+      Zi();
+      FileUserDataProvider = class extends N {
+        constructor(t, e, i, s, r, n) {
+          super(),
+            (this.f = t),
+            (this.g = e),
+            (this.h = i),
+            (this.j = s),
+            (this.m = r),
+            (this.n = n),
+            (this.capabilities = this.g.capabilities),
+            (this.onDidChangeCapabilities = this.g.onDidChangeCapabilities),
+            (this.a = this.B(new $())),
+            (this.onDidChangeFile = this.a.event),
+            (this.b = vn.forUris(() => !(this.capabilities & 1024))),
+            (this.c = new vv((o) => this.m.extUri.getComparisonKey(this.t(o)))),
+            this.r(),
+            this.B(s.onDidChangeProfiles(() => this.r())),
+            this.B(this.g.onDidChangeFile((o) => this.s(o)));
+        }
 
-          r() {
-            this.c.clear();
-            for (const t of this.j.profiles) this.c.add(t.settingsResource), this.c.add(t.keybindingsResource), this.c.add(t.tasksResource), this.c.add(t.extensionsResource);
-          }
+        r() {
+          this.c.clear();
+          for (const t of this.j.profiles) this.c.add(t.settingsResource), this.c.add(t.keybindingsResource), this.c.add(t.tasksResource), this.c.add(t.extensionsResource);
+        }
 
-          open(t, e) {
-            return this.g.open(this.t(t), e);
-          }
+        open(t, e) {
+          return this.g.open(this.t(t), e);
+        }
 
-          close(t) {
-            return this.g.close(t);
-          }
+        close(t) {
+          return this.g.close(t);
+        }
 
-          read(t, e, i, s, r) {
-            return this.g.read(t, e, i, s, r);
-          }
+        read(t, e, i, s, r) {
+          return this.g.read(t, e, i, s, r);
+        }
 
-          write(t, e, i, s, r) {
-            return this.g.write(t, e, i, s, r);
-          }
+        write(t, e, i, s, r) {
+          return this.g.write(t, e, i, s, r);
+        }
 
-          watch(t, e) {
-            this.b.set(t, t);
-            const i = this.g.watch(this.t(t), e);
-            return Pe(() => {
-              this.b.delete(t), i.dispose();
-            });
-          }
+        watch(t, e) {
+          this.b.set(t, t);
+          const i = this.g.watch(this.t(t), e);
+          return Pe(() => {
+            this.b.delete(t), i.dispose();
+          });
+        }
 
-          stat(t) {
-            return this.g.stat(this.t(t));
-          }
+        stat(t) {
+          return this.g.stat(this.t(t));
+        }
 
-          mkdir(t) {
-            return this.g.mkdir(this.t(t));
-          }
+        mkdir(t) {
+          return this.g.mkdir(this.t(t));
+        }
 
-          rename(t, e, i) {
-            return this.g.rename(this.t(t), this.t(e), i);
-          }
+        rename(t, e, i) {
+          return this.g.rename(this.t(t), this.t(e), i);
+        }
 
-          readFile(t, e) {
-            return this.g.readFile(this.t(t), e);
-          }
+        readFile(t, e) {
+          return this.g.readFile(this.t(t), e);
+        }
 
-          readFileStream(t, e, i) {
-            return this.g.readFileStream(this.t(t), e, i);
-          }
+        readFileStream(t, e, i) {
+          return this.g.readFileStream(this.t(t), e, i);
+        }
 
-          readdir(t) {
-            return this.g.readdir(this.t(t));
-          }
+        readdir(t) {
+          return this.g.readdir(this.t(t));
+        }
 
-          enforceAtomicReadFile(t) {
-            return this.c.has(t);
-          }
+        enforceAtomicReadFile(t) {
+          return this.c.has(t);
+        }
 
-          writeFile(t, e, i) {
-            return this.g.writeFile(this.t(t), e, i);
-          }
+        writeFile(t, e, i) {
+          return this.g.writeFile(this.t(t), e, i);
+        }
 
-          enforceAtomicWriteFile(t) {
-            return this.c.has(t) ? { postfix: ".vsctmp" } : !1;
-          }
+        enforceAtomicWriteFile(t) {
+          return this.c.has(t) ? { postfix: ".vsctmp" } : !1;
+        }
 
-          delete(t, e) {
-            return this.g.delete(this.t(t), e);
-          }
+        delete(t, e) {
+          return this.g.delete(this.t(t), e);
+        }
 
-          copy(t, e, i) {
-            if (o0(this.g)) return this.g.copy(this.t(t), this.t(e), i);
-            throw new Error("copy not supported");
-          }
+        copy(t, e, i) {
+          if (o0(this.g)) return this.g.copy(this.t(t), this.t(e), i);
+          throw new Error("copy not supported");
+        }
 
-          cloneFile(t, e) {
-            if (x6(this.g)) return this.g.cloneFile(this.t(t), this.t(e));
-            throw new Error("clone not supported");
-          }
+        cloneFile(t, e) {
+          if (x6(this.g)) return this.g.cloneFile(this.t(t), this.t(e));
+          throw new Error("clone not supported");
+        }
 
-          s(t) {
-            const e = [];
-            for (const i of t) {
-              if (i.resource.scheme !== this.f) continue;
-              const s = this.u(i.resource);
-              this.b.findSubstr(s) && e.push({ resource: s, type: i.type, cId: i.cId });
-            }
-            e.length && (this.n.debug("User data changed"), this.a.fire(e));
+        s(t) {
+          const e = [];
+          for (const i of t) {
+            if (i.resource.scheme !== this.f) continue;
+            const s = this.u(i.resource);
+            this.b.findSubstr(s) && e.push({ resource: s, type: i.type, cId: i.cId });
           }
+          e.length && (this.n.debug("User data changed"), this.a.fire(e));
+        }
 
-          t(t) {
-            return t.with({ scheme: this.f });
-          }
+        t(t) {
+          return t.with({ scheme: this.f });
+        }
 
-          u(t) {
-            return t.with({ scheme: this.h });
-          }
-        });
+        u(t) {
+          return t.with({ scheme: this.h });
+        }
+      };
     },
   }),
   tV = {};
@@ -53496,319 +53424,321 @@ var ND,
   nV = v({
     "out-build/vs/code/electron-main/main.js"() {
       "use strict";
-      qx(),
-        Gx(),
-        ge(),
-        ti(),
-        de(),
-        dn(),
-        We(),
-        Ei(),
-        H(),
-        Fr(),
-        Re(),
-        Ae(),
-        xr(),
-        Z(),
-        Ls(),
-        _t(),
-        Ut(),
-        _r(),
-        Hg(),
-        JH(),
-        le(),
-        rt(),
-        KH(),
-        ez(),
-        gt(),
-        Al(),
-        rz(),
-        lt(),
-        nz(),
-        bm(),
-        Ra(),
-        az(),
-        vm(),
-        kt(),
-        cz(),
-        Q(),
-        Na(),
-        ut(),
-        Ba(),
-        uz(),
-        mD(),
-        Oz(),
-        In(),
-        Hz(),
-        Vm(),
-        Vz(),
-        Ht(),
-        Co(),
-        yl(),
-        ho(),
-        pr(),
-        qz(),
-        Jz(),
-        T(),
-        nr(),
-        Qz(),
-        ql(),
-        Xz(),
-        Wy(),
-        ay(),
-        eV(),
-        yc(),
-        hb(),
-        (ND = class {
-          main() {
-            try {
-              this.a();
-            } catch (t) {
-              console.error(t.message), app.exit(1);
-            }
-          }
+      qx();
+      Gx();
+      ge();
+      ti();
+      de();
+      dn();
+      We();
+      Ei();
+      H();
+      Fr();
+      Re();
+      Ae();
+      xr();
+      Z();
+      Ls();
+      _t();
+      Ut();
+      _r();
+      Hg();
+      JH();
+      le();
+      rt();
+      KH();
+      ez();
+      gt();
+      Al();
+      rz();
+      lt();
+      nz();
+      bm();
+      Ra();
+      az();
+      vm();
+      kt();
+      cz();
+      Q();
+      Na();
+      ut();
+      Ba();
+      uz();
+      mD();
+      Oz();
+      In();
+      Hz();
+      Vm();
+      Vz();
+      Ht();
+      Co();
+      yl();
+      ho();
+      pr();
+      qz();
+      Jz();
+      T();
+      nr();
+      Qz();
+      ql();
+      Xz();
+      Wy();
+      ay();
+      eV();
+      yc();
+      hb();
 
-          async a() {
-            av((c) => console.error(c));
-            const [t, e, i, s, r, n, o, a] = this.b();
+      ND = class {
+        main() {
+          try {
+            this.a();
+          } catch (err) {
+            console.error(err.message);
+            app.exit(1);
+          }
+        }
+
+        async a() {
+          av((c) => console.error(c));
+          const [t, e, i, s, r, n, o, a] = this.b();
+          try {
             try {
-              try {
-                await this.d(i, a, s, r, o);
-              } catch (c) {
-                throw (this.g(i, o, c), c);
-              }
-              await t.invokeFunction(async (c) => {
-                const l = c.get(K),
-                  h = c.get(Xe),
-                  d = c.get(yt),
-                  p = c.get(pa),
-                  g = await this.f(l, i, h, t, o, !0);
-                return (
-                  he.writeFile(i.mainLockfile, String(process.pid)).catch((m) => {
-                    l.warn(`app#startup(): Error writing main lockfile: ${m.stack}`);
-                  }),
-                  (n.logger = p.createLogger("main", { name: u(158, null) })),
-                  I.once(h.onWillShutdown)((m) => {
-                    d.dispose(),
-                      s.dispose(),
-                      m.join(
-                        "instanceLockfile",
-                        $fs.promises.unlink(i.mainLockfile).catch(() => {}),
-                      );
-                  }),
-                  t.createInstance(zp, g, e).startup()
-                );
-              });
+              await this.d(i, a, s, r, o);
             } catch (c) {
-              t.invokeFunction(this.j, c);
+              throw (this.g(i, o, c), c);
             }
-          }
-
-          b() {
-            const t = new Gd(),
-              e = new Ne();
-            process.once("exit", () => e.dispose());
-            const i = { _serviceBrand: void 0, ...as };
-            t.set(Je, i);
-            const s = new Rr(this.k(), i),
-              r = this.c(s);
-            t.set(ct, s);
-            const n = new P9(WI(s), s.logsHome);
-            t.set(ja, n);
-            const o = new dD(n.getLogLevel()),
-              a = e.add(new MD(o, [new m6(n.getLogLevel())]));
-            t.set(K, a);
-            const c = new Jp(a);
-            t.set(yt, c);
-            const l = new qd(a);
-            c.registerProvider(O.file, l);
-            const h = new Tu(c);
-            t.set(ji, h);
-            const d = new D0(1, s, a, c);
-            t.set(l0, d), t.set(Ot, d), t.set(op, new ap(d));
-            const p = new md(d, h, s, c, a);
-            t.set(cr, p), c.registerProvider(O.vscodeUserData, new RD(O.file, l, O.vscodeUserData, p, h, a));
-            const g = J && i.win32RegValueName ? e.add(new o1(a, i.win32RegValueName)) : s.policyFile ? e.add(new a1(s.policyFile, c, a)) : new Um();
-            t.set(Do, g);
-            const m = new oD(p.defaultProfile.settingsResource, c, g, a);
-            return (
-              t.set(st, m),
-              t.set(Xe, new ke(ad, void 0, !1)),
-              t.set($n, new ke(ID, void 0, !0)),
-              t.set(ya, new ke(yd)),
-              t.set(Ua, new ke(LD, void 0, !1)),
-              t.set(fD, new ke(Ru)),
-              t.set(ko, new Kp(s, p, a)),
-              [new uD(t, !0), r, s, m, d, o, i, p]
-            );
-          }
-
-          c(t) {
-            const e = { VSCODE_IPC_HOOK: t.mainIPCHandle };
-            return (
-              ["VSCODE_NLS_CONFIG", "VSCODE_PORTABLE"].forEach((i) => {
-                const s = process.env[i];
-                typeof s == "string" && (e[i] = s);
-              }),
-              Object.assign(process.env, e),
-              e
-            );
-          }
-
-          async d(t, e, i, s, r) {
-            await si.settled([
-              Promise.all(
-                [
-                  this.e(t.extensionsPath),
-                  t.codeCachePath,
-                  t.logsHome.with({ scheme: O.file }).fsPath,
-                  e.defaultProfile.globalStorageHome.with({ scheme: O.file }).fsPath,
-                  t.workspaceStorageHome.with({ scheme: O.file }).fsPath,
-                  t.localHistoryHome.with({ scheme: O.file }).fsPath,
-                  t.backupHome,
-                ].map((n) => (n ? $fs.promises.mkdir(n, { recursive: !0 }) : void 0)),
-              ),
-              s.init(),
-              i.initialize(),
-            ]),
-              e.init();
-          }
-
-          e(t) {
-            if (J) {
-              const e = I4(t);
-              e && vc(e);
-            }
-            return t;
-          }
-
-          async f(t, e, i, s, r, n) {
-            let o;
-            try {
-              qe("code/willStartMainServer"), (o = await mI(e.mainIPCHandle)), qe("code/didStartMainServer"), I.once(i.onWillShutdown)(() => o.dispose());
-            } catch (a) {
-              if (a.code !== "EADDRINUSE") throw (this.g(e, r, a), a);
-              let c;
-              try {
-                c = await wI(e.mainIPCHandle, "main");
-              } catch (p) {
-                if (!n || J || p.code !== "ECONNREFUSED") throw (p.code === "EPERM" && this.h(u(159, null, r.nameShort), u(160, null), r), p);
-                try {
-                  $fs.unlinkSync(e.mainIPCHandle);
-                } catch (g) {
-                  throw (t.warn("Could not delete obsolete instance handle", g), g);
-                }
-                return this.f(t, e, i, s, r, !1);
-              }
-              if (e.extensionTestsLocationURI && !e.debugExtensionHost.break) {
-                const p = `Running extension tests from the command line is currently only supported if no other instance of ${r.nameShort} is running.`;
-                throw (t.error(p), c.dispose(), new Error(p));
-              }
-              let l;
-              !e.args.wait &&
-                !e.args.status &&
-                (l = setTimeout(() => {
-                  this.h(u(161, null, r.nameShort), u(162, null), r);
-                }, 1e4));
-              const h = Qe.toService(c.getChannel("launch"), { disableMarshalling: !0 }),
-                d = Qe.toService(c.getChannel("diagnostics"), { disableMarshalling: !0 });
-              if (e.args.status)
-                return s.invokeFunction(async () => {
-                  const p = new Gp(Gl, r),
-                    g = await d.getMainDiagnostics(),
-                    m = await d.getRemoteDiagnostics({ includeProcesses: !0, includeWorkspaceMetadata: !0 }),
-                    b = await p.getDiagnostics(g, m);
-                  throw (console.log(b), new ah());
-                });
-              throw (J && (await this.i(h, t)), t.trace("Sending env to running instance..."), await h.start(e.args, process.env), c.dispose(), l && clearTimeout(l), new ah("Sent env to running instance. Terminating..."));
-            }
-            if (e.args.status) throw (console.log(u(163, null, r.nameShort)), new ah("Terminating..."));
-            return (process.env.VSCODE_PID = String(process.pid)), o;
-          }
-
-          g(t, e, i) {
-            if (i.code === "EACCES" || i.code === "EPERM") {
-              const s = Yt([t.userDataPath, t.extensionsPath, Wh]).map((r) => ia(L.file(r), { os: rs, tildify: t }));
-              this.h(
-                u(164, null),
-                u(
-                  165,
-                  null,
-                  fi(i),
-                  s.join(`
-`),
-                ),
-                e,
+            await t.invokeFunction(async (c) => {
+              const l = c.get(K),
+                h = c.get(Xe),
+                d = c.get(yt),
+                p = c.get(pa),
+                g = await this.f(l, i, h, t, o, !0);
+              return (
+                he.writeFile(i.mainLockfile, String(process.pid)).catch((m) => {
+                  l.warn(`app#startup(): Error writing main lockfile: ${m.stack}`);
+                }),
+                (n.logger = p.createLogger("main", { name: u(158, null) })),
+                I.once(h.onWillShutdown)((m) => {
+                  d.dispose(),
+                    s.dispose(),
+                    m.join(
+                      "instanceLockfile",
+                      $fs.promises.unlink(i.mainLockfile).catch(() => {}),
+                    );
+                }),
+                t.createInstance(zp, g, e).startup()
               );
-            }
+            });
+          } catch (c) {
+            t.invokeFunction(this.j, c);
           }
+        }
 
-          h(t, e, i) {
-            dialog.showMessageBoxSync(By({ type: "warning", buttons: [u(166, null)], message: t, detail: e }, i).options);
+        b() {
+          const t = new serviceCollection(),
+            e = new Ne();
+          process.once("exit", () => e.dispose());
+          const i = { _serviceBrand: void 0, ...as };
+          t.set(Je, i);
+          const s = new Rr(this.k(), i),
+            r = this.c(s);
+          t.set(ct, s);
+          const n = new P9(WI(s), s.logsHome);
+          t.set(ja, n);
+          const o = new dD(n.getLogLevel()),
+            a = e.add(new LogService(o, [new m6(n.getLogLevel())]));
+          t.set(K, a);
+          const c = new Jp(a);
+          t.set(yt, c);
+          const l = new qd(a);
+          c.registerProvider(O.file, l);
+          const h = new UriIdentityService(c);
+          t.set(ji, h);
+          const d = new D0(1, s, a, c);
+          t.set(l0, d), t.set(Ot, d), t.set(op, new CubeSetupManagement(d));
+          const p = new md(d, h, s, c, a);
+          t.set(cr, p), c.registerProvider(O.vscodeUserData, new FileUserDataProvider(O.file, l, O.vscodeUserData, p, h, a));
+          const g = J && i.win32RegValueName ? e.add(new NativePolicyService(a, i.win32RegValueName)) : s.policyFile ? e.add(new FilePolicyService(s.policyFile, c, a)) : new Um();
+          t.set(Do, g);
+          const m = new oD(p.defaultProfile.settingsResource, c, g, a);
+          return (
+            t.set(st, m),
+            t.set(Xe, new Descriptors(ad, void 0, !1)),
+            t.set($n, new Descriptors(RequestService, void 0, !0)),
+            t.set(ya, new Descriptors(yd)),
+            t.set(Ua, new Descriptors(SignService, void 0, !1)),
+            t.set(fD, new Descriptors(Ru)),
+            t.set(ko, new ProtocolMainService(s, p, a)),
+            [new uD(t, !0), r, s, m, d, o, i, p]
+          );
+        }
+
+        c(t) {
+          const e = { VSCODE_IPC_HOOK: t.mainIPCHandle };
+          return (
+            ["VSCODE_NLS_CONFIG", "VSCODE_PORTABLE"].forEach((i) => {
+              const s = process.env[i];
+              typeof s == "string" && (e[i] = s);
+            }),
+            Object.assign(process.env, e),
+            e
+          );
+        }
+
+        async d(t, e, i, s, r) {
+          await si.settled([
+            Promise.all(
+              [
+                this.e(t.extensionsPath),
+                t.codeCachePath,
+                t.logsHome.with({ scheme: O.file }).fsPath,
+                e.defaultProfile.globalStorageHome.with({ scheme: O.file }).fsPath,
+                t.workspaceStorageHome.with({ scheme: O.file }).fsPath,
+                t.localHistoryHome.with({ scheme: O.file }).fsPath,
+                t.backupHome,
+              ].map((n) => (n ? $fs.promises.mkdir(n, { recursive: !0 }) : void 0)),
+            ),
+            s.init(),
+            i.initialize(),
+          ]),
+            e.init();
+        }
+
+        e(t) {
+          if (J) {
+            const e = I4(t);
+            e && vc(e);
           }
+          return t;
+        }
 
-          async i(t, e) {
-            if (J) {
-              const i = await t.getMainProcessId();
-              e.trace("Sending some foreground love to the running instance:", i);
+        async f(t, e, i, s, r, n) {
+          let o;
+          try {
+            qe("code/willStartMainServer"), (o = await mI(e.mainIPCHandle)), qe("code/didStartMainServer"), I.once(i.onWillShutdown)(() => o.dispose());
+          } catch (a) {
+            if (a.code !== "EADDRINUSE") throw (this.g(e, r, a), a);
+            let c;
+            try {
+              c = await wI(e.mainIPCHandle, "main");
+            } catch (p) {
+              if (!n || J || p.code !== "ECONNREFUSED") throw (p.code === "EPERM" && this.h(u(159, null, r.nameShort), u(160, null), r), p);
               try {
-                (await import("windows-foreground-love")).allowSetForegroundWindow(i);
-              } catch (s) {
-                e.error(s);
+                $fs.unlinkSync(e.mainIPCHandle);
+              } catch (g) {
+                throw (t.warn("Could not delete obsolete instance handle", g), g);
               }
+              return this.f(t, e, i, s, r, !1);
+            }
+            if (e.extensionTestsLocationURI && !e.debugExtensionHost.break) {
+              const p = `Running extension tests from the command line is currently only supported if no other instance of ${r.nameShort} is running.`;
+              throw (t.error(p), c.dispose(), new Error(p));
+            }
+            let l;
+            !e.args.wait &&
+              !e.args.status &&
+              (l = setTimeout(() => {
+                this.h(u(161, null, r.nameShort), u(162, null), r);
+              }, 1e4));
+            const h = Qe.toService(c.getChannel("launch"), { disableMarshalling: !0 }),
+              d = Qe.toService(c.getChannel("diagnostics"), { disableMarshalling: !0 });
+            if (e.args.status)
+              return s.invokeFunction(async () => {
+                const p = new Gp(Gl, r),
+                  g = await d.getMainDiagnostics(),
+                  m = await d.getRemoteDiagnostics({ includeProcesses: !0, includeWorkspaceMetadata: !0 }),
+                  b = await p.getDiagnostics(g, m);
+                throw (console.log(b), new ah());
+              });
+            throw (J && (await this.i(h, t)), t.trace("Sending env to running instance..."), await h.start(e.args, process.env), c.dispose(), l && clearTimeout(l), new ah("Sent env to running instance. Terminating..."));
+          }
+          if (e.args.status) throw (console.log(u(163, null, r.nameShort)), new ah("Terminating..."));
+          return (process.env.VSCODE_PID = String(process.pid)), o;
+        }
+
+        g(t, e, i) {
+          if (i.code === "EACCES" || i.code === "EPERM") {
+            const s = Yt([t.userDataPath, t.extensionsPath, Wh]).map((r) => ia(L.file(r), { os: rs, tildify: t }));
+            this.h(
+              u(164, null),
+              u(
+                165,
+                null,
+                fi(i),
+                s.join(`
+`),
+              ),
+              e,
+            );
+          }
+        }
+
+        h(t, e, i) {
+          dialog.showMessageBoxSync(By({ type: "warning", buttons: [u(166, null)], message: t, detail: e }, i).options);
+        }
+
+        async i(t, e) {
+          if (J) {
+            const i = await t.getMainProcessId();
+            e.trace("Sending some foreground love to the running instance:", i);
+            try {
+              (await import("windows-foreground-love")).allowSetForegroundWindow(i);
+            } catch (s) {
+              e.error(s);
             }
           }
+        }
 
-          j(t, e) {
-            const i = t.get(K),
-              s = t.get(Xe);
-            let r = 0;
-            e && (e.isExpected ? e.message && i.trace(e.message) : ((r = 1), e.stack ? i.error(e.stack) : i.error(`Startup error: ${e.toString()}`))), s.kill(r);
-          }
+        j(t, e) {
+          const i = t.get(K),
+            s = t.get(Xe);
+          let r = 0;
+          e && (e.isExpected ? e.message && i.trace(e.message) : ((r = 1), e.stack ? i.error(e.stack) : i.error(`Startup error: ${e.toString()}`))), s.kill(r);
+        }
 
-          k() {
-            const t = this.l(cL(process.argv));
-            if (t.wait && !t.waitMarkerFilePath) {
-              const e = sz(t.verbose);
-              e && (lL(process.argv, "--waitMarkerFilePath", e), (t.waitMarkerFilePath = e));
-            }
-            return t;
+        k() {
+          const t = this.l(cL(process.argv));
+          if (t.wait && !t.waitMarkerFilePath) {
+            const e = sz(t.verbose);
+            e && (lL(process.argv, "--waitMarkerFilePath", e), (t.waitMarkerFilePath = e));
           }
+          return t;
+        }
 
-          l(t) {
-            if ((t["open-url"] && ((t._urls = t._), (t._ = [])), !t.remote)) {
-              const e = this.m(t._, t.goto);
-              t._ = e;
-            }
-            return t;
+        l(t) {
+          if ((t["open-url"] && ((t._urls = t._), (t._ = [])), !t.remote)) {
+            const e = this.m(t._, t.goto);
+            t._ = e;
           }
+          return t;
+        }
 
-          m(t, e) {
-            const i = Zs(),
-              s = t.map((o) => {
-                let a = String(o),
-                  c;
-                e && ((c = Dh(a)), (a = c.path)), a && (a = this.n(i, a));
-                const l = v2(a, i),
-                  h = Ke(l);
-                return h && !o$(h) ? null : e && c ? ((c.path = l), this.o(c)) : l;
-              }),
-              r = J || q,
-              n = As(s, (o) => (o && r ? o.toLowerCase() : o || ""));
-            return Yt(n);
-          }
+        m(t, e) {
+          const i = Zs(),
+            s = t.map((o) => {
+              let a = String(o),
+                c;
+              e && ((c = Dh(a)), (a = c.path)), a && (a = this.n(i, a));
+              const l = v2(a, i),
+                h = Ke(l);
+              return h && !o$(h) ? null : e && c ? ((c.path = l), this.o(c)) : l;
+            }),
+            r = J || q,
+            n = As(s, (o) => (o && r ? o.toLowerCase() : o || ""));
+          return Yt(n);
+        }
 
-          n(t, e) {
-            return J && (e = io(e, '"')), (e = h2(h2(e, " "), "	")), J && ((e = eo(t, e)), (e = io(e, "."))), e;
-          }
+        n(t, e) {
+          return J && (e = io(e, '"')), (e = h2(h2(e, " "), "	")), J && ((e = eo(t, e)), (e = io(e, "."))), e;
+        }
 
-          o(t) {
-            const e = [t.path];
-            return typeof t.line == "number" && e.push(String(t.line)), typeof t.column == "number" && e.push(String(t.column)), e.join(":");
-          }
-        }),
-        (BD = new ND()),
-        BD.main();
+        o(t) {
+          const e = [t.path];
+          return typeof t.line == "number" && e.push(String(t.line)), typeof t.column == "number" && e.push(String(t.column)), e.join(":");
+        }
+      };
+      BD = new ND();
+      BD.main();
     },
   });
 

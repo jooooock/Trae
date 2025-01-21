@@ -3,3 +3,4 @@
 node_modules
 resources
 !src/**/node_modules
+debug
