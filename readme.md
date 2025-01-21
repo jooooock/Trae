@@ -4,6 +4,10 @@
 
 v1.95.3
 
-## 平台
+## 运行
 
-macOS
+```shell
+yarn install
+yarn dev
+```
+将以非打包模式启动`Trae`。
