@@ -37250,11 +37250,6 @@ var pS,
             ...(options.headers || {}),
             ...customHeader,
           };
-          // options.proxy = {
-          //   protocol: "http",
-          //   host: "127.0.0.1",
-          //   port: "1091",
-          // };
           this.e.info("[Request start]", wr(options));
           try {
             i = await instance.request(options);
