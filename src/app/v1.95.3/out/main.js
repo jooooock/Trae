@@ -547,11 +547,11 @@ export default {
   __disposeResources,
 };
 
-var RC = Object.create,
+var __Object_create = Object.create,
   y4 = Object.defineProperty,
   TC = Object.getOwnPropertyDescriptor,
   getOwnPropertyNames = Object.getOwnPropertyNames,
-  NC = Object.getPrototypeOf,
+  getPrototypeOf = Object.getPrototypeOf,
   BC = Object.prototype.hasOwnProperty,
   L1 = ((t) => (typeof require < "u" ? require : typeof Proxy < "u" ? new Proxy(t, { get: (e, i) => (typeof require < "u" ? require : e)[i] }) : t))(function (t) {
     if (typeof require < "u") return require.apply(this, arguments);
@@ -567,9 +567,14 @@ var RC = Object.create,
       }
       return result;
     },
-  jC = (t, e) =>
+  jC = (defs, module) =>
     function () {
-      return e || (0, t[getOwnPropertyNames(t)[0]])((e = { exports: {} }).exports, e), e.exports;
+      if (!module) {
+        const entry = getOwnPropertyNames(defs)[0];
+        module = { exports: {} };
+        defs[entry](module.exports, module);
+      }
+      return module.exports;
     },
   UC = (t, e, i, s) => {
     if ((e && typeof e == "object") || typeof e == "function")
@@ -582,18 +587,18 @@ var RC = Object.create,
           });
     return t;
   },
-  k4 = (t, e, i) => (
-    (i = t != null ? RC(NC(t)) : {}),
-    UC(
-      e || !t || !t.__esModule
-        ? y4(i, "default", {
-            value: t,
-            enumerable: !0,
+  k4 = (module, e, proto) => {
+    proto = module != null ? __Object_create(getPrototypeOf(module)) : {};
+    return UC(
+      e || !module || !module.__esModule
+        ? y4(proto, "default", {
+            value: module,
+            enumerable: true,
           })
-        : i,
-      t,
-    )
-  );
+        : proto,
+      module,
+    );
+  };
 
 function P1(t) {
   const e = [];
@@ -638,19 +643,20 @@ function WC() {
   } else return console.trace("perf-util loaded in UNKNOWN environment"), P1();
 }
 
-function HC(t) {
-  return t.MonacoPerformanceMarks || (t.MonacoPerformanceMarks = WC()), t.MonacoPerformanceMarks;
+function HC(global) {
+  global.MonacoPerformanceMarks || (global.MonacoPerformanceMarks = WC());
+  return global.MonacoPerformanceMarks;
 }
 
 var F1,
-  qe,
-  _1,
+  performance_mark,
+  performance_getMarks,
   xr = v({
     "out-build/vs/base/common/performance.js"() {
       "use strict";
       F1 = HC(globalThis);
-      qe = F1.mark;
-      _1 = F1.getMarks;
+      performance_mark = F1.mark;
+      performance_getMarks = F1.getMarks;
     },
   });
 
@@ -677,37 +683,46 @@ import * as https from "https";
 import * as dns from "dns";
 import * as qs from "qs";
 import { fileURLToPath, parse as xD, parse as CD, URL as yj } from "url";
-import { HttpError as kj, newError as Sj } from "builder-util-runtime";
-import Ij, { Provider as Ej } from "electron-updater";
-import { parseUpdateInfo as Dj, resolveFiles as Cj } from "electron-updater/out/providers/Provider.js";
-import { TronClientChecker as Aj } from "@ies/tron-client";
+import { HttpError, newError } from "builder-util-runtime";
+import electronUpdater, { Provider } from "electron-updater";
+import { parseUpdateInfo, resolveFiles } from "electron-updater/out/providers/Provider.js";
+import { TronClientChecker } from "@ies/tron-client";
 import { DeviceRegister } from "@byted/device-register";
-import { createDefaultSlardarClient as CH } from "@byted-icube/slardar/dist/index.node.js";
-import { createDefaultTeaClient as xH } from "@byted-icube/tea/dist/index.node.js";
-import { Tenant as qE } from "@byted-icube/env";
-import * as FH from "portfinder";
-import { connectToExchange as _H } from "@byted-icube/manager-sdk";
-import { jsonrepair as VH } from "jsonrepair";
-import { createGunzip as Nz } from "zlib";
-import * as jn from "original-fs";
-import { performance as aV } from "perf_hooks";
-import { createRequire, register as gV } from "node:module";
-import Nu from "lodash.merge";
-import u1 from "lodash.merge";
+import { createDefaultSlardarClient } from "@byted-icube/slardar/dist/index.node.js";
+import { createDefaultTeaClient } from "@byted-icube/tea/dist/index.node.js";
+import { Tenant } from "@byted-icube/env";
+import * as portfinder from "portfinder";
+import { connectToExchange } from "@byted-icube/manager-sdk";
+import { jsonrepair } from "jsonrepair";
+import { createGunzip } from "zlib";
+import * as originalFS from "original-fs";
+import { performance } from "perf_hooks";
+import { createRequire, register as registerModule } from "node:module";
+import lodash_merge from "lodash.merge";
 
-function O1(t, e) {
-  const i = zC(t, e),
+function O1(argv, key) {
+  const i = zC(argv, key),
     s = [i];
-  return $path.isAbsolute(i) || s.unshift(E4), $path.resolve(...s);
+  $path.isAbsolute(i) || s.unshift(E4);
+  return $path.resolve(...s);
 }
 
 function zC(t, e) {
   const i = process.env.VSCODE_PORTABLE;
-  if (i) return $path.join(i, "user-data");
+  if (i) {
+    return $path.join(i, "user-data");
+  }
+
   let s = process.env.VSCODE_APPDATA;
-  if (s) return $path.join(s, e);
+  if (s) {
+    return $path.join(s, e);
+  }
+
   const r = t["user-data-dir"];
-  if (r) return r;
+  if (r) {
+    return r;
+  }
+
   switch (process.platform) {
     case "win32":
       if (((s = process.env.APPDATA), !s)) {
@@ -725,6 +740,7 @@ function zC(t, e) {
     default:
       throw new Error("Platform not supported");
   }
+
   return $path.join(s, e);
 }
 
@@ -735,8 +751,8 @@ var E4,
       E4 = process.env.VSCODE_CWD || process.cwd();
     },
   }),
-  D4 = jC({
-    "node_modules/minimist/index.js"(t, e) {
+  $minimist = jC({
+    "node_modules/minimist/index.js"(exports, module) {
       "use strict";
 
       function i(n, o) {
@@ -756,7 +772,7 @@ var E4,
         return (o === "constructor" && typeof n[o] == "function") || o === "__proto__";
       }
 
-      e.exports = function (n, o) {
+      module.exports = function (n, o) {
         o || (o = {});
         var a = { bools: {}, strings: {}, unknownFn: null };
         typeof o.unknown == "function" && (a.unknownFn = o.unknown),
@@ -941,12 +957,18 @@ function $4() {
   return process.uncHostAllowlist;
 }
 
-function vc(t) {
+function vc(path) {
   if (process.platform !== "win32") return;
   const e = $4();
-  if (e)
-    if (typeof t == "string") e.add(t.toLowerCase());
-    else for (const i of qC(t)) vc(i);
+  if (e) {
+    if (typeof path == "string") {
+      e.add(path.toLowerCase());
+    } else {
+      for (const i of qC(path)) {
+        vc(i);
+      }
+    }
+  }
 }
 
 function qC(t) {
@@ -955,15 +977,15 @@ function qC(t) {
   return Array.from(e);
 }
 
-function I4(t) {
-  if (typeof t != "string") return;
-  const e = ["\\\\.\\UNC\\", "\\\\?\\UNC\\", "\\\\"];
+function getUNCPath(path) {
+  if (typeof path != "string") return;
+  const strings = ["\\\\.\\UNC\\", "\\\\?\\UNC\\", "\\\\"];
   let i;
-  for (const s of e) {
-    if (t.indexOf(s) !== 0) continue;
-    const n = t.indexOf("\\", s.length);
+  for (const s of strings) {
+    if (path.indexOf(s) !== 0) continue;
+    const n = path.indexOf("\\", s.length);
     if (n === -1) continue;
-    const o = t.substring(s.length, n);
+    const o = path.substring(s.length, n);
     if (o) {
       i = o;
       break;
@@ -14575,11 +14597,11 @@ var pl,
             return (
               this.g ||
                 (this.g = (async () => {
-                  qe("code/willInitStorage");
+                  performance_mark("code/willInitStorage");
                   try {
                     await this.Q();
                   } finally {
-                    qe("code/didInitStorage");
+                    performance_mark("code/didInitStorage");
                   }
                   this.h.schedule();
                 })()),
@@ -17118,7 +17140,7 @@ var Iy,
   Ly = v({
     "out-build/vs/platform/environment/node/argv.js"() {
       "use strict";
-      (Iy = k4(D4(), 1)),
+      (Iy = k4($minimist(), 1)),
         Z(),
         le(),
         (kA = {
@@ -38189,7 +38211,7 @@ var yS,
   $j = v({
     "out-build/vs/platform/update/electron-main/CustomProvider.js"() {
       "use strict";
-      yS = class extends Ej {
+      yS = class extends Provider {
         constructor(t, e, i) {
           super(i), (this.b = t), (this.c = e), (this.a = this.b.feedUrl);
         }
@@ -38198,9 +38220,9 @@ var yS,
           const t = xj(this.a, !0);
           for (let e = 0; ; e++)
             try {
-              return Dj(await this.httpRequest(t), "", t);
+              return parseUpdateInfo(await this.httpRequest(t), "", t);
             } catch (i) {
-              if (i instanceof kj && i.statusCode === 404) throw Sj(`Cannot find update info: ${i.stack || i.message}`, "ERR_UPDATER_CHANNEL_FILE_NOT_FOUND");
+              if (i instanceof HttpError && i.statusCode === 404) throw newError(`Cannot find update info: ${i.stack || i.message}`, "ERR_UPDATER_CHANNEL_FILE_NOT_FOUND");
               if (i.code === "ECONNREFUSED" && e < 3) {
                 await new Promise((s, r) => {
                   try {
@@ -38216,7 +38238,7 @@ var yS,
         }
 
         resolveFiles(t) {
-          return Cj(t, this.a);
+          return resolveFiles(t, this.a);
         }
       };
     },
@@ -38286,7 +38308,7 @@ var Jr,
               (this.w = null),
               (this.x = null),
               (this.y = null),
-              (this.z = Ij.autoUpdater),
+              (this.z = electronUpdater.autoUpdater),
               (this.A = 10 * 1e3),
               (this.B = 1e3),
               (this.C = null),
@@ -38364,7 +38386,7 @@ var Jr,
                 warn: this.i.warn.bind(this.i),
               },
             };
-            this.i.debug("ICUBE: tron config", n), (this.t = new Aj(n));
+            this.i.debug("ICUBE: tron config", n), (this.t = new TronClientChecker(n));
           }
 
           P(e) {
@@ -39615,10 +39637,10 @@ var IS,
                 additionalArguments: [`--vscode-window-config=${this.bb.resource.toString()}`],
                 v8CacheOptions: this.t.useCodeCache ? "bypassHeatCheck" : "none",
               });
-              qe("code/willCreateCodeBrowserWindow"),
+              performance_mark("code/willCreateCodeBrowserWindow"),
                 (this.m = new electron.BrowserWindow(pe)),
                 (process.env.VSCODE_DEV || process.env.ICUBE_DEBUG_OPEN_DEVTOOLS) && this.m.webContents.openDevTools({ mode: "right" }),
-                qe("code/didCreateCodeBrowserWindow"),
+                performance_mark("code/didCreateCodeBrowserWindow"),
                 (this.Q = this.m.id),
                 this.n(this.m, pe),
                 this.w(this.U, B),
@@ -39938,8 +39960,8 @@ var IS,
               (e.zoomLevel = this.Nb()),
               (e.isCustomZoomLevel = typeof this.ab == "number"),
               e.isCustomZoomLevel && e.partsSplash && (e.partsSplash.zoomLevel = e.zoomLevel),
-              qe("code/willOpenNewWindow"),
-              (e.perfMarks = _1()),
+              performance_mark("code/willOpenNewWindow"),
+              (e.perfMarks = performance_getMarks()),
               this.bb.update(e);
           }
 
@@ -40014,7 +40036,7 @@ var IS,
           }
 
           Ib(e) {
-            qe("code/willRestoreCodeWindowState");
+            performance_mark("code/willRestoreCodeWindowState");
             let i = !1;
             if (e) {
               this.ab = e.zoomLevel;
@@ -40026,7 +40048,7 @@ var IS,
 ${s.stack}`);
               }
             }
-            return qe("code/didRestoreCodeWindowState"), [e || En(), i];
+            return performance_mark("code/didRestoreCodeWindowState"), [e || En(), i];
           }
 
           getBounds() {
@@ -41258,7 +41280,7 @@ var hp,
               logsPath: this.H.logsHome.with({ scheme: O.file }).fsPath,
               product: as,
               isInitialStartup: e.initialStartup,
-              perfMarks: _1(),
+              perfMarks: performance_getMarks(),
               os: { release: $os.release(), hostname: $os.hostname(), arch: $os.arch() },
               autoDetectHighContrast: i?.autoDetectHighContrast ?? !0,
               autoDetectColorScheme: i?.autoDetectColorScheme ?? !1,
@@ -41290,13 +41312,13 @@ var hp,
                 });
             } else {
               const c = this.r.getNewWindowState(a);
-              qe("code/willCreateCodeWindow");
+              performance_mark("code/willCreateCodeWindow");
               const l = (o = this.P.createInstance(yu, {
                 state: c,
                 extensionDevelopmentPath: a.extensionDevelopmentPath,
                 isExtensionTestHost: !!a.extensionTestsPath,
               }));
-              qe("code/didCreateCodeWindow"),
+              performance_mark("code/didCreateCodeWindow"),
                 e.forceNewTabbedWindow && this.getLastActiveWindow()?.addTabbedWindow(l),
                 this.n.set(l.id, l),
                 this.a.fire(l),
@@ -47025,9 +47047,9 @@ var Op,
 
           async C() {
             const { device_id: e, user_id: i, user_is_login: s, tenant: r, region: n = this.m() } = this.commonParams,
-              o = xH({
+              o = createDefaultTeaClient({
                 region: n,
-                tenant: r === wi.BYTEDANCE ? qE.BYTEDANCE : qE.PUBLIC,
+                tenant: r === wi.BYTEDANCE ? Tenant.BYTEDANCE : Tenant.PUBLIC,
                 event_verify_url: this.g ? `${this.h}/v1/list_test` : void 0,
               });
             o.config({
@@ -47039,7 +47061,7 @@ var Op,
 
           async D() {
             const { region: e = this.m(), device_id: i } = this.commonParams,
-              s = CH({ userId: i || "0" }, this.commonParams, e);
+              s = createDefaultSlardarClient({ userId: i || "0" }, this.commonParams, e);
             this.G(s);
           }
         }),
@@ -47220,7 +47242,7 @@ var Mp,
                   const { logsDir: k, out: D, err: x } = d(),
                     C = p(D, x),
                     F = $path.join(k, "manager_panic.log"),
-                    z = await FH.getPortPromise({ port: 51e3, host: g ? Lu : Pu });
+                    z = await portfinder.getPortPromise({ port: 51e3, host: g ? Lu : Pu });
                   (process.env.ICUBE_USE_IPV6 = g.toString()),
                     (process.env.ICUBE_PROXY_HOST = g ? Lu : Pu),
                     (process.env.ICUBE_PROXY_PORT = z.toString()),
@@ -47326,7 +47348,7 @@ var Mp,
           async startCommandExchange(e) {
             this.s.error(`startCommandExchange: ${this.g}`);
             const { WebSocket: i } = await import("ws"),
-              { startMessageLoop: s, sendMessage: r } = _H(
+              { startMessageLoop: s, sendMessage: r } = connectToExchange(
                 null,
                 {
                   getUrl: async () => {
@@ -48600,7 +48622,7 @@ var Mb,
             try {
               JSON.parse(wc(i));
             } catch {
-              const r = VH(i);
+              const r = jsonrepair(i);
               await this.D.writeFile(this.w.argvResource, ee.fromString(r));
             }
           } catch (e) {
@@ -50284,7 +50306,7 @@ var rz = v({
 
         registerProvider(e, i) {
           if (this.n.has(e)) throw new Error(`A filesystem provider for the scheme '${e}' is already registered.`);
-          qe(`code/registerFilesystem/${e}`);
+          performance_mark(`code/registerFilesystem/${e}`);
           const s = new Ne();
           return (
             this.n.set(e, i),
@@ -51972,18 +51994,21 @@ function kz(t, e, i, s, r, n, o, a) {
     l = $r.create(!1);
   return (
     t.info(`Creating a socket (${o})...`),
-    qe(`code/willCreateSocket/${n}`),
+    performance_mark(`code/willCreateSocket/${n}`),
     e.connect(i, s, r, o).then(
       (h) => {
         c.didTimeout
-          ? (qe(`code/didCreateSocketError/${n}`),
+          ? (performance_mark(`code/didCreateSocketError/${n}`),
             t.info(`Creating a socket (${o}) finished after ${l.elapsed()} ms, but this is too late and has timed out already.`),
             Gt(`Creating a socket (${o}) finished after ${l.elapsed()} ms, but this is too late and has timed out already. will dispose socket`, n),
             h?.dispose())
-          : (qe(`code/didCreateSocketOK/${n}`), t.info(`Creating a socket (${o}) was successful after ${l.elapsed()} ms.`), Gt(`Creating a socket (${o}) was successful after ${l.elapsed()} ms.`, n), c.resolve(h));
+          : (performance_mark(`code/didCreateSocketOK/${n}`), t.info(`Creating a socket (${o}) was successful after ${l.elapsed()} ms.`), Gt(`Creating a socket (${o}) was successful after ${l.elapsed()} ms.`, n), c.resolve(h));
       },
       (h) => {
-        qe(`code/didCreateSocketError/${n}`), t.info(`Creating a socket (${o}) returned an error after ${l.elapsed()} ms.`), Gt(`Creating a socket (${o}) returned an error after ${l.elapsed()} ms. Error: ${fi(h)}`, n), c.reject(h);
+        performance_mark(`code/didCreateSocketError/${n}`),
+          t.info(`Creating a socket (${o}) returned an error after ${l.elapsed()} ms.`),
+          Gt(`Creating a socket (${o}) returned an error after ${l.elapsed()} ms. Error: ${fi(h)}`, n),
+          c.reject(h);
       },
     ),
     c.promise
@@ -52859,7 +52884,7 @@ async function $D(t, e) {
         ).then(i, s);
       else {
         let h = c;
-        !t.isChromiumNetwork && c.headers["content-encoding"] === "gzip" && (h = c.pipe(Nz())),
+        !t.isChromiumNetwork && c.headers["content-encoding"] === "gzip" && (h = c.pipe(createGunzip())),
           i({
             res: c,
             stream: iI(h),
@@ -53522,7 +53547,7 @@ var PD,
 
 var ND,
   BD,
-  nV = v({
+  electron_main = v({
     "out-build/vs/code/electron-main/main.js"() {
       "use strict";
       qx();
@@ -53707,7 +53732,7 @@ var ND,
 
         e(t) {
           if (J) {
-            const e = I4(t);
+            const e = getUNCPath(t);
             e && vc(e);
           }
           return t;
@@ -53716,7 +53741,7 @@ var ND,
         async f(t, e, i, s, r, n) {
           let o;
           try {
-            qe("code/willStartMainServer"), (o = await mI(e.mainIPCHandle)), qe("code/didStartMainServer"), I.once(i.onWillShutdown)(() => o.dispose());
+            performance_mark("code/willStartMainServer"), (o = await mI(e.mainIPCHandle)), performance_mark("code/didStartMainServer"), I.once(i.onWillShutdown)(() => o.dispose());
           } catch (a) {
             if (a.code !== "EADDRINUSE") throw (this.g(e, r, a), a);
             let c;
@@ -54190,7 +54215,7 @@ var l1 = createRequire(import.meta.url),
   HD = $path.dirname(fileURLToPath(import.meta.url));
 
 if (process.env.ELECTRON_RUN_AS_NODE || process.versions.electron) {
-  gV(
+  registerModule(
     `data:text/javascript;base64,${Buffer.from(
       `
 	export async function resolve(specifier, context, nextResolve) {
@@ -54219,16 +54244,16 @@ if (process.env.VSCODE_DEV) {
   try {
     if (process.env.ICUBE_DEV_PROVIDER === "Spring") {
       const t = l1("../product.desktop.spring.json");
-      globalThis._VSCODE_PRODUCT_JSON = Nu(globalThis._VSCODE_PRODUCT_JSON, t);
+      globalThis._VSCODE_PRODUCT_JSON = lodash_merge(globalThis._VSCODE_PRODUCT_JSON, t);
     } else {
       const t = l1("../product.desktop.json");
-      globalThis._VSCODE_PRODUCT_JSON = Nu(globalThis._VSCODE_PRODUCT_JSON, t);
+      globalThis._VSCODE_PRODUCT_JSON = lodash_merge(globalThis._VSCODE_PRODUCT_JSON, t);
     }
     if ($fs.existsSync($path.join(HD, "product.desktop.local.json"))) {
       const t = l1("../product.desktop.local.json");
-      globalThis._VSCODE_PRODUCT_JSON = Nu(globalThis._VSCODE_PRODUCT_JSON, t);
+      globalThis._VSCODE_PRODUCT_JSON = lodash_merge(globalThis._VSCODE_PRODUCT_JSON, t);
     }
-    globalThis._VSCODE_PRODUCT_JSON = Nu(globalThis._VSCODE_PRODUCT_JSON, { quality: "local" });
+    globalThis._VSCODE_PRODUCT_JSON = lodash_merge(globalThis._VSCODE_PRODUCT_JSON, { quality: "local" });
   } catch {}
 }
 try {
@@ -54254,7 +54279,7 @@ function mergeConfig() {
   let c = a.update(n);
   c = Buffer.concat([c, a.final()]);
   const l = JSON.parse(c.toString());
-  l.iCubeApp && (globalThis._VSCODE_PRODUCT_JSON = Nu(globalThis._VSCODE_PRODUCT_JSON, { iCubeApp: l.iCubeApp }));
+  l.iCubeApp && (globalThis._VSCODE_PRODUCT_JSON = lodash_merge(globalThis._VSCODE_PRODUCT_JSON, { iCubeApp: l.iCubeApp }));
 }
 
 globalThis._VSCODE_PACKAGE_JSON = { ...wV };
@@ -54262,36 +54287,44 @@ globalThis._VSCODE_FILE_ROOT = HD;
 var n4 = void 0;
 
 function vV() {
-  return n4 || (n4 = yV()), n4;
+  n4 || (n4 = yV());
+  return n4;
 }
 
 async function yV() {
-  qe("code/willLoadNls");
-  let t, e;
-  if (process.env.VSCODE_NLS_CONFIG)
+  performance_mark("code/willLoadNls");
+  let nlsConfig, messageFile;
+  if (process.env.VSCODE_NLS_CONFIG) {
     try {
-      (t = JSON.parse(process.env.VSCODE_NLS_CONFIG)), t?.languagePack?.messagesFile ? (e = t.languagePack.messagesFile) : t?.defaultMessagesFile && (e = t.defaultMessagesFile), (globalThis._VSCODE_NLS_LANGUAGE = t?.resolvedLanguage);
-    } catch (i) {
-      console.error(`Error reading VSCODE_NLS_CONFIG from environment: ${i}`);
+      nlsConfig = JSON.parse(process.env.VSCODE_NLS_CONFIG);
+      nlsConfig?.languagePack?.messagesFile ? (messageFile = nlsConfig.languagePack.messagesFile) : nlsConfig?.defaultMessagesFile && (messageFile = nlsConfig.defaultMessagesFile);
+      globalThis._VSCODE_NLS_LANGUAGE = nlsConfig?.resolvedLanguage;
+    } catch (err) {
+      console.error(`Error reading VSCODE_NLS_CONFIG from environment: ${err}`);
     }
-  if (!(process.env.VSCODE_DEV || !e)) {
+  }
+  if (!process.env.VSCODE_DEV && messageFile) {
     try {
-      globalThis._VSCODE_NLS_MESSAGES = JSON.parse((await $fs.promises.readFile(e)).toString());
-    } catch (i) {
-      if ((console.error(`Error reading NLS messages file ${e}: ${i}`), t?.languagePack?.corruptMarkerFile))
+      globalThis._VSCODE_NLS_MESSAGES = JSON.parse((await $fs.promises.readFile(messageFile)).toString());
+    } catch (err) {
+      console.error(`Error reading NLS messages file ${messageFile}: ${err}`);
+      if (nlsConfig?.languagePack?.corruptMarkerFile) {
         try {
-          await $fs.promises.writeFile(t.languagePack.corruptMarkerFile, "corrupted");
-        } catch (s) {
-          console.error(`Error writing corrupted NLS marker file: ${s}`);
+          await $fs.promises.writeFile(nlsConfig.languagePack.corruptMarkerFile, "corrupted");
+        } catch (err) {
+          console.error(`Error writing corrupted NLS marker file: ${err}`);
         }
-      if (t?.defaultMessagesFile && t.defaultMessagesFile !== e)
+      }
+      if (nlsConfig?.defaultMessagesFile && nlsConfig.defaultMessagesFile !== messageFile) {
         try {
-          globalThis._VSCODE_NLS_MESSAGES = JSON.parse((await $fs.promises.readFile(t.defaultMessagesFile)).toString());
-        } catch (s) {
-          console.error(`Error reading default NLS messages file ${t.defaultMessagesFile}: ${s}`);
+          globalThis._VSCODE_NLS_MESSAGES = JSON.parse((await $fs.promises.readFile(nlsConfig.defaultMessagesFile)).toString());
+        } catch (err) {
+          console.error(`Error reading default NLS messages file ${nlsConfig.defaultMessagesFile}: ${err}`);
         }
+      }
     }
-    return qe("code/didLoadNls"), t;
+    performance_mark("code/didLoadNls");
+    return nlsConfig;
   }
 }
 
@@ -54299,50 +54332,55 @@ async function kV() {
   await vV();
 }
 
-var SV = k4(D4(), 1);
+var SV = k4($minimist(), 1);
 
 bc();
 M1();
 xr();
 xr();
 
-async function zD({ userLocale: t, osLocale: e, userDataPath: i, commit: s, nlsMetadataPath: r }) {
-  if ((qe("code/willGenerateNls"), process.env.VSCODE_DEV)) return LV(t, e, r);
-  if (t === "pseudo" || t.startsWith("en") || !s || !i) return Bu(t, e, r);
+async function generateNls({ userLocale, osLocale, userDataPath, commit, nlsMetadataPath }) {
+  performance_mark("code/willGenerateNls");
+  if (process.env.VSCODE_DEV) {
+    return LV(userLocale, osLocale, nlsMetadataPath);
+  }
+  if (userLocale === "pseudo" || userLocale.startsWith("en") || !commit || !userDataPath) {
+    return Bu(userLocale, osLocale, nlsMetadataPath);
+  }
   if (process.env.ENABLE_MARSCODE_NLS) {
-    qe("code/didGenerateNls");
-    const n = t !== "en" ? `nls.${t}.messages.json` : "nls.messages.json";
+    performance_mark("code/didGenerateNls");
+    const n = userLocale !== "en" ? `nls.${userLocale}.messages.json` : "nls.messages.json";
     return {
-      userLocale: t,
-      osLocale: e,
-      resolvedLanguage: t,
-      defaultMessagesFile: $path.join(r, n),
-      locale: t,
+      userLocale: userLocale,
+      osLocale: osLocale,
+      resolvedLanguage: userLocale,
+      defaultMessagesFile: $path.join(nlsMetadataPath, n),
+      locale: userLocale,
       availableLanguages: {},
     };
   }
   try {
-    const n = await IV(i);
-    if (!n) return Bu(t, e, r);
-    const o = AV(n, t);
-    if (!o) return Bu(t, e, r);
+    const n = await IV(userDataPath);
+    if (!n) return Bu(userLocale, osLocale, nlsMetadataPath);
+    const o = AV(n, userLocale);
+    if (!o) return Bu(userLocale, osLocale, nlsMetadataPath);
     const a = n[o],
       c = a?.translations?.vscode;
-    if (!a || typeof a.hash != "string" || !a.translations || typeof c != "string" || !(await o4(c))) return Bu(t, e, r);
+    if (!a || typeof a.hash != "string" || !a.translations || typeof c != "string" || !(await o4(c))) return Bu(userLocale, osLocale, nlsMetadataPath);
     const l = `${a.hash}.${o}`,
-      h = $path.join(i, "clp", l),
-      d = $path.join(h, s),
+      h = $path.join(userDataPath, "clp", l),
+      d = $path.join(h, commit),
       p = $path.join(d, "nls.messages.json"),
       g = $path.join(h, "tcf.json"),
       m = $path.join(h, "corrupted.info");
     (await o4(m)) && (await $fs.promises.rm(h, { recursive: !0, force: !0, maxRetries: 3 }));
     const b = {
-      userLocale: t,
-      osLocale: e,
+      userLocale: userLocale,
+      osLocale: osLocale,
       resolvedLanguage: o,
-      defaultMessagesFile: $path.join(r, "nls.messages.json"),
+      defaultMessagesFile: $path.join(nlsMetadataPath, "nls.messages.json"),
       languagePack: { translationsConfigFile: g, messagesFile: p, corruptMarkerFile: m },
-      locale: t,
+      locale: userLocale,
       availableLanguages: { "*": o },
       _languagePackId: l,
       _languagePackSupport: !0,
@@ -54351,11 +54389,11 @@ async function zD({ userLocale: t, osLocale: e, userDataPath: i, commit: s, nlsM
       _resolvedLanguagePackCoreLocation: d,
       _corruptedFile: m,
     };
-    if (await o4(d)) return PV(d).catch(() => {}), qe("code/didGenerateNls"), b;
+    if (await o4(d)) return PV(d).catch(() => {}), performance_mark("code/didGenerateNls"), b;
     const [, S, k, D] = await Promise.all([
         $fs.promises.mkdir(d, { recursive: !0 }),
-        JSON.parse(await $fs.promises.readFile($path.join(r, "nls.keys.json"), "utf-8")),
-        JSON.parse(await $fs.promises.readFile($path.join(r, "nls.messages.json"), "utf-8")),
+        JSON.parse(await $fs.promises.readFile($path.join(nlsMetadataPath, "nls.keys.json"), "utf-8")),
+        JSON.parse(await $fs.promises.readFile($path.join(nlsMetadataPath, "nls.messages.json"), "utf-8")),
         JSON.parse(await $fs.promises.readFile(c, "utf-8")),
       ]),
       x = [];
@@ -54364,11 +54402,13 @@ async function zD({ userLocale: t, osLocale: e, userDataPath: i, commit: s, nlsM
       const X = D.contents[F];
       for (const ne of z) x.push(X?.[ne] || k[C]), C++;
     }
-    return await Promise.all([$fs.promises.writeFile(p, JSON.stringify(x), "utf-8"), $fs.promises.writeFile(g, JSON.stringify(a.translations), "utf-8")]), qe("code/didGenerateNls"), b;
-  } catch (n) {
-    console.error("Generating translation files failed.", n);
+    await Promise.all([$fs.promises.writeFile(p, JSON.stringify(x), "utf-8"), $fs.promises.writeFile(g, JSON.stringify(a.translations), "utf-8")]);
+    performance_mark("code/didGenerateNls");
+    return b;
+  } catch (err) {
+    console.error("Generating translation files failed.", err);
   }
-  return Bu(t, e, r);
+  return Bu(userLocale, osLocale, nlsMetadataPath);
 }
 
 async function IV(t) {
@@ -54395,7 +54435,7 @@ function AV(t, e) {
 
 function Bu(t, e, i) {
   return (
-    qe("code/didGenerateNls"),
+    performance_mark("code/didGenerateNls"),
     {
       userLocale: t,
       osLocale: e,
@@ -54409,7 +54449,7 @@ function Bu(t, e, i) {
 
 function LV(t, e, i) {
   return (
-    qe("code/didGenerateNls"),
+    performance_mark("code/didGenerateNls"),
     {
       userLocale: t,
       osLocale: e,
@@ -54449,27 +54489,37 @@ function _V(t) {
   }
 }
 
-function OV(t, e) {
+function OV(data, e) {
   try {
-    return JSON.parse(t);
-  } catch (i) {
-    e?.(i);
+    return JSON.parse(data);
+  } catch (err) {
+    e?.(err);
     return;
   }
 }
 
-function MV(t, e, i) {
-  if (!Un)
+function MV(filepath, key, i) {
+  if (!Un) {
     try {
-      if ($fs.existsSync(t)) {
-        const s = $fs.readFileSync(t, "utf8"),
-          r = OV(s) || {};
-        r && r[e] && typeof r[e] == "string" && (Un = r[e]);
+      if ($fs.existsSync(filepath)) {
+        const fileContent = $fs.readFileSync(filepath, "utf8");
+        const json = OV(fileContent) || {};
+        if (json && json[key] && typeof json[key] == "string") {
+          Un = json[key];
+        }
       }
-      Un || ((Un = _V() || crypto.randomUUID()), Un && ($fs.existsSync(t) || $fs.mkdirSync($path.dirname(t), { recursive: !0 }), $fs.writeFileSync(t, JSON.stringify({ [e]: Un }), "utf8")));
-    } catch (s) {
-      i?.(s), (Un = void 0);
+      if (!Un) {
+        Un = _V() || crypto.randomUUID();
+        if (Un) {
+          $fs.existsSync(filepath) || $fs.mkdirSync($path.dirname(filepath), { recursive: !0 });
+          $fs.writeFileSync(filepath, JSON.stringify({ [key]: Un }), "utf8");
+        }
+      }
+    } catch (err) {
+      i?.(err);
+      Un = void 0;
     }
+  }
   return Un;
 }
 
@@ -54478,79 +54528,94 @@ var nlsMetadataPath = $path.dirname(fileURLToPath(import.meta.url)),
 if (!process.env.VSCODE_DEV) {
   process.env.ELECTRON_FORCE_IS_PACKAGED = "true";
 }
-qe("code/didStartMain");
-qe("code/willLoadMainBundle", { startTime: Math.floor(aV.timeOrigin) });
-qe("code/didLoadMainBundle");
+performance_mark("code/didStartMain");
+performance_mark("code/willLoadMainBundle", { startTime: Math.floor(performance.timeOrigin) });
+performance_mark("code/didLoadMainBundle");
 var qD = dV(Tt);
 
-function TV() {
+function setupProductConfig() {
   if (process.env.ICUBE_DEV_PROVIDER === "Spring") {
-    const t = a4("../product.desktop.spring.json");
-    u1(Tt, t);
+    const productJson = a4("../product.desktop.spring.json");
+    lodash_merge(Tt, productJson);
   } else {
-    const t = a4("../product.desktop.json");
-    u1(Tt, t);
+    const productJson = a4("../product.desktop.json");
+    lodash_merge(Tt, productJson);
   }
-  if (jn.existsSync($path.join(nlsMetadataPath, "../product.desktop.local.json"))) {
+  if (originalFS.existsSync($path.join(nlsMetadataPath, "../product.desktop.local.json"))) {
     const t = a4("../product.desktop.local.json");
-    u1(Tt, t);
+    lodash_merge(Tt, t);
   }
-  u1(Tt, { quality: "local" });
+  lodash_merge(Tt, { quality: "local" });
 }
 
 if (process.env.VSCODE_DEV) {
   try {
-    TV();
+    setupProductConfig();
   } catch (err) {
     console.error("setup product config error", err);
   }
 }
-var zs = VV(),
-  d1 = BV(zs);
-zs.sandbox && !zs["disable-chromium-sandbox"] && !d1["disable-chromium-sandbox"]
+
+var parsedArgv = VV(),
+  d1 = BV(parsedArgv);
+parsedArgv.sandbox && !parsedArgv["disable-chromium-sandbox"] && !d1["disable-chromium-sandbox"]
   ? app.enableSandbox()
   : app.commandLine.hasSwitch("no-sandbox") && !app.commandLine.hasSwitch("disable-gpu-sandbox")
     ? app.commandLine.appendSwitch("disable-gpu-sandbox")
     : (app.commandLine.appendSwitch("no-sandbox"), app.commandLine.appendSwitch("disable-gpu-sandbox"));
-var userDataPath = O1(zs, Tt.nameShort ?? "marscode-local");
+var userDataPath = O1(parsedArgv, Tt.nameShort ?? "marscode-local");
+
 if (process.env.VSCODE_DEV) {
   userDataPath = $path.resolve($path.dirname(userDataPath), `${$path.basename(userDataPath)} - Local`);
 }
 if (process.platform === "win32") {
-  const t = I4(userDataPath);
-  t && vc(t);
+  const uncPath = getUNCPath(userDataPath);
+  uncPath && vc(uncPath);
 }
+
 app.setPath("userData", userDataPath);
-var GD = GV();
+var __cacheDir = getCacheDir();
 Menu.setApplicationMenu(null);
-qe("code/willStartCrashReporter");
-(zs["crash-reporter-directory"] || (d1["enable-crash-reporter"] && !zs["disable-crash-reporter"])) && HV();
-qe("code/didStartCrashReporter");
+
+performance_mark("code/willStartCrashReporter");
+if (parsedArgv["crash-reporter-directory"] || (d1["enable-crash-reporter"] && !parsedArgv["disable-crash-reporter"])) {
+  startCrashReporter();
+}
+performance_mark("code/didStartCrashReporter");
+
 qD && qD.isPortable && app.setAppLogsPath($path.join(userDataPath, "logs"));
 protocol.registerSchemesAsPrivileged([
   {
     scheme: "vscode-webview",
     privileges: {
-      standard: !0,
-      secure: !0,
-      supportFetchAPI: !0,
-      corsEnabled: !0,
-      allowServiceWorkers: !0,
-      codeCache: !0,
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      allowServiceWorkers: true,
+      codeCache: true,
     },
   },
   {
     scheme: "vscode-file",
-    privileges: { secure: !0, standard: !0, supportFetchAPI: !0, corsEnabled: !0, codeCache: !0 },
+    privileges: {
+      secure: true,
+      standard: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      codeCache: true,
+    },
   },
 ]);
+
 qV();
 process.env.ENABLE_MARSCODE_NLS = "1";
-var c4 = void 0,
-  osLocale = YD((app.getPreferredSystemLanguages()?.[0] ?? "en").toLowerCase()),
-  userLocale = KV(d1);
+
+var c4 = void 0;
+var osLocale = YD((app.getPreferredSystemLanguages()?.[0] ?? "en").toLowerCase());
+var userLocale = KV(d1);
 if (userLocale) {
-  c4 = zD({
+  c4 = generateNls({
     userLocale: userLocale,
     osLocale: osLocale,
     commit: Tt.commit,
@@ -54558,41 +54623,53 @@ if (userLocale) {
     nlsMetadataPath: nlsMetadataPath,
   });
 }
+
 if (process.platform === "win32" || process.platform === "linux") {
   const lang = !userLocale || userLocale === "qps-ploc" ? "en" : userLocale;
   app.commandLine.appendSwitch("lang", lang);
 }
+
 app.once("ready", function () {
-  if (zs.trace) {
-    const t = {
-      categoryFilter: zs["trace-category-filter"] || "*",
-      traceOptions: zs["trace-options"] || "record-until-full,enable-sampling",
+  if (parsedArgv.trace) {
+    const options = {
+      categoryFilter: parsedArgv["trace-category-filter"] || "*",
+      traceOptions: parsedArgv["trace-options"] || "record-until-full,enable-sampling",
     };
-    contentTracing.startRecording(t).finally(() => JD());
+    contentTracing.startRecording(options).finally(() => mainAppReady());
   } else {
-    JD();
+    mainAppReady();
   }
 });
 
-async function JD() {
-  qe("code/mainAppReady");
+async function mainAppReady() {
+  performance_mark("code/mainAppReady");
   try {
-    const [, t] = await Promise.all([JV(GD), YV()]);
-    await NV(GD, t);
-  } catch (t) {
-    console.error(t);
+    const [, locale] = await Promise.all([$mkdir(__cacheDir), getLocaleConfig()]);
+    await didRunMainBundle(__cacheDir, locale);
+  } catch (err) {
+    console.error(err);
   }
 }
 
-async function NV(t, e) {
-  (process.env.VSCODE_NLS_CONFIG = JSON.stringify(e)), (process.env.VSCODE_CODE_CACHE_PATH = t || ""), await kV(), await Promise.resolve().then(() => (nV(), tV)), qe("code/didRunMainBundle");
+async function didRunMainBundle(cacheDir, locale) {
+  process.env.VSCODE_NLS_CONFIG = JSON.stringify(locale);
+  process.env.VSCODE_CODE_CACHE_PATH = cacheDir || "";
+  await kV();
+  await Promise.resolve().then(() => {
+    electron_main();
+    return tV;
+  });
+  performance_mark("code/didRunMainBundle");
 }
 
-function BV(t) {
+function BV(argv) {
   const e = ["disable-hardware-acceleration", "force-color-profile", "disable-lcd-text", "proxy-bypass-list"];
-  process.platform === "linux" && (e.push("force-renderer-accessibility"), e.push("password-store"));
-  const i = ["enable-proposed-api", "log-level", "use-inmemory-secretstorage"],
-    s = jV();
+  if (process.platform === "linux") {
+    e.push("force-renderer-accessibility");
+    e.push("password-store");
+  }
+  const i = ["enable-proposed-api", "log-level", "use-inmemory-secretstorage"];
+  const s = readArgvJson();
   Object.keys(s).forEach((a) => {
     const c = s[a];
     if (e.indexOf(a) !== -1) {
@@ -54620,26 +54697,28 @@ function BV(t) {
   app.commandLine.appendSwitch("disable-features", r);
   const n = `FontMatchingCTMigration,${app.commandLine.getSwitchValue("disable-blink-features")}`;
   app.commandLine.appendSwitch("disable-blink-features", n);
-  const o = zV(t);
-  return o && app.commandLine.appendSwitch("js-flags", o), s;
+  const o = zV(argv);
+  o && app.commandLine.appendSwitch("js-flags", o);
+  return s;
 }
 
-function jV() {
-  const t = WV();
+function readArgvJson() {
+  const filepath = WV();
   let e;
   try {
-    e = C4(jn.readFileSync(t).toString());
-  } catch (i) {
-    i && i.code === "ENOENT" ? UV(t) : console.warn(`Unable to read argv.json configuration file in ${t}, falling back to defaults (${i})`);
+    e = C4(originalFS.readFileSync(filepath).toString());
+  } catch (err) {
+    err && err.code === "ENOENT" ? UV(filepath) : console.warn(`Unable to read argv.json configuration file in ${filepath}, falling back to defaults (${err})`);
   }
-  return e || (e = {}), e;
+  e || (e = {});
+  return e;
 }
 
-function UV(t) {
+function UV(filepath) {
   try {
-    const e = $path.dirname(t);
-    jn.existsSync(e) || jn.mkdirSync(e);
-    const i = [
+    const dirname = $path.dirname(filepath);
+    originalFS.existsSync(dirname) || originalFS.mkdirSync(dirname);
+    const content = [
       "// This configuration file allows you to pass permanent command line arguments to VS Code.",
       "// Only a subset of arguments is currently supported to reduce the likelihood of breaking",
       "// the installation.",
@@ -54653,82 +54732,95 @@ function UV(t) {
       '	// "disable-hardware-acceleration": true',
       "}",
     ];
-    jn.writeFileSync(
-      t,
-      i.join(`
+    originalFS.writeFileSync(
+      filepath,
+      content.join(`
 `),
     );
-  } catch (e) {
-    console.error(`Unable to create argv.json configuration file in ${t}, falling back to defaults (${e})`);
+  } catch (err) {
+    console.error(`Unable to create argv.json configuration file in ${filepath}, falling back to defaults (${err})`);
   }
 }
 
 function WV() {
   const t = process.env.VSCODE_PORTABLE;
-  if (t) return $path.join(t, "argv.json");
-  let e = Tt.dataFolderName;
-  return process.env.VSCODE_DEV && (e = `${e}-local`), $path.join($os.homedir(), e, "argv.json");
+  if (t) {
+    return $path.join(t, "argv.json");
+  }
+  let dataFolderName = Tt.dataFolderName;
+  process.env.VSCODE_DEV && (dataFolderName = `${dataFolderName}-local`);
+  return $path.join($os.homedir(), dataFolderName, "argv.json");
 }
 
-function HV() {
-  let t = zs["crash-reporter-directory"],
-    e = "";
-  if (t) {
-    if (((t = $path.normalize(t)), $path.isAbsolute(t) || (console.error(`The path '${t}' specified for --crash-reporter-directory must be absolute.`), app.exit(1)), !jn.existsSync(t)))
+function startCrashReporter() {
+  let crashReporterDir = parsedArgv["crash-reporter-directory"],
+    submitURL = "";
+  if (crashReporterDir) {
+    crashReporterDir = $path.normalize(crashReporterDir);
+    if (!$path.isAbsolute(crashReporterDir)) {
+      console.error(`The path '${crashReporterDir}' specified for --crash-reporter-directory must be absolute.`);
+      app.exit(1);
+    }
+    if (!originalFS.existsSync(crashReporterDir)) {
       try {
-        jn.mkdirSync(t, { recursive: !0 });
+        originalFS.mkdirSync(crashReporterDir, { recursive: true });
       } catch {
-        console.error(`The path '${t}' specified for --crash-reporter-directory does not seem to exist or cannot be created.`), app.exit(1);
+        console.error(`The path '${crashReporterDir}' specified for --crash-reporter-directory does not seem to exist or cannot be created.`);
+        app.exit(1);
       }
-    console.log(`Found --crash-reporter-directory argument. Setting crashDumps directory to be '${t}'`), app.setPath("crashDumps", t);
+    }
+    console.log(`Found --crash-reporter-directory argument. Setting crashDumps directory to be '${crashReporterDir}'`);
+    app.setPath("crashDumps", crashReporterDir);
   } else {
     const o = Tt.appCenter;
     if (o) {
-      const a = process.platform === "win32",
-        c = process.platform === "linux",
-        l = process.platform === "darwin",
-        h = d1["crash-reporter-id"];
-      if (h && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(h)) {
-        if (a)
+      const isWin = process.platform === "win32",
+        isLinux = process.platform === "linux",
+        isMac = process.platform === "darwin",
+        crashReporterID = d1["crash-reporter-id"];
+      if (crashReporterID && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(crashReporterID)) {
+        if (isWin) {
           switch (process.arch) {
             case "x64":
-              e = o["win32-x64"];
+              submitURL = o["win32-x64"];
               break;
             case "arm64":
-              e = o["win32-arm64"];
+              submitURL = o["win32-arm64"];
               break;
           }
-        else if (l)
-          if (Tt.darwinUniversalAssetId) e = o["darwin-universal"];
+        } else if (isMac) {
+          if (Tt.darwinUniversalAssetId) submitURL = o["darwin-universal"];
           else
             switch (process.arch) {
               case "x64":
-                e = o.darwin;
+                submitURL = o.darwin;
                 break;
               case "arm64":
-                e = o["darwin-arm64"];
+                submitURL = o["darwin-arm64"];
                 break;
             }
-        else c && (e = o["linux-x64"]);
-        e = e.concat("&uid=", h, "&iid=", h, "&sid=", h);
+        } else if (isLinux) {
+          submitURL = o["linux-x64"];
+        }
+        submitURL = submitURL.concat("&uid=", crashReporterID, "&iid=", crashReporterID, "&sid=", crashReporterID);
         const p = process.argv,
           g = p.indexOf("--");
-        g === -1 ? p.push("--crash-reporter-id", h) : p.splice(g, 0, "--crash-reporter-id", h);
+        g === -1 ? p.push("--crash-reporter-id", crashReporterID) : p.splice(g, 0, "--crash-reporter-id", crashReporterID);
       }
     }
   }
-  const i = (Tt.crashReporter ? Tt.crashReporter.productName : void 0) || Tt.nameShort,
-    s = (Tt.crashReporter ? Tt.crashReporter.companyName : void 0) || "Microsoft",
-    r = !!(!process.env.VSCODE_DEV && e),
-    n = MV($path.resolve(userDataPath, "User/globalStorage/storage.json"), "telemetry.machineId", console.error.bind(console));
+  const productName = (Tt.crashReporter ? Tt.crashReporter.productName : void 0) || Tt.nameShort,
+    companyName = (Tt.crashReporter ? Tt.crashReporter.companyName : void 0) || "Microsoft",
+    uploadToServer = !!(!process.env.VSCODE_DEV && submitURL),
+    machine_id = MV($path.resolve(userDataPath, "User/globalStorage/storage.json"), "telemetry.machineId", console.error.bind(console));
   crashReporter.start({
-    companyName: s,
-    productName: process.env.VSCODE_DEV ? `${i} Dev` : i,
-    submitURL: e,
-    uploadToServer: r,
-    compress: !1,
+    companyName: companyName,
+    productName: process.env.VSCODE_DEV ? `${productName} Dev` : productName,
+    submitURL: submitURL,
+    uploadToServer: uploadToServer,
+    compress: false,
     globalExtra: {
-      machine_id: n || "",
+      machine_id: machine_id || "",
       build_version: Tt.tronBuildVersion || "",
       quality: Tt.quality || "",
       build_time: Tt.date || "",
@@ -54739,65 +54831,73 @@ function HV() {
 
 function zV(t) {
   const e = [];
-  return t["js-flags"] && e.push(t["js-flags"]), e.length > 0 ? e.join(" ") : null;
+  t["js-flags"] && e.push(t["js-flags"]);
+  return e.length > 0 ? e.join(" ") : null;
 }
 
 function VV() {
-  return (0, SV.default)(process.argv, {
+  // minimist
+  return SV.default(process.argv, {
     string: ["user-data-dir", "locale", "js-flags", "crash-reporter-directory"],
     boolean: ["disable-chromium-sandbox"],
-    default: { sandbox: !0 },
+    default: { sandbox: true },
     alias: { "no-sandbox": "sandbox" },
   });
 }
 
 function qV() {
-  const t = [];
-  (globalThis.macOpenFiles = t),
-    app.on("open-file", function (s, r) {
-      t.push(r);
-    });
-  const e = [],
-    i = function (s, r) {
-      s.preventDefault(), e.push(r);
-    };
+  const openFiles = [];
+  globalThis.macOpenFiles = openFiles;
+  app.on("open-file", function (evt, file) {
+    openFiles.push(file);
+  });
+  const openUrls = [];
+  const openUrlHandler = function (evt, url) {
+    evt.preventDefault();
+    openUrls.push(url);
+  };
   app.on("will-finish-launching", function () {
-    app.on("open-url", i);
-  }),
-    (globalThis.getOpenUrls = function () {
-      return app.removeListener("open-url", i), e;
-    });
+    app.on("open-url", openUrlHandler);
+  });
+  globalThis.getOpenUrls = function () {
+    app.removeListener("open-url", openUrlHandler);
+    return openUrls;
+  };
 }
 
-function GV() {
+function getCacheDir() {
   if (process.argv.indexOf("--no-cached-data") > 0 || process.env.VSCODE_DEV) return;
-  const t = Tt.commit;
-  if (t) return $path.join(userDataPath, "CachedData", t);
-}
-
-async function JV(t) {
-  if (typeof t == "string")
-    try {
-      return await jn.promises.mkdir(t, { recursive: !0 }), t;
-    } catch {}
-}
-
-function YD(t) {
-  if (t.startsWith("zh")) {
-    const e = t.split("-")[1];
-    return ["hans", "cn", "sg", "my"].includes(e) ? "zh-cn" : "zh-tw";
+  const commit = Tt.commit;
+  if (commit) {
+    return $path.join(userDataPath, "CachedData", commit);
   }
-  return t;
 }
 
-async function YV() {
+async function $mkdir(path) {
+  if (typeof path == "string") {
+    try {
+      await originalFS.promises.mkdir(path, { recursive: true });
+      return path;
+    } catch {}
+  }
+}
+
+function YD(locale) {
+  if (locale.startsWith("zh")) {
+    const lang = locale.split("-")[1];
+    return ["hans", "cn", "sg", "my"].includes(lang) ? "zh-cn" : "zh-tw";
+  }
+  return locale;
+}
+
+async function getLocaleConfig() {
   const t = c4 ? await c4 : void 0;
   if (t) return t;
-  let e = app.getLocale();
-  return e
-    ? ((e = YD(e.toLowerCase())),
-      zD({
-        userLocale: e,
+  let locale = app.getLocale();
+  return locale
+    ? ((locale = YD(locale.toLowerCase())),
+      generateNls({
+        userLocale: locale,
         osLocale: osLocale,
         commit: Tt.commit,
         userDataPath: userDataPath,
@@ -54814,6 +54914,6 @@ async function YV() {
 }
 
 function KV(t) {
-  const e = zs.locale;
-  return e ? e.toLowerCase() : typeof t?.locale == "string" ? t.locale.toLowerCase() : void 0;
+  const locale = parsedArgv.locale;
+  return locale ? locale.toLowerCase() : typeof t?.locale == "string" ? t.locale.toLowerCase() : void 0;
 }
