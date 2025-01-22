@@ -16582,176 +16582,164 @@ var Ed,
   xy = v({
     "out-build/vs/platform/native/electron-main/auth.js"() {
       "use strict";
-      jt(),
-        H(),
-        bn(),
-        T(),
-        ge(),
-        ri(),
-        rt(),
-        V5(),
-        gt(),
-        G(),
-        Q(),
-        vd(),
-        ni(),
-        (Ed = U("proxyAuthService")),
-        (Dd = class extends N {
-          constructor(e, i, s, r, n, o) {
-            super(), (this.h = e), (this.m = i), (this.n = s), (this.r = r), (this.s = n), (this.t = o), (this.a = "proxy-credentials://"), (this.b = new Map()), (this.c = void 0), (this.f = new Set()), (this.g = new Map()), this.u();
-          }
+      jt(), H(), bn(), T(), ge(), ri(), rt(), V5(), gt(), G(), Q(), vd(), ni();
+      Ed = U("proxyAuthService");
+      Dd = class extends N {
+        constructor(e, i, s, r, n, o) {
+          super(), (this.h = e), (this.m = i), (this.n = s), (this.r = r), (this.s = n), (this.t = o), (this.a = "proxy-credentials://"), (this.b = new Map()), (this.c = void 0), (this.f = new Set()), (this.g = new Map()), this.u();
+        }
 
-          u() {
-            const e = I.fromNodeEventEmitter(app, "login", (i, s, r, n, o) => ({
-              event: i,
-              authInfo: { ...n, attempt: r.firstAuthAttempt ? 1 : 2 },
-              callback: o,
-            }));
-            this.B(e(this.w, this));
-          }
+        u() {
+          const e = I.fromNodeEventEmitter(app, "login", (i, s, r, n, o) => ({
+            event: i,
+            authInfo: { ...n, attempt: r.firstAuthAttempt ? 1 : 2 },
+            callback: o,
+          }));
+          this.B(e(this.w, this));
+        }
 
-          async lookupAuthorization(e) {
-            return this.w({ authInfo: e });
-          }
+        async lookupAuthorization(e) {
+          return this.w({ authInfo: e });
+        }
 
-          async w({ event: e, authInfo: i, callback: s }) {
-            if (!i.isProxy) return;
-            e?.preventDefault();
-            const r = String(Or({ scheme: i.scheme, host: i.host, port: i.port }));
-            let n,
-              o = this.b.get(r);
-            if (o) this.h.trace("auth#onLogin (proxy) - pending proxy handling found"), (n = await o);
-            else {
-              this.h.trace("auth#onLogin (proxy) - no pending proxy handling found, starting new"), (o = this.y(i, r)), this.b.set(r, o);
-              try {
-                n = await o;
-              } finally {
-                this.b.delete(r);
-              }
-            }
-            return s?.(n?.username, n?.password), n;
-          }
-
-          async y(e, i) {
-            this.h.trace("auth#resolveProxyCredentials (proxy) - enter");
+        async w({ event: e, authInfo: i, callback: s }) {
+          if (!i.isProxy) return;
+          e?.preventDefault();
+          const r = String(Or({ scheme: i.scheme, host: i.host, port: i.port }));
+          let n,
+            o = this.b.get(r);
+          if (o) this.h.trace("auth#onLogin (proxy) - pending proxy handling found"), (n = await o);
+          else {
+            this.h.trace("auth#onLogin (proxy) - no pending proxy handling found, starting new"), (o = this.y(i, r)), this.b.set(r, o);
             try {
-              const s = await this.z(e, i);
-              if (s) return this.h.trace("auth#resolveProxyCredentials (proxy) - got credentials"), s;
-              this.h.trace("auth#resolveProxyCredentials (proxy) - did not get credentials");
+              n = await o;
             } finally {
-              this.h.trace("auth#resolveProxyCredentials (proxy) - exit");
+              this.b.delete(r);
             }
           }
+          return s?.(n?.username, n?.password), n;
+        }
 
-          async z(e, i) {
-            if ((this.h.trace("auth#doResolveProxyCredentials - enter", e), this.t.extensionTestsLocationURI)) {
-              const l = this.s.getValue("integration-test.http.proxyAuth");
-              if (l) {
-                const h = l.indexOf(":");
-                return h !== -1
-                  ? { username: l.substring(0, h), password: l.substring(h + 1) }
-                  : {
-                      username: l,
-                      password: "",
-                    };
-              }
-              return;
-            }
-            const s = (this.s.getValue("http.proxy") || "").trim() || (process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY || "").trim() || void 0;
-            if (s?.indexOf("@") !== -1) {
-              const l = L.parse(s),
-                h = l.authority.indexOf("@");
-              if (h !== -1) {
-                if (e.attempt > 1) {
-                  this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - ignoring previously used config/envvar credentials");
-                  return;
-                }
-                this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - found config/envvar credentials to use");
-                const d = l.authority.substring(0, h),
-                  p = d.indexOf(":");
-                return p !== -1
-                  ? { username: d.substring(0, p), password: d.substring(p + 1) }
-                  : {
-                      username: d,
-                      password: "",
-                    };
-              }
-            }
-            const r = e.attempt === 1 && this.g.get(i);
-            if (r) {
-              this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - found session credentials to use");
-              const { username: l, password: h } = r;
-              return { username: l, password: h };
-            }
-            let n, o;
-            try {
-              const l = this.r.get(this.a + i, -1);
-              if (l) {
-                const h = JSON.parse(await this.n.decrypt(l));
-                (n = h.username), (o = h.password);
-              }
-            } catch (l) {
-              this.h.error(l);
-            }
-            if (e.attempt === 1 && typeof n == "string" && typeof o == "string")
-              return (
-                this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - found stored credentials to use"),
-                this.g.set(i, {
-                  username: n,
-                  password: o,
-                }),
-                { username: n, password: o }
-              );
-            const a = this.c,
-              c = (this.c = (async () => {
-                await a;
-                const l = await this.C(e, i, n, o);
-                return this.c === c && (this.c = void 0), l;
-              })());
-            return c;
+        async y(e, i) {
+          this.h.trace("auth#resolveProxyCredentials (proxy) - enter");
+          try {
+            const s = await this.z(e, i);
+            if (s) return this.h.trace("auth#resolveProxyCredentials (proxy) - got credentials"), s;
+            this.h.trace("auth#resolveProxyCredentials (proxy) - did not get credentials");
+          } finally {
+            this.h.trace("auth#resolveProxyCredentials (proxy) - exit");
           }
+        }
 
-          async C(e, i, s, r) {
-            if (this.f.has(i)) {
-              this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - login dialog was cancelled before, not showing again");
-              return;
+        async z(e, i) {
+          if ((this.h.trace("auth#doResolveProxyCredentials - enter", e), this.t.extensionTestsLocationURI)) {
+            const l = this.s.getValue("integration-test.http.proxyAuth");
+            if (l) {
+              const h = l.indexOf(":");
+              return h !== -1
+                ? { username: l.substring(0, h), password: l.substring(h + 1) }
+                : {
+                    username: l,
+                    password: "",
+                  };
             }
-            const n = this.m.getFocusedWindow() || this.m.getLastActiveWindow();
-            if (!n) {
-              this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - no opened window found to show dialog in");
-              return;
-            }
-            this.h.trace(`auth#doResolveProxyCredentials (proxy) - asking window ${n.id} to handle proxy login`);
-            const o = this.g.get(i),
-              a = {
-                authInfo: e,
-                username: o?.username ?? s,
-                password: o?.password ?? r,
-                replyChannel: `vscode:proxyAuthResponse:${$uuid()}`,
-              };
-            n.sendWhenReady("vscode:openProxyAuthenticationDialog", ft.None, a);
-            const c = await new Promise((l) => {
-              const h = async (d, p, g) => {
-                if (p === a.replyChannel)
-                  if ((this.h.trace(`auth#doResolveProxyCredentials - exit - received credentials from window ${n.id}`), n.win?.webContents.off("ipc-message", h), g)) {
-                    const m = { username: g.username, password: g.password };
-                    try {
-                      if (g.remember) {
-                        const b = await this.n.encrypt(JSON.stringify(m));
-                        this.r.store(this.a + i, b, -1, 1);
-                      } else this.r.remove(this.a + i, -1);
-                    } catch (b) {
-                      this.h.error(b);
-                    }
-                    l({ username: m.username, password: m.password });
-                  } else this.f.add(i), l(void 0);
-              };
-              n.win?.webContents.on("ipc-message", h);
-            });
-            return this.g.set(i, c), c;
+            return;
           }
-        }),
-        (Dd = __decorate([__param(0, K), __param(1, zt), __param(2, Hh), __param(3, bl), __param(4, st), __param(5, ct)], Dd));
+          const s = (this.s.getValue("http.proxy") || "").trim() || (process.env.https_proxy || process.env.HTTPS_PROXY || process.env.http_proxy || process.env.HTTP_PROXY || "").trim() || void 0;
+          if (s?.indexOf("@") !== -1) {
+            const l = L.parse(s),
+              h = l.authority.indexOf("@");
+            if (h !== -1) {
+              if (e.attempt > 1) {
+                this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - ignoring previously used config/envvar credentials");
+                return;
+              }
+              this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - found config/envvar credentials to use");
+              const d = l.authority.substring(0, h),
+                p = d.indexOf(":");
+              return p !== -1
+                ? { username: d.substring(0, p), password: d.substring(p + 1) }
+                : {
+                    username: d,
+                    password: "",
+                  };
+            }
+          }
+          const r = e.attempt === 1 && this.g.get(i);
+          if (r) {
+            this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - found session credentials to use");
+            const { username: l, password: h } = r;
+            return { username: l, password: h };
+          }
+          let n, o;
+          try {
+            const l = this.r.get(this.a + i, -1);
+            if (l) {
+              const h = JSON.parse(await this.n.decrypt(l));
+              (n = h.username), (o = h.password);
+            }
+          } catch (l) {
+            this.h.error(l);
+          }
+          if (e.attempt === 1 && typeof n == "string" && typeof o == "string")
+            return (
+              this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - found stored credentials to use"),
+              this.g.set(i, {
+                username: n,
+                password: o,
+              }),
+              { username: n, password: o }
+            );
+          const a = this.c,
+            c = (this.c = (async () => {
+              await a;
+              const l = await this.C(e, i, n, o);
+              return this.c === c && (this.c = void 0), l;
+            })());
+          return c;
+        }
+
+        async C(e, i, s, r) {
+          if (this.f.has(i)) {
+            this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - login dialog was cancelled before, not showing again");
+            return;
+          }
+          const n = this.m.getFocusedWindow() || this.m.getLastActiveWindow();
+          if (!n) {
+            this.h.trace("auth#doResolveProxyCredentials (proxy) - exit - no opened window found to show dialog in");
+            return;
+          }
+          this.h.trace(`auth#doResolveProxyCredentials (proxy) - asking window ${n.id} to handle proxy login`);
+          const o = this.g.get(i),
+            a = {
+              authInfo: e,
+              username: o?.username ?? s,
+              password: o?.password ?? r,
+              replyChannel: `vscode:proxyAuthResponse:${$uuid()}`,
+            };
+          n.sendWhenReady("vscode:openProxyAuthenticationDialog", ft.None, a);
+          const c = await new Promise((l) => {
+            const h = async (d, p, g) => {
+              if (p === a.replyChannel)
+                if ((this.h.trace(`auth#doResolveProxyCredentials - exit - received credentials from window ${n.id}`), n.win?.webContents.off("ipc-message", h), g)) {
+                  const m = { username: g.username, password: g.password };
+                  try {
+                    if (g.remember) {
+                      const b = await this.n.encrypt(JSON.stringify(m));
+                      this.r.store(this.a + i, b, -1, 1);
+                    } else this.r.remove(this.a + i, -1);
+                  } catch (b) {
+                    this.h.error(b);
+                  }
+                  l({ username: m.username, password: m.password });
+                } else this.f.add(i), l(void 0);
+            };
+            n.win?.webContents.on("ipc-message", h);
+          });
+          return this.g.set(i, c), c;
+        }
+      };
+      Dd = __decorate([__param(0, K), __param(1, zt), __param(2, Hh), __param(3, bl), __param(4, st), __param(5, ct)], Dd);
     },
   }),
   Da,
@@ -23326,45 +23314,39 @@ var $n,
   In = v({
     "out-build/vs/platform/request/common/request.js"() {
       "use strict";
-      mt(),
-        We(),
-        T(),
-        le(),
-        cn(),
-        G(),
-        ii(),
-        ($n = U("requestService")),
-        (u9 = class {
-          constructor(t) {
-            this.b = t;
-          }
+      mt(), We(), T(), le(), cn(), G(), ii();
+      $n = U("requestService");
+      u9 = class {
+        constructor(t) {
+          this.b = t;
+        }
 
-          toJSON() {
-            if (!this.a) {
-              const t = Object.create(null);
-              for (const e in this.b) e.toLowerCase() === "authorization" || e.toLowerCase() === "proxy-authorization" ? (t[e] = "*****") : (t[e] = this.b[e]);
-              this.a = t;
-            }
-            return this.a;
+        toJSON() {
+          if (!this.a) {
+            const t = Object.create(null);
+            for (const e in this.b) e.toLowerCase() === "authorization" || e.toLowerCase() === "proxy-authorization" ? (t[e] = "*****") : (t[e] = this.b[e]);
+            this.a = t;
           }
-        }),
-        (h9 = class extends N {
-          constructor(t) {
-            super(), (this.b = t), (this.a = 0);
-          }
+          return this.a;
+        }
+      };
+      h9 = class extends N {
+        constructor(t) {
+          super(), (this.b = t), (this.a = 0);
+        }
 
-          async c(t, e) {
-            const i = `[network] #${++this.a}: ${t.url}`;
-            this.b.trace(`${i} - begin`, t.type, new u9(t.headers ?? {}));
-            try {
-              const s = await e();
-              return this.b.trace(`${i} - end`, t.type, s.res.statusCode, s.res.headers), s;
-            } catch (s) {
-              throw (this.b.error(`${i} - error`, t.type, Ks(s)), s);
-            }
+        async c(t, e) {
+          const i = `[network] #${++this.a}: ${t.url}`;
+          this.b.trace(`${i} - begin`, t.type, new u9(t.headers ?? {}));
+          try {
+            const s = await e();
+            return this.b.trace(`${i} - end`, t.type, s.res.statusCode, s.res.headers), s;
+          } catch (s) {
+            throw (this.b.error(`${i} - error`, t.type, Ks(s)), s);
           }
-        }),
-        BP(1);
+        }
+      };
+      BP(1);
     },
   });
 
@@ -24174,41 +24156,46 @@ var fr,
   Na = v({
     "out-build/vs/platform/product/common/product.js"() {
       "use strict";
-      if ((Ls(), H(), ri(), (Zd = globalThis.vscode), typeof Zd < "u" && typeof Zd.context < "u")) {
+      Ls(), H(), ri();
+      Zd = globalThis.vscode;
+      if (typeof Zd < "u" && typeof Zd.context < "u") {
         const t = Zd.context.configuration();
-        if (t) Mt = t.product;
-        else throw new Error("Sandbox: unable to resolve product configuration from preload script.");
+        if (t) {
+          Mt = t.product;
+        } else {
+          throw new Error("Sandbox: unable to resolve product configuration from preload script.");
+        }
       } else if (globalThis._VSCODE_PRODUCT_JSON && globalThis._VSCODE_PACKAGE_JSON) {
-        if (
-          ((Mt = globalThis._VSCODE_PRODUCT_JSON),
-          Ge.VSCODE_DEV &&
-            Object.assign(Mt, {
-              nameShort: `${Mt.nameShort} - Local`,
-              nameLong: `${Mt.nameLong} - Local`,
-              dataFolderName: `${Mt.dataFolderName}-local`,
-              serverDataFolderName: Mt.serverDataFolderName ? `${Mt.serverDataFolderName}-local` : void 0,
-            }),
-          !Mt.version)
-        ) {
+        Mt = globalThis._VSCODE_PRODUCT_JSON;
+        if (Ge.VSCODE_DEV) {
+          Object.assign(Mt, {
+            nameShort: `${Mt.nameShort} - Local`,
+            nameLong: `${Mt.nameLong} - Local`,
+            dataFolderName: `${Mt.dataFolderName}-local`,
+            serverDataFolderName: Mt.serverDataFolderName ? `${Mt.serverDataFolderName}-local` : void 0,
+          });
+        }
+        if (!Mt.version) {
           const t = globalThis._VSCODE_PACKAGE_JSON;
           Object.assign(Mt, { version: t.version });
         }
         Ge.ICUBE_EXTENSIONS_GALLERY && Object.assign(Mt, { extensionsGallery: JSON.parse(Ge.ICUBE_EXTENSIONS_GALLERY) });
-      } else
-        (Mt = {}),
-          Object.keys(Mt).length === 0 &&
-            Object.assign(Mt, {
-              version: "1.95.0-dev",
-              nameShort: "Code - OSS Dev",
-              nameLong: "Code - OSS Dev",
-              applicationName: "code-oss",
-              dataFolderName: ".vscode-oss",
-              urlProtocol: "code-oss",
-              reportIssueUrl: "https://github.com/microsoft/vscode/issues/new",
-              licenseName: "MIT",
-              licenseUrl: "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
-              serverLicenseUrl: "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
-            });
+      } else {
+        Mt = {};
+        Object.keys(Mt).length === 0 &&
+          Object.assign(Mt, {
+            version: "1.95.0-dev",
+            nameShort: "Code - OSS Dev",
+            nameLong: "Code - OSS Dev",
+            applicationName: "code-oss",
+            dataFolderName: ".vscode-oss",
+            urlProtocol: "code-oss",
+            reportIssueUrl: "https://github.com/microsoft/vscode/issues/new",
+            licenseName: "MIT",
+            licenseUrl: "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
+            serverLicenseUrl: "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
+          });
+      }
       if (Ge.IDE_ENVIRONMENT_ID) {
         const e = {
           id: Ge.IDE_ENVIRONMENT_ID || "",
@@ -24222,15 +24209,15 @@ var fr,
         };
         Object.assign(Mt, { devSpaceInfo: e });
       }
-      Mt.iCubeApp || Object.assign(Mt, { iCubeApp: {} }),
-        Object.assign(Mt.iCubeApp, {
-          envInfo: {
-            ...Mt.iCubeApp?.envInfo,
-            sessionID: $uuid(),
-          },
-        }),
-        Object.assign(Mt, { _onDidChangeConfig: new $() }),
-        (as = Mt);
+      Mt.iCubeApp || Object.assign(Mt, { iCubeApp: {} });
+      Object.assign(Mt.iCubeApp, {
+        envInfo: {
+          ...Mt.iCubeApp?.envInfo,
+          sessionID: $uuid(),
+        },
+      });
+      Object.assign(Mt, { _onDidChangeConfig: new $() });
+      as = Mt;
     },
   }),
   ko,
@@ -26214,71 +26201,66 @@ var Wr,
   ql = v({
     "out-build/vs/platform/log/electron-main/loggerService.js"() {
       "use strict";
-      Zi(),
-        H(),
-        G(),
-        Q(),
-        yF(),
-        (ja = pa),
-        (P9 = class extends L9 {
-          constructor() {
-            super(...arguments), (this.u = new li());
-          }
+      Zi(), H(), G(), Q(), yF(), (ja = pa);
+      P9 = class extends L9 {
+        constructor() {
+          super(...arguments), (this.u = new li());
+        }
 
-          createLogger(t, e, i) {
-            i !== void 0 && this.u.set(this.n(t), i);
-            try {
-              return super.createLogger(t, e);
-            } catch (s) {
-              throw (this.u.delete(this.n(t)), s);
-            }
+        createLogger(t, e, i) {
+          i !== void 0 && this.u.set(this.n(t), i);
+          try {
+            return super.createLogger(t, e);
+          } catch (s) {
+            throw (this.u.delete(this.n(t)), s);
           }
+        }
 
-          registerLogger(t, e) {
-            e !== void 0 && this.u.set(t.resource, e), super.registerLogger(t);
-          }
+        registerLogger(t, e) {
+          e !== void 0 && this.u.set(t.resource, e), super.registerLogger(t);
+        }
 
-          deregisterLogger(t) {
-            this.u.delete(t), super.deregisterLogger(t);
-          }
+        deregisterLogger(t) {
+          this.u.delete(t), super.deregisterLogger(t);
+        }
 
-          getRegisteredLoggers(t) {
-            const e = [];
-            for (const i of super.getRegisteredLoggers()) t === this.u.get(i.resource) && e.push(i);
-            return e;
-          }
+        getRegisteredLoggers(t) {
+          const e = [];
+          for (const i of super.getRegisteredLoggers()) t === this.u.get(i.resource) && e.push(i);
+          return e;
+        }
 
-          getOnDidChangeLogLevelEvent(t) {
-            return I.filter(this.onDidChangeLogLevel, (e) => g6(e) || this.w(e[0], t));
-          }
+        getOnDidChangeLogLevelEvent(t) {
+          return I.filter(this.onDidChangeLogLevel, (e) => g6(e) || this.w(e[0], t));
+        }
 
-          getOnDidChangeVisibilityEvent(t) {
-            return I.filter(this.onDidChangeVisibility, ([e]) => this.w(e, t));
-          }
+        getOnDidChangeVisibilityEvent(t) {
+          return I.filter(this.onDidChangeVisibility, ([e]) => this.w(e, t));
+        }
 
-          getOnDidChangeLoggersEvent(t) {
-            return I.filter(
-              I.map(this.onDidChangeLoggers, (e) => ({
-                added: [...e.added].filter((s) => this.w(s.resource, t)),
-                removed: [...e.removed].filter((s) => this.w(s.resource, t)),
-              })),
-              (e) => e.added.length > 0 || e.removed.length > 0,
-            );
-          }
+        getOnDidChangeLoggersEvent(t) {
+          return I.filter(
+            I.map(this.onDidChangeLoggers, (e) => ({
+              added: [...e.added].filter((s) => this.w(s.resource, t)),
+              removed: [...e.removed].filter((s) => this.w(s.resource, t)),
+            })),
+            (e) => e.added.length > 0 || e.removed.length > 0,
+          );
+        }
 
-          deregisterLoggers(t) {
-            for (const [e, i] of this.u) i === t && this.deregisterLogger(e);
-          }
+        deregisterLoggers(t) {
+          for (const [e, i] of this.u) i === t && this.deregisterLogger(e);
+        }
 
-          w(t, e) {
-            const i = this.u.get(t);
-            return i === void 0 || i === e;
-          }
+        w(t, e) {
+          const i = this.u.get(t);
+          return i === void 0 || i === e;
+        }
 
-          dispose() {
-            super.dispose(), this.u.clear();
-          }
-        });
+        dispose() {
+          super.dispose(), this.u.clear();
+        }
+      };
     },
   });
 
@@ -26911,43 +26893,43 @@ var gf,
   MF = v({
     "out-build/vs/platform/update/common/updateIpc.js"() {
       "use strict";
-      H(),
-        Ln(),
-        (B9 = class {
-          constructor(t) {
-            this.a = t;
-          }
+      H();
+      Ln();
+      B9 = class {
+        constructor(t) {
+          this.a = t;
+        }
 
-          listen(t, e) {
-            switch (e) {
-              case "onStateChange":
-                return this.a.onStateChange;
-            }
-            throw new Error(`Event not found: ${e}`);
+        listen(t, e) {
+          switch (e) {
+            case "onStateChange":
+              return this.a.onStateChange;
           }
+          throw new Error(`Event not found: ${e}`);
+        }
 
-          call(t, e, i) {
-            switch (e) {
-              case "checkForUpdates":
-                return this.a.checkForUpdates(i);
-              case "downloadUpdate":
-                return this.a.downloadUpdate();
-              case "applyUpdate":
-                return this.a.applyUpdate();
-              case "quitAndInstall":
-                return this.a.quitAndInstall();
-              case "_getInitialState":
-                return Promise.resolve(this.a.state);
-              case "isLatestVersion":
-                return this.a.isLatestVersion();
-              case "_applySpecificUpdate":
-                return this.a._applySpecificUpdate(i);
-              case "setState":
-                return Promise.resolve(this.a.setState(i));
-            }
-            throw new Error(`Call not found: ${e}`);
+        call(t, e, i) {
+          switch (e) {
+            case "checkForUpdates":
+              return this.a.checkForUpdates(i);
+            case "downloadUpdate":
+              return this.a.downloadUpdate();
+            case "applyUpdate":
+              return this.a.applyUpdate();
+            case "quitAndInstall":
+              return this.a.quitAndInstall();
+            case "_getInitialState":
+              return Promise.resolve(this.a.state);
+            case "isLatestVersion":
+              return this.a.isLatestVersion();
+            case "_applySpecificUpdate":
+              return this.a._applySpecificUpdate(i);
+            case "setState":
+              return Promise.resolve(this.a.setState(i));
           }
-        });
+          throw new Error(`Call not found: ${e}`);
+        }
+      };
     },
   });
 
@@ -27111,22 +27093,38 @@ var U9,
       Gm = "iCubeNativeAppLocationRegion";
       mf = "iCubeNativeAppStartSetup";
       (function (t) {
-        (t.USEast = "US-East"), (t.SG = "Singapore-Central"), (t.BOEI18N = "US-BOE"), (t.BOE = "China-BOE"), (t.CN = "China-North");
+        t.USEast = "US-East";
+        t.SG = "Singapore-Central";
+        t.BOEI18N = "US-BOE";
+        t.BOE = "China-BOE";
+        t.CN = "China-North";
       })(W9 || (W9 = {}));
       (function (t) {
-        (t.BYTEDANCE = "bytedance"), (t.MARSCODE = "marscode");
+        t.BYTEDANCE = "bytedance";
+        t.MARSCODE = "marscode";
       })(wi || (wi = {}));
       (function (t) {
-        (t.BYTEDANCE = "bytedance"), (t.DCAR = "dcar"), (t.MARSCODE_CN = "marscode_cn"), (t.MARSCODE_COM = "marscode_com"), (t.UNKNOWN = "unknown");
+        t.BYTEDANCE = "bytedance";
+        t.DCAR = "dcar";
+        t.MARSCODE_CN = "marscode_cn";
+        t.MARSCODE_COM = "marscode_com";
+        t.UNKNOWN = "unknown";
       })(H9 || (H9 = {}));
       (function (t) {
-        (t.CN = "cn"), (t.I18N = "i18n");
+        t.CN = "cn";
+        t.I18N = "i18n";
       })(wf || (wf = {}));
       (function (t) {
-        (t.CN = "CN"), (t.SG = "SG"), (t.US = "US"), (t.BOE = "BOE"), (t.BOEI18N = "BOEI18N");
+        t.CN = "CN";
+        t.SG = "SG";
+        t.US = "US";
+        t.BOE = "BOE";
+        t.BOEI18N = "BOEI18N";
       })(oi || (oi = {}));
       (function (t) {
-        (t.cn = "cn"), (t.sg = "sg"), (t.us = "us");
+        t.cn = "cn";
+        t.sg = "sg";
+        t.us = "us";
       })(Jl || (Jl = {}));
       TF = {
         [Jl.cn]: oi.CN,
@@ -27217,84 +27215,76 @@ var xo,
   yf = v({
     "out-build/vs/code/electron-main/iCubeRegionManagement.js"() {
       "use strict";
-      G(),
-        T(),
-        Pn(),
-        Q(),
-        H(),
-        bf(),
-        Ci(),
-        de(),
-        ut(),
-        is(),
-        (xo = U("IMainICubeRegionManagementService")),
-        (vf = class extends N {
-          constructor(e, i) {
-            super(),
-              (this.r = e),
-              (this.s = i),
-              (this.b = !1),
-              (this.g = null),
-              (this.h = new di()),
-              (this.m = this.B(new $())),
-              (this.onDidChangeRegion = this.m.event),
-              (this.n = this.B(new $())),
-              (this.onDidChangeAiRegion = this.n.event),
-              (this.handleGetRegion = async () => this.getRegion()),
-              (this.handleGetAiRegion = async () => this.getAiRegion()),
-              (this.getRegion = async () => (this.b ? this.c : await this.refreshRegion())),
-              (this.getAiRegion = async () => (this.b ? this.f : (await this.refreshRegion(), this.f))),
-              (this.getRegionByLocation = async () =>
-                (
-                  await Promise.any(
-                    ["trae.ai", "marscode.cn"].map((n) =>
-                      axios.request({
-                        url: `https://api.${n}/cloudide/api/v3/public/GetLoginGuidanceForBytedance`,
-                        method: "POST",
-                      }),
-                    ),
-                  ).catch((n) => {
-                    throw (this.r.error("[getRegionByLocation]", n), n);
-                  })
-                )?.data?.Result?.Region),
-              (this.c = this.u()),
-              (this.f = this.u()),
-              this.t();
-          }
+      G(), T(), Pn(), Q(), H(), bf(), Ci(), de(), ut(), is();
+      xo = U("IMainICubeRegionManagementService");
+      vf = class extends N {
+        constructor(e, i) {
+          super();
+          this.r = e;
+          this.s = i;
+          this.b = false;
+          this.g = null;
+          this.h = new di();
+          this.m = this.B(new $());
+          this.onDidChangeRegion = this.m.event;
+          this.n = this.B(new $());
+          this.onDidChangeAiRegion = this.n.event;
+          this.handleGetRegion = async () => this.getRegion();
+          this.handleGetAiRegion = async () => this.getAiRegion();
+          this.getRegion = async () => (this.b ? this.c : await this.refreshRegion());
+          this.getAiRegion = async () => (this.b ? this.f : (await this.refreshRegion(), this.f));
+          this.getRegionByLocation = async () =>
+            (
+              await Promise.any(
+                ["trae.ai", "marscode.cn"].map((n) =>
+                  axios.request({
+                    url: `https://api.${n}/cloudide/api/v3/public/GetLoginGuidanceForBytedance`,
+                    method: "POST",
+                  }),
+                ),
+              ).catch((n) => {
+                this.r.error("[getRegionByLocation]", n);
+                throw n;
+              })
+            )?.data?.Result?.Region;
+          this.c = this.u();
+          this.f = this.u();
+          this.t();
+        }
 
-          t() {
-            De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_REGION, this.handleGetRegion.bind(this)), De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_AI_REGION, this.handleGetAiRegion.bind(this));
-          }
+        t() {
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_REGION, this.handleGetRegion.bind(this)), De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_AI_REGION, this.handleGetAiRegion.bind(this));
+        }
 
-          u() {
-            return this.s.provider === Jt.SPRING ? oi.US : oi.CN;
-          }
+        u() {
+          return this.s.provider === Jt.SPRING ? oi.US : oi.CN;
+        }
 
-          initialize({ mainICubeAuthManagementService: e, broadcastToCodeWindows: i }) {
-            (this.a = i), (this.j = e), this.h.complete();
-          }
+        initialize({ mainICubeAuthManagementService: e, broadcastToCodeWindows: i }) {
+          (this.a = i), (this.j = e), this.h.complete();
+        }
 
-          async refreshRegion() {
-            this.g || (this.g = this._refreshRegion());
-            const e = await this.g;
-            return (this.g = null), e;
-          }
+        async refreshRegion() {
+          this.g || (this.g = this._refreshRegion());
+          const e = await this.g;
+          return (this.g = null), e;
+        }
 
-          async _refreshRegion() {
-            await this.h.p;
-            const e = await this.j?.getAuthUserInfo({ forceLogin: !1 });
-            return e?.region || e?.aiRegion ? ((this.c = e.region || this.u()), (this.f = e.aiRegion || this.u()), (this.b = !0), this.w(), this.c) : ((this.c = this.u()), (this.f = this.u()), this.w(), this.c);
-          }
+        async _refreshRegion() {
+          await this.h.p;
+          const e = await this.j?.getAuthUserInfo({ forceLogin: !1 });
+          return e?.region || e?.aiRegion ? ((this.c = e.region || this.u()), (this.f = e.aiRegion || this.u()), (this.b = !0), this.w(), this.c) : ((this.c = this.u()), (this.f = this.u()), this.w(), this.c);
+        }
 
-          w() {
-            this.r.info("[MainICubeRegionManagementService] refresh region", "userRegion: ", this.c, "aiRegion: ", this.f),
-              this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_REGION, this.c, this.f),
-              (this.b = !0),
-              this.m.fire(this.c),
-              this.n.fire(this.f);
-          }
-        }),
-        (vf = __decorate([__param(0, K), __param(1, Je)], vf));
+        w() {
+          this.r.info("[MainICubeRegionManagementService] refresh region", "userRegion: ", this.c, "aiRegion: ", this.f),
+            this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_REGION, this.c, this.f),
+            (this.b = !0),
+            this.m.fire(this.c),
+            this.n.fire(this.f);
+        }
+      };
+      vf = __decorate([__param(0, K), __param(1, Je)], vf);
     },
   }),
   Hr,
@@ -27353,13 +27343,13 @@ var xo,
       })(Sf || (Sf = {}));
     },
   }),
-  G9,
+  loginErrorLogo,
   BF = v({
     "out-build/vs/code/electron-main/oauth/media/loginError.js"() {
       "use strict";
-      is(),
-        (G9 = {
-          [Jt.SPRING]: `
+      is();
+      loginErrorLogo = {
+        [Jt.SPRING]: `
         <svg width="524" height="169" viewBox="0 0 524 169" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_585_96654)">
 <rect x="16" y="25" width="96" height="96" rx="16" fill="url(#paint0_radial_585_96654)" shape-rendering="crispEdges"/>
@@ -27417,7 +27407,7 @@ var xo,
 </defs>
 </svg>
     `,
-          [Jt.YINLI]: `
+        [Jt.YINLI]: `
         <svg width="524" height="169" viewBox="0 0 524 169" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g filter="url(#filter0_d_537_159694)">
 			<rect x="16" y="25" width="96" height="96" rx="20" fill="white" shape-rendering="crispEdges"/>
@@ -27477,16 +27467,16 @@ var xo,
 			</defs>
 			</svg>
     `,
-        });
+      };
     },
   }),
-  J9,
+  loginLogo,
   jF = v({
     "out-build/vs/code/electron-main/oauth/media/loginLogo.js"() {
       "use strict";
-      is(),
-        (J9 = {
-          [Jt.SPRING]: `
+      is();
+      loginLogo = {
+        [Jt.SPRING]: `
         <svg width="536" height="160" viewBox="0 0 536 160" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_d_69_62486)">
             <rect x="32" y="16" width="96" height="96" rx="16" fill="url(#paint0_radial_69_62486)" shape-rendering="crispEdges"/>
@@ -27543,7 +27533,7 @@ var xo,
             <path d="M91.4537 71.4695H79.8174V75.4549H91.4537V71.4695Z" fill="white"/>
         </svg>
     `,
-          [Jt.YINLI]: `
+        [Jt.YINLI]: `
         <svg width="524" height="169" viewBox="0 0 524 169" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g filter="url(#filter0_d_537_159374)">
 					<rect x="16" y="25" width="96" height="96" rx="20" fill="white" shape-rendering="crispEdges"/>
@@ -27604,16 +27594,16 @@ var xo,
 					</defs>
 					</svg>
     `,
-        });
+      };
     },
   }),
-  Y9,
+  loginSuccessLogo,
   UF = v({
     "out-build/vs/code/electron-main/oauth/media/loginSuccess.js"() {
       "use strict";
-      is(),
-        (Y9 = {
-          [Jt.SPRING]: `
+      is();
+      loginSuccessLogo = {
+        [Jt.SPRING]: `
                     <svg width="524" height="169" viewBox="0 0 524 169" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d_585_96636)">
 <rect x="16" y="25" width="96" height="96" rx="16" fill="url(#paint0_radial_585_96636)" shape-rendering="crispEdges"/>
@@ -27672,7 +27662,7 @@ var xo,
 </svg>
 
                 `,
-          [Jt.YINLI]: `
+        [Jt.YINLI]: `
                     <svg width="524" height="169" viewBox="0 0 524 169" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g filter="url(#filter0_d_537_159521)">
 			<rect x="16" y="25" width="96" height="96" rx="20" fill="white" shape-rendering="crispEdges"/>
@@ -27732,7 +27722,7 @@ var xo,
 			</defs>
 			</svg>
     `,
-        });
+      };
     },
   }),
   K9,
@@ -27743,8 +27733,8 @@ var xo,
       BF();
       jF();
       UF();
-      K9 = (t, e, i, s, r) => {
-        const n = {
+      K9 = (t, timeout, lang, inlineCss, provider) => {
+        const messages_marscode = {
             zh: {
               "Authorize to log in to MarsCode?": "\u6388\u6743\u767B\u5F55\u8C46\u5305 MarsCode ?",
               "Please click the button to log in and authorize.": "\u8BF7\u70B9\u51FB\u6309\u94AE\u8FDB\u884C\u767B\u5F55\u6388\u6743\uFF0C",
@@ -27761,7 +27751,7 @@ var xo,
               "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.": "",
             },
           },
-          o = {
+          messages_trae = {
             zh: {
               "Authorize to log in to MarsCode?": "\u6388\u6743\u767B\u5F55 Trae ?",
               "Please click the button to log in and authorize.": "\u8BF7\u70B9\u51FB\u6309\u94AE\u8FDB\u884C\u767B\u5F55\u6388\u6743\uFF0C",
@@ -27785,19 +27775,19 @@ var xo,
             },
           };
 
-        function a(c) {
-          const l = r === "Spring" ? o : n;
-          return i === "en" ? l.en[c] || c : l.zh[c] || c;
+        function a(key) {
+          const messages = provider === "Spring" ? messages_trae : messages_marscode;
+          return lang === "en" ? messages.en[key] || key : messages.zh[key] || key;
         }
 
         return `
 		<!DOCTYPE html>
-		<html lang="${i}" provider="${r}">
+		<html lang="${lang}" provider="${provider}">
 		<head>
 			<meta charset="UTF-8">
 			<title>Login Confirm</title>
 			<style>
-				${s}
+				${inlineCss}
 			</style>
 			<style>
 					body {
@@ -27938,7 +27928,7 @@ var xo,
 
 			<div id="content" class="show">
 				<div class="titleArea">
-					${J9[r]}
+					${loginLogo[provider]}
 					<h1 class="title">${a("Authorize to log in to MarsCode?")}</h1>
 					<div class="explain">${a("Please click the button to log in and authorize.")}${a("This page will expire in 5 minutes")}</div>
 				</div>
@@ -27955,11 +27945,11 @@ var xo,
 				</div>
 			</div>
 			<div id="success-content">
-			${Y9[r]}
+			${loginSuccessLogo[provider]}
 			<h1 class="title">${a("MarsCode login successfully!")}
 			</div>
 			<div id="fail-content">
-			${G9[r]}
+			${loginErrorLogo[provider]}
 			<h1 class="title">${a("MarsCode authorization login failed")}</div>
 			<p id="reason" class="explain"></div>
 			</div>
@@ -27968,7 +27958,7 @@ var xo,
 			let isTimeout = false;
 			let confirmTimeout = setTimeout(function() {
 				isTimeout = true;
-			}, ${e});
+			}, ${timeout});
 			const confirmButton = document.getElementById('login-confirm');
 			confirmButton.addEventListener('click', function() {
 				confirmButton.classList.toggle('loading', true);
@@ -36555,14 +36545,12 @@ var Jf,
   tj = v({
     "out-build/vs/base/common/iconLabels.js"() {
       "use strict";
-      KB(),
-        _t(),
-        tb(),
-        (Jf = new RegExp(`\\$\\(${Mn.iconNameExpression}(?:${Mn.iconModifierExpression})?\\)`, "g")),
-        (Qk = new RegExp(`(\\\\)?${Jf.source}`, "g")),
-        (QB = new RegExp(`\\\\${Jf.source}`, "g")),
-        (XB = new RegExp(`(\\s)?(\\\\)?${Jf.source}(\\s)?`, "g")),
-        (ej = new RegExp(`\\$\\(${Mn.iconNameCharacter}+\\)`, "g"));
+      KB(), _t(), tb();
+      Jf = new RegExp(`\\$\\(${Mn.iconNameExpression}(?:${Mn.iconModifierExpression})?\\)`, "g");
+      Qk = new RegExp(`(\\\\)?${Jf.source}`, "g");
+      QB = new RegExp(`\\\\${Jf.source}`, "g");
+      XB = new RegExp(`(\\s)?(\\\\)?${Jf.source}(\\s)?`, "g");
+      ej = new RegExp(`\\$\\(${Mn.iconNameCharacter}+\\)`, "g");
     },
   });
 
@@ -36582,62 +36570,61 @@ var Xk,
   rj = v({
     "out-build/vs/base/common/htmlContent.js"() {
       "use strict";
-      We(),
-        tj(),
-        nt(),
-        _t(),
-        ge(),
-        (function (t) {
-          (t[(t.Paragraph = 0)] = "Paragraph"), (t[(t.Break = 1)] = "Break");
-        })(Xk || (Xk = {})),
-        (eS = class {
-          constructor(t = "", e = !1) {
-            if (((this.value = t), typeof this.value != "string")) throw sx("value");
-            typeof e == "boolean"
-              ? ((this.isTrusted = e), (this.supportThemeIcons = !1), (this.supportHtml = !1))
-              : ((this.isTrusted = e.isTrusted ?? void 0), (this.supportThemeIcons = e.supportThemeIcons ?? !1), (this.supportHtml = e.supportHtml ?? !1));
-          }
+      We(), tj(), nt(), _t(), ge();
 
-          appendText(t, e = 0) {
-            return (
-              (this.value += ij(this.supportThemeIcons ? ZB(t) : t)
-                .replace(/([ \t]+)/g, (i, s) => "&nbsp;".repeat(s.length))
-                .replace(/\>/gm, "\\>")
-                .replace(
-                  /\n/g,
-                  e === 1
-                    ? `\\
+      (function (t) {
+        t[(t.Paragraph = 0)] = "Paragraph";
+        t[(t.Break = 1)] = "Break";
+      })(Xk || (Xk = {}));
+
+      eS = class {
+        constructor(t = "", e = !1) {
+          if (((this.value = t), typeof this.value != "string")) throw sx("value");
+          typeof e == "boolean"
+            ? ((this.isTrusted = e), (this.supportThemeIcons = !1), (this.supportHtml = !1))
+            : ((this.isTrusted = e.isTrusted ?? void 0), (this.supportThemeIcons = e.supportThemeIcons ?? !1), (this.supportHtml = e.supportHtml ?? !1));
+        }
+
+        appendText(t, e = 0) {
+          return (
+            (this.value += ij(this.supportThemeIcons ? ZB(t) : t)
+              .replace(/([ \t]+)/g, (i, s) => "&nbsp;".repeat(s.length))
+              .replace(/\>/gm, "\\>")
+              .replace(
+                /\n/g,
+                e === 1
+                  ? `\\
 `
-                    : `
+                  : `
 
 `,
-                )),
-              this
-            );
-          }
+              )),
+            this
+          );
+        }
 
-          appendMarkdown(t) {
-            return (this.value += t), this;
-          }
+        appendMarkdown(t) {
+          return (this.value += t), this;
+        }
 
-          appendCodeblock(t, e) {
-            return (
-              (this.value += `
+        appendCodeblock(t, e) {
+          return (
+            (this.value += `
 ${sj(e, t)}
 `),
-              this
-            );
-          }
+            this
+          );
+        }
 
-          appendLink(t, e, i) {
-            return (this.value += "["), (this.value += this.c(e, "]")), (this.value += "]("), (this.value += this.c(String(t), ")")), i && (this.value += ` "${this.c(this.c(i, '"'), ")")}"`), (this.value += ")"), this;
-          }
+        appendLink(t, e, i) {
+          return (this.value += "["), (this.value += this.c(e, "]")), (this.value += "]("), (this.value += this.c(String(t), ")")), i && (this.value += ` "${this.c(this.c(i, '"'), ")")}"`), (this.value += ")"), this;
+        }
 
-          c(t, e) {
-            const i = new RegExp(Qo(e), "g");
-            return t.replace(i, (s, r) => (t.charAt(r - 1) !== "\\" ? `\\${s}` : s));
-          }
-        });
+        c(t, e) {
+          const i = new RegExp(Qo(e), "g");
+          return t.replace(i, (s, r) => (t.charAt(r - 1) !== "\\" ? `\\${s}` : s));
+        }
+      };
     },
   });
 
@@ -36933,7 +36920,8 @@ function sS(t, e, i) {
         s.has(o) || s.add(o);
       },
     };
-  r.addRule(".monaco-workbench { forced-color-adjust: none; }"), e && rS.getThemingParticipants().forEach((o) => o(t, r, e));
+  r.addRule(".monaco-workbench { forced-color-adjust: none; }");
+  e && rS.getThemingParticipants().forEach((o) => o(t, r, e));
   const n = [];
   for (const o of QF().getColors()) {
     const a = t.getColor(o.id, !0);
@@ -36954,7 +36942,8 @@ var rS,
   cj = v({
     "out-build/vs/workbench/services/themes/browser/iCubeCSSRule.js"() {
       "use strict";
-      ii(), es(), Zm(), Ef(), (rS = Ye.as(Qm.ThemingContribution));
+      ii(), es(), Zm(), Ef();
+      rS = Ye.as(Qm.ThemingContribution);
     },
   });
 
@@ -36967,55 +36956,79 @@ var nS,
   cS = v({
     "out-build/vs/code/electron-main/setupThemeService.js"() {
       "use strict";
-      Re(),
-        T(),
-        ge(),
-        pk(),
-        oj(),
-        rw(),
-        Of(),
-        cj(),
-        (nS = nj()),
-        (gu = [
-          {
-            id: "Dark",
-            label: "Dark",
-            uiTheme: "vs-dark",
-            path: "./themes/dark_plus.json",
-          },
-          { id: "Deep Blue", label: "Deep Blue", uiTheme: "vs-dark", path: "./themes/dark_blue.json" },
-          {
-            id: "Light",
-            label: "Light",
-            uiTheme: "vs",
-            path: "./themes/light_icube.json",
-          },
-        ]),
-        (uj = gu.map((t) => t.id)),
-        (oS = class {
-          constructor(t) {
-            (this.supportsExtensionGalleryResources = !1), (this.fileService = t);
-          }
+      Re(), T(), ge(), pk(), oj(), rw(), Of(), cj();
+      nS = nj();
+      gu = [
+        {
+          id: "Dark",
+          label: "Dark",
+          uiTheme: "vs-dark",
+          path: "./themes/dark_plus.json",
+        },
+        { id: "Deep Blue", label: "Deep Blue", uiTheme: "vs-dark", path: "./themes/dark_blue.json" },
+        {
+          id: "Light",
+          label: "Light",
+          uiTheme: "vs",
+          path: "./themes/light_icube.json",
+        },
+      ];
+      uj = gu.map((t) => t.id);
+      oS = class {
+        constructor(fileService) {
+          this.supportsExtensionGalleryResources = false;
+          this.fileService = fileService;
+        }
 
-          async readExtensionResource(t) {
-            try {
-              return (await this.fileService.readFile(t)).value.toString();
-            } catch {
-              return "";
-            }
+        async readExtensionResource(path) {
+          try {
+            return (await this.fileService.readFile(path)).value.toString();
+          } catch {
+            return "";
           }
+        }
 
-          isExtensionGalleryResource(t) {
-            return !1;
-          }
+        isExtensionGalleryResource(t) {
+          return false;
+        }
 
-          getExtensionGalleryResourceURL({ publisher: t, name: e, version: i, targetPlatform: s }, r) {}
-        }),
-        (aS = class extends iS {
-          getICubeThemeExtension() {
-            const t = L.parse($path.join(It.asFileUri(A2).fsPath, "theme-defaults"));
-            return {
-              description: {
+        getExtensionGalleryResourceURL({ publisher, name, version, targetPlatform }, r) {}
+      };
+      aS = class extends iS {
+        getICubeThemeExtension() {
+          const t = L.parse($path.join(It.asFileUri(A2).fsPath, "theme-defaults"));
+          return {
+            description: {
+              id: "icube.icube-themes",
+              identifier: { value: "icube.icube-themes", _lower: "icube.icube-themes" },
+              isBuiltin: !0,
+              isUserBuiltin: !1,
+              isUnderDevelopment: !1,
+              extensionLocation: t,
+              targetPlatform: "undefined",
+              name: "icube-themes",
+              displayName: "icube themes",
+              description: "The default icube light and dark themes",
+              categories: ["Themes"],
+              version: "1.0.0",
+              publisher: "icube",
+              license: "MIT",
+              engines: { vscode: "*" },
+              contributes: {
+                themes: gu,
+                iconThemes: [
+                  {
+                    id: "vs-minimal",
+                    label: "Minimal (Visual Studio Code)",
+                    path: "./fileicons/vs_minimal-icon-theme.json",
+                  },
+                ],
+              },
+              repository: { type: "git", url: "https://github.com/microsoft/vscode.git" },
+            },
+            value: gu,
+            collector: {
+              _extension: {
                 id: "icube.icube-themes",
                 identifier: { value: "icube.icube-themes", _lower: "icube.icube-themes" },
                 isBuiltin: !0,
@@ -37043,64 +37056,36 @@ var nS,
                 },
                 repository: { type: "git", url: "https://github.com/microsoft/vscode.git" },
               },
-              value: gu,
-              collector: {
-                _extension: {
-                  id: "icube.icube-themes",
-                  identifier: { value: "icube.icube-themes", _lower: "icube.icube-themes" },
-                  isBuiltin: !0,
-                  isUserBuiltin: !1,
-                  isUnderDevelopment: !1,
-                  extensionLocation: t,
-                  targetPlatform: "undefined",
-                  name: "icube-themes",
-                  displayName: "icube themes",
-                  description: "The default icube light and dark themes",
-                  categories: ["Themes"],
-                  version: "1.0.0",
-                  publisher: "icube",
-                  license: "MIT",
-                  engines: { vscode: "*" },
-                  contributes: {
-                    themes: gu,
-                    iconThemes: [
-                      {
-                        id: "vs-minimal",
-                        label: "Minimal (Visual Studio Code)",
-                        path: "./fileicons/vs_minimal-icon-theme.json",
-                      },
-                    ],
-                  },
-                  repository: { type: "git", url: "https://github.com/microsoft/vscode.git" },
-                },
-                _extensionPointId: "themes",
-              },
-            };
-          }
+              _extensionPointId: "themes",
+            },
+          };
+        }
 
-          h() {
-            const t = this.getICubeThemeExtension(),
-              e = Ha.fromName(t.description.publisher, t.description.name, t.description.isBuiltin);
-            this.i(e, t.description.extensionLocation, t.value, this.a, t.collector);
-          }
-        }),
-        (ib = class extends N {
-          constructor(t) {
-            super(), (this.extensionService = new oS(t)), (this.fileService = t), (this.a = this.B(new aS(nS, Uf.fromExtensionTheme)));
-          }
+        h() {
+          const t = this.getICubeThemeExtension(),
+            e = Ha.fromName(t.description.publisher, t.description.name, t.description.isBuiltin);
+          this.i(e, t.description.extensionLocation, t.value, this.a, t.collector);
+        }
+      };
+      ib = class extends N {
+        constructor(t) {
+          super(), (this.extensionService = new oS(t)), (this.fileService = t), (this.a = this.B(new aS(nS, Uf.fromExtensionTheme)));
+        }
 
-          async getCssCode(t) {
-            const e = this.a.findThemeBySettingsId(t);
-            return await e?.ensureLoaded(this.extensionService), e ? sS(e) : "";
-          }
+        async getCssCode(t) {
+          const e = this.a.findThemeBySettingsId(t);
+          return await e?.ensureLoaded(this.extensionService), e ? sS(e) : "";
+        }
 
-          async getColorTheme(t) {
-            const e = this.a.findThemeBySettingsId(t);
-            if ((await e?.ensureLoaded(this.extensionService), e)) return { currentTheme: e, css: sS(e) };
-          }
-        });
+        async getColorTheme(t) {
+          const e = this.a.findThemeBySettingsId(t);
+          if ((await e?.ensureLoaded(this.extensionService), e)) return { currentTheme: e, css: sS(e) };
+        }
+      };
     },
   });
+
+// todo
 
 var Xa,
   OAuthLocalServer,
@@ -37114,11 +37099,13 @@ var Xa,
       bc();
       cS();
       ri();
+
       (function (t) {
         t.LOGIN_CONFIRM = "/login-confirm";
         t.LOGIN_SUCCESS = "/login-success";
         t.AUTHORIZE = "/authorize";
       })(Xa || (Xa = {}));
+
       OAuthLocalServer = class Ku extends N {
         static {
           this.TIMEOUT_MS = 30 * 60 * 1000;
@@ -37147,10 +37134,10 @@ var Xa,
           return await this.j?.p;
         }
 
-        setAuthCodeHandler(e, i) {
-          this.c = e;
+        setAuthCodeHandler(authCodeHandler, timeout) {
+          this.c = authCodeHandler;
           this.n = $uuid();
-          i && this.w();
+          timeout && this.w();
         }
 
         setAuthorizationTimeoutHandler(e) {
@@ -37164,8 +37151,13 @@ var Xa,
         }
 
         y() {
-          this.g && (clearTimeout(this.g), (this.g = void 0));
-          this.h && clearTimeout(this.h);
+          if (this.g) {
+            clearTimeout(this.g);
+            this.g = void 0;
+          }
+          if (this.h) {
+            clearTimeout(this.h);
+          }
         }
 
         async z() {
@@ -37173,17 +37165,17 @@ var Xa,
             const server = createServer(async (req, res) => {
               try {
                 await this.C(req, res);
-              } catch (o) {
-                this.r.error(`OAuthLocalServer#Error handling request: ${o}`);
+              } catch (err) {
+                this.r.error(`OAuthLocalServer#Error handling request: ${err}`);
                 res.statusCode = 500;
                 res.end("Internal Server Error");
               }
             });
             server.listen(0, "127.0.0.1", () => {
               try {
-                const r = server.address();
-                this.j?.complete(r?.port);
-                this.r.info(`OAuthLocalServer#[Server] Listening on port ${r?.port}.`);
+                const address = server.address();
+                this.j?.complete(address?.port);
+                this.r.info(`OAuthLocalServer#[Server] Listening on port ${address?.port}.`);
                 resolve(server);
               } catch (err) {
                 reject(err);
@@ -37193,6 +37185,7 @@ var Xa,
         }
 
         async C(req, res) {
+          debugger;
           const { url } = req;
           this.r.info(`OAuthLocalServer#[Server] Received url request: ${url?.split("?")[0]}. ${this.t.argvResource}`);
           res.setHeader("Access-Control-Allow-Origin", "*");
@@ -37204,70 +37197,97 @@ var Xa,
             res.statusCode = 200;
             res.end();
           } else if (req.url?.includes(Xa.LOGIN_CONFIRM)) {
-            this.h ||
-              (this.h = setTimeout(() => {
-                this.y(), this.dispose(), this.f?.();
-              }, Ku.AUTHORIZATION_TIMEOUT_MS));
-            const { query: r } = L.parse(req.url || ""),
-              n = await import("qs"),
-              { IDEUserToken: o } = n.parse(r);
-            o && (this.b = o), (res.statusCode = 200);
+            if (!this.h) {
+              this.h = setTimeout(() => {
+                this.y();
+                this.dispose();
+                this.f?.();
+              }, Ku.AUTHORIZATION_TIMEOUT_MS);
+            }
+            const { query } = L.parse(req.url || "");
+            const $qs = await import("qs");
+            const { IDEUserToken } = $qs.parse(query);
+            IDEUserToken && (this.b = IDEUserToken);
+            res.statusCode = 200;
             let a = {};
             try {
               const l = (await this.u.readFile(this.t.argvResource)).value.toString();
               a = JSON.parse(wc(l));
             } catch {}
             res.end(Z9(this.s.urlProtocol, Ku.AUTHORIZATION_TIMEOUT_MS, a.locale || "zh-cn", await this.m.getCssCode("Dark"), this.s.provider));
-          } else if (req.url?.includes(Xa.LOGIN_SUCCESS))
+          } else if (req.url?.includes(Xa.LOGIN_SUCCESS)) {
             try {
-              await this.D(this.b), (res.statusCode = 200), res.end();
-            } catch (r) {
-              r.message.includes("GetAiRegionError:NotAllowed") ? (res.statusCode = 401) : r.message.includes("CloudIDETokenError:LinkExpired") ? (res.statusCode = 402) : (res.statusCode = 500), res.end();
+              await this.D(this.b);
+              res.statusCode = 200;
+              res.end();
+            } catch (err) {
+              err.message.includes("GetAiRegionError:NotAllowed") ? (res.statusCode = 401) : err.message.includes("CloudIDETokenError:LinkExpired") ? (res.statusCode = 402) : (res.statusCode = 500), res.end();
             }
-          else if (req.url?.includes(Xa.AUTHORIZE)) {
+          } else if (req.url?.includes(Xa.AUTHORIZE)) {
             const r = req.url.split("?")[1];
             this.D(r, res);
           }
         }
 
-        async D(e, i) {
-          const s = this.n;
+        async D(query, res) {
+          const uuid = this.n;
           if (this.c) {
             try {
-              await this.c(e, i);
+              await this.c(query, res);
               this.r.info("OAuthLocalServer#Received oauth2 jwt success");
-            } catch (r) {
-              this.r.error(`OAuthLocalServer#Err occurred during auth code handler: ${r}.`);
-              throw r;
+            } catch (err) {
+              this.r.error(`OAuthLocalServer#Err occurred during auth code handler: ${err}.`);
+              throw err;
             }
-            s === this.n && (this.r.info("OAuthLocalServer#last auth code handler, dispose local server"), this.dispose());
-          } else this.r.error("OAuthLocalServer#[Server] can't find authCodeHandler.");
+            if (uuid === this.n) {
+              this.r.info("OAuthLocalServer#last auth code handler, dispose local server");
+              this.dispose();
+            }
+          } else {
+            this.r.error("OAuthLocalServer#[Server] can't find authCodeHandler.");
+          }
         }
 
         dispose() {
-          this.a?.close(), this.y(), (this.a = void 0), (this.b = void 0), (this.j = void 0), this.r.info("OAuthLocalServer#Authenticator server closed");
+          this.a?.close();
+          this.y();
+          this.a = void 0;
+          this.b = void 0;
+          this.j = void 0;
+          this.r.info("OAuthLocalServer#Authenticator server closed");
         }
       };
     },
   });
 
-function wr(t, e = []) {
-  const i = {};
-  if (e.length > hS) return {};
-  try {
-    for (const s in t) typeof t[s] == "object" ? (i[s] = wr(t[s], [...e, s])) : uS.includes(s.toLowerCase()) ? (i[s] = "******") : (i[s] = t[s]);
-  } catch (s) {
-    console.log(s);
+function _mask(obj, keyPath = []) {
+  const result = {};
+  if (keyPath.length > hS) {
+    return {};
   }
-  return i;
+  try {
+    for (const key in obj) {
+      if (typeof obj[key] == "object") {
+        result[key] = _mask(obj[key], [...keyPath, key]);
+      } else if (maskedKeyList.includes(key.toLowerCase())) {
+        result[key] = "******";
+      } else {
+        result[key] = obj[key];
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  return result;
 }
 
-var uS,
+var maskedKeyList,
   hS,
   Yf = v({
     "out-build/vs/code/electron-main/oauth/common/util.js"() {
       "use strict";
-      (uS = ["token", "refreshtoken", "x-cloudide-token", "ideusertoken", "scope"]), (hS = 10);
+      maskedKeyList = ["token", "refreshtoken", "x-cloudide-token", "ideusertoken", "scope"];
+      hS = 10;
     },
   });
 
@@ -37281,8 +37301,8 @@ var pS,
       pS = dns.promises;
       gS = ["ENOTFOUND", "ENETUNREACH", "ECONNREFUSED", "ETIMEDOUT", "ECONNABORTED", "ERR_NETWORK"];
       CommonRequest = class {
-        constructor(t, e) {
-          this.e = t;
+        constructor(logService, e) {
+          this.e = logService;
           this.f = e;
           this.a = new https.Agent({ family: 6 });
           this.b = new https.Agent({ family: 4 });
@@ -37292,7 +37312,7 @@ var pS,
 
         async request(options) {
           const instance = axios.create({});
-          let i;
+          let resp;
           const s = this.f.getValue("login.env.ppe");
           const customHeader = {};
           if (s) {
@@ -37303,15 +37323,13 @@ var pS,
             ...(options.headers || {}),
             ...customHeader,
           };
-          this.e.info("[Request start]", wr(options));
+          this.e.info("[Request start]", _mask(options));
           try {
-            i = await instance.request(options);
+            resp = await instance.request(options);
           } catch (err) {
-            if (
-              (this.e.error("[Request Error]", err, err.code, err.response?.data, err.response?.headers, err.stack, wr(options)),
-              this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", err?.request?.socket?.localAddress, err?.request?.socket?.localPort),
-              options.url)
-            ) {
+            this.e.error("[Request Error]", err, err.code, err.response?.data, err.response?.headers, err.stack, _mask(options));
+            this.e.error("[Request Error Network]", "network: ", $os.networkInterfaces(), "address: ", err?.request?.socket?.localAddress, err?.request?.socket?.localPort);
+            if (options.url) {
               const o = new URL(options.url),
                 a = await pS.lookup(o.hostname).catch((c) => {
                   this.e.error("[Request Error]", "get address from dns error", c);
@@ -37323,23 +37341,29 @@ var pS,
               const o = axios.create({ httpsAgent: this.a, httpAgent: this.c }),
                 a = axios.create({ httpsAgent: this.b, httpAgent: this.d }),
                 c = { v4: new AbortController(), v6: new AbortController() };
-              i = await Promise.any([
+              resp = await Promise.any([
                 o
                   .request({ ...options, signal: c.v6.signal })
                   .then((l) => (c.v4.abort(), l))
                   .catch((l) => {
-                    throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
+                    this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack);
+                    throw l;
                   }),
                 a
                   .request({ ...options, signal: c.v4.signal })
                   .then((l) => (c.v6.abort(), l))
                   .catch((l) => {
-                    throw (this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack), l);
+                    this.e.error("[Request Error]", l, l.code, l.response?.data, l.response?.headers, l.stack);
+                    throw l;
                   }),
               ]);
-            } else throw err;
+            } else {
+              throw err;
+            }
           }
-          return this.e.info("[Request Success]", "Header: ", i?.headers), this.e.info("[Request Success Network]", "local address: ", i?.request?.socket?.localAddress, i?.request?.socket?.localPort), i?.data;
+          this.e.info("[Request Success]", "Header: ", resp?.headers);
+          this.e.info("[Request Success Network]", "local address: ", resp?.request?.socket?.localAddress, resp?.request?.socket?.localPort);
+          return resp?.data;
         }
       };
     },
@@ -37360,6 +37384,7 @@ var errCodes,
       mS();
       Yf();
       errCodes = ["20324", "20101"];
+
       (function (t) {
         t[(t.NO_UserInfo = 1)] = "NO_UserInfo";
         t[(t.Handle_Login_Error = 2)] = "Handle_Login_Error";
@@ -37368,6 +37393,7 @@ var errCodes,
         t[(t.Handle_Login_NetworkError = 10002)] = "Handle_Login_NetworkError";
         t[(t.Handle_Login_TimeoutError = 10001)] = "Handle_Login_TimeoutError";
       })(wu || (wu = {}));
+
       MarsCodeOAuthService = class extends N {
         constructor(t, e, i, s, r, n, o, a) {
           // debugger;
@@ -37413,10 +37439,10 @@ var errCodes,
           return oi.CN;
         }
 
-        // updateLocalCredential
-        async z(req, res) {
-          const i = qs.parse(req || "");
-          this.j.info("[updateLocalCredential]", wr(i));
+        // authCodeHandler
+        async z(query, res) {
+          const i = qs.parse(query || "");
+          this.j.info("[updateLocalCredential]", _mask(i));
           const s = async (code, msg) => {
             if (res) {
               const redirectLoc = this.G(await this.c.getPort(), 1, code, msg);
@@ -37504,7 +37530,7 @@ var errCodes,
           const url = `${host || `https://${s.url}`}/cloudide/api/v3/${s.path}/oauth/ExchangeToken`,
             data = { ClientID: s.clientId, RefreshToken: refreshToken, ClientSecret: "-", UserID: "" },
             options = { headers: { "Content-Type": "application/json" } };
-          this.j.info("[getJwtToken]", "request", url, wr(data));
+          this.j.info("[getJwtToken]", "request", url, _mask(data));
           const resp = await this.h
             .request({
               method: "POST",
@@ -37514,7 +37540,7 @@ var errCodes,
               ...options,
             })
             .catch((err) => {
-              this.j.info("[getJwtToken]", "request error", err.message, err.stack, wr(err.response?.data));
+              this.j.info("[getJwtToken]", "request error", err.message, err.stack, _mask(err.response?.data));
               const code = err.response?.data?.ResponseMetadata?.Error?.Code;
               throw errCodes.includes(code) ? new Error(Sf.RefreshTokenInvalid) : err;
             });
@@ -37522,7 +37548,7 @@ var errCodes,
             this.j.info("[getJwtToken]", "response error", "no response");
             throw new Error("[getJwtToken]no response");
           }
-          this.j.info("[getJwtToken]", "response success", wr(resp));
+          this.j.info("[getJwtToken]", "response success", _mask(resp));
           return resp.Result;
         }
 
@@ -37542,7 +37568,7 @@ var errCodes,
               "x-cloudide-token": token,
             },
           };
-          this.j.info("[getUserInfo]", "request", wr(options), url, data);
+          this.j.info("[getUserInfo]", "request", _mask(options), url, data);
           const resp = await this.h
             .request({
               method: "POST",
@@ -37629,135 +37655,162 @@ var errCodes,
       is();
       Yf();
       ByteDanceOAuthService = class extends N {
-        constructor(t, e, i, s, r, n, o, a) {
-          super(),
-            (this.h = t),
-            (this.j = e),
-            (this.m = i),
-            (this.n = s),
-            (this.r = r),
-            (this.s = n),
-            (this.t = o),
-            (this.u = a),
-            (this.c = new OAuthLocalServer(this.h, this.j, this.m, this.n)),
-            (this.f = new CommonRequest(this.h, this.t)),
-            (this.g = this.j.provider === Jt.YINLI ? "ide.byted.org" : "ide-us.tiktok-row.org");
+        constructor(logService, productConfig, i, s, r, n, o, a) {
+          super();
+          this.h = logService;
+          this.j = productConfig;
+          this.m = i;
+          this.n = s;
+          this.r = r;
+          this.s = n;
+          this.t = o;
+          this.u = a;
+          this.c = new OAuthLocalServer(this.h, this.j, this.m, this.n);
+          this.f = new CommonRequest(this.h, this.t);
+          this.g = this.j.provider === Jt.YINLI ? "ide.byted.org" : "ide-us.tiktok-row.org";
         }
 
         async login() {
-          this.a || (this.a = new di()),
-            this.h.info("OAuthenticator#start a server to listen for oauth result"),
-            await this.c.getServer(),
-            this.c.setAuthCodeHandler(this.D.bind(this), !0),
-            this.c.setAuthorizationTimeoutHandler(this.C.bind(this)),
-            this.h.info("OAuthenticator#open oauth url"),
-            this.F(await this.c.getPort());
+          this.a || (this.a = new di());
+          this.h.info("OAuthenticator#start a server to listen for oauth result");
+          await this.c.getServer();
+          this.c.setAuthCodeHandler(this.D.bind(this), true);
+          this.c.setAuthorizationTimeoutHandler(this.C.bind(this));
+          this.h.info("OAuthenticator#open oauth url");
+          this.F(await this.c.getPort());
           const t = await this.a.p;
-          return (this.a = void 0), t;
+          this.a = void 0;
+          return t;
         }
 
-        async refreshToken(t) {
-          if (!t) throw new Error("RefreshTokenError:TokenNullError");
-          return await this.z(t);
+        async refreshToken(token) {
+          if (!token) {
+            throw new Error("RefreshTokenError:TokenNullError");
+          }
+          return await this.z(token);
         }
 
-        async w(t) {
+        async w(token) {
           try {
-            const e = await this.f.request({
+            const resp = await this.f.request({
               method: "POST",
               url: `https://${this.g}/api/v2?Action=GetUserToken`,
               data: {},
               timeout: 3e4,
-              tryAgent: !0,
-              headers: { "X-Cloudide-Token": t },
+              tryAgent: true,
+              headers: { "X-Cloudide-Token": token },
             });
-            if (!e) throw new Error("GetJwtTokenError:ResultNullError");
-            return (
-              this.h.info("[getJwtToken]", "Result: ", wr(e)),
-              {
-                Token: e.Result.Token,
-                ExpiredAt: e.Result.ExpiredAt,
-                UserID: e.Result.UserID,
-                TenantID: e.Result.TenantID,
-              }
-            );
-          } catch (e) {
-            throw new Error(`GetJwtTokenError:${e}`);
+            if (!resp) {
+              throw new Error("GetJwtTokenError:ResultNullError");
+            }
+            this.h.info("[getJwtToken]", "Result: ", _mask(resp));
+            return {
+              Token: resp.Result.Token,
+              ExpiredAt: resp.Result.ExpiredAt,
+              UserID: resp.Result.UserID,
+              TenantID: resp.Result.TenantID,
+            };
+          } catch (err) {
+            throw new Error(`GetJwtTokenError:${err}`);
           }
         }
 
-        async y(t) {
+        async y(token) {
           try {
-            const e = await this.f.request({
+            const resp = await this.f.request({
               method: "POST",
               url: `https://${this.g}/api/v2/GetUserNativeRegion`,
               data: {},
               timeout: 3e4,
-              tryAgent: !0,
-              headers: { "X-Cloudide-Token": t },
+              tryAgent: true,
+              headers: { "X-Cloudide-Token": token },
             });
-            if (!e) throw new Error("GetAiRegionError:ResultNullError");
-            if ((this.h.info("[getAiRegion]", "Result: ", e), !e.Result.Allow)) throw new Error("GetAiRegionError:NotAllowed");
-            return (
-              e.Result.AIRegion === "-" && (e.Result.AIRegion = void 0),
-              {
-                Allow: e.Result.Allow,
-                AIRegion: e.Result.AIRegion,
-              }
-            );
-          } catch (e) {
-            throw new Error(`GetAiRegionError:${e}`);
+            if (!resp) {
+              throw new Error("GetAiRegionError:ResultNullError");
+            }
+            this.h.info("[getAiRegion]", "Result: ", resp);
+            if (!resp.Result.Allow) {
+              throw new Error("GetAiRegionError:NotAllowed");
+            }
+            if (resp.Result.AIRegion === "-") {
+              resp.Result.AIRegion = void 0;
+            }
+            return {
+              Allow: resp.Result.Allow,
+              AIRegion: resp.Result.AIRegion,
+            };
+          } catch (err) {
+            throw new Error(`GetAiRegionError:${err}`);
           }
         }
 
-        async z(t) {
-          const e = t?.split(".")[1],
+        async z(token) {
+          const e = token?.split(".")[1],
             i = e && e.replace(/-/g, "+").replace(/_/g, "/"),
             s = JSON.parse(decodeURIComponent(escape(atob(i)))),
-            { avatar_url: r, email: n, iat: o, iss: a, organization: c, username: l, work_country: h } = s;
-          if (l) {
-            const [{ Token: d, ExpiredAt: p }, g] = await Promise.all([this.w(t), this.y(t)]),
-              m = g.AIRegion,
-              b = {
-                username: l,
-                iss: a,
-                iat: o,
-                organization: c,
-                work_country: h,
-                email: n,
-                avatar_url: r,
+            { avatar_url, email, iat, iss, organization, username, work_country } = s;
+          if (username) {
+            const [{ Token, ExpiredAt }, g] = await Promise.all([this.w(token), this.y(token)]),
+              aiRegion = g.AIRegion,
+              account = {
+                username: username,
+                iss: iss,
+                iat: iat,
+                organization: organization,
+                work_country: work_country,
+                email: email,
+                avatar_url: avatar_url,
                 scope: wi.BYTEDANCE,
               };
-            return { token: d, refreshToken: t, expiredAt: p, userId: l, aiRegion: m, account: b };
-          } else throw new Error("RefreshTokenError:TokenParseError");
+            return {
+              token: Token,
+              refreshToken: token,
+              expiredAt: ExpiredAt,
+              userId: username,
+              aiRegion: aiRegion,
+              account: account,
+            };
+          } else {
+            throw new Error("RefreshTokenError:TokenParseError");
+          }
         }
 
         C() {
-          this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
+          this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError"));
+          this.a = void 0;
         }
 
-        async D(t) {
-          if (t) {
-            if ((this.h.info("OAuthenticator#write ide_credential file to local path"), !this.a)) throw new Error("CloudIDETokenError:LinkExpired");
-            const e = await this.z(t).catch((i) => {
-              throw (this.a?.error(i), (this.a = void 0), i);
+        async D(token) {
+          if (token) {
+            this.h.info("OAuthenticator#write ide_credential file to local path");
+            if (!this.a) {
+              throw new Error("CloudIDETokenError:LinkExpired");
+            }
+            const e = await this.z(token).catch((i) => {
+              this.a?.error(i);
+              this.a = void 0;
+              throw i;
             });
             this.a?.complete(e);
-          } else this.a?.error(new Error("CloudIDETokenError:TokenNullError")), (this.a = void 0);
+          } else {
+            this.a?.error(new Error("CloudIDETokenError:TokenNullError"));
+            this.a = void 0;
+          }
         }
 
-        F(t) {
-          const e = `http://127.0.0.1:${t}${Xa.LOGIN_CONFIRM}`,
-            i = `https://${this.g}/ide/api/v1/users/login/local?next=${e}`;
+        F(port) {
+          const e = `http://127.0.0.1:${port}${Xa.LOGIN_CONFIRM}`,
+            url = `https://${this.g}/ide/api/v1/users/login/local?next=${e}`;
           if (!this.r) {
             this.h.error("OAuthenticator# this.nativeHostMainService is undefined");
             return;
           }
-          this.r.openExternal(void 0, i),
-            this.b && clearTimeout(this.b),
-            (this.b = setTimeout(() => {
-              this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError")), (this.a = void 0);
-            }, OAuthLocalServer.TIMEOUT_MS));
+          this.r.openExternal(void 0, url);
+          this.b && clearTimeout(this.b);
+          this.b = setTimeout(() => {
+            this.a?.error(new Error("CloudIDETokenError:LoginTimeoutError"));
+            this.a = void 0;
+          }, OAuthLocalServer.TIMEOUT_MS);
         }
 
         async checkToken() {
@@ -37813,7 +37866,6 @@ var ob,
         }
 
         constructor(productConfig, i, s, r, n, o) {
-          debugger;
           super();
           this.n = productConfig;
           this.r = i;
@@ -37970,7 +38022,7 @@ var ob,
           this.C.fire(this.nativeAppMetadata);
           this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D);
           this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata);
-          this.s.info("[persistUserInfoWithNotify]", this.S, wr(userInfo));
+          this.s.info("[persistUserInfoWithNotify]", this.S, _mask(userInfo));
           if (this.S) {
             userInfo ? this.r.setItem(this.S, JSON.stringify(userInfo)) : remove && this.r.removeItem(this.S);
           }
@@ -38021,7 +38073,6 @@ var ob,
 
         // logout
         X() {
-          debugger;
           if (this.S) {
             this.D = void 0;
             this.z.fire(void 0);
