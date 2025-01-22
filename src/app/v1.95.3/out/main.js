@@ -3679,8 +3679,8 @@ function it(t) {
   return typeof t == "string";
 }
 
-function xt(t) {
-  return typeof t == "object" && t !== null && !Array.isArray(t) && !(t instanceof RegExp) && !(t instanceof Date);
+function isPlainObject(obj) {
+  return typeof obj == "object" && obj !== null && !Array.isArray(obj) && !(obj instanceof RegExp) && !(obj instanceof Date);
 }
 
 function kx(t) {
@@ -3714,7 +3714,7 @@ function _c(t) {
 }
 
 function tg(t) {
-  if (!xt(t)) return !1;
+  if (!isPlainObject(t)) return !1;
   for (const e in t) if (Tv.call(t, e)) return !1;
   return !0;
 }
@@ -4921,7 +4921,7 @@ var t2 = v({
           }
 
           add(t, e) {
-            dg(it(t)), dg(xt(e)), dg(!this.a.has(t), "There is already an extension with this id"), this.a.set(t, e);
+            dg(it(t)), dg(isPlainObject(e)), dg(!this.a.has(t), "There is already an extension with this id"), this.a.set(t, e);
           }
 
           knows(t) {
@@ -5214,7 +5214,7 @@ var n2,
             }
             for (const o of Object.keys(e)) {
               const a = e[o];
-              if (xt(a) && (Ir(r[o]) || xt(r[o]))) {
+              if (isPlainObject(a) && (Ir(r[o]) || isPlainObject(r[o]))) {
                 if (((r[o] = { ...(r[o] ?? {}), ...a }), i)) for (const l in a) n.set(`${o}.${l}`, i);
               } else (r[o] = a), i ? n.set(o, i) : n.delete(o);
             }
@@ -5225,13 +5225,13 @@ var n2,
             const r = this.e[t],
               n = s?.value ?? r?.defaultDefaultValue;
             let o = i;
-            if (xt(e) && ((r !== void 0 && r.type === "object") || (r === void 0 && (Ir(n) || xt(n))))) {
+            if (isPlainObject(e) && ((r !== void 0 && r.type === "object") || (r === void 0 && (Ir(n) || isPlainObject(n))))) {
               if (((o = s?.source ?? new Map()), !(o instanceof Map))) {
                 console.error("defaultValueSource is not a Map");
                 return;
               }
               for (const c in e) i && o.set(`${t}.${c}`, i);
-              e = { ...(xt(n) ? n : {}), ...e };
+              e = { ...(isPlainObject(n) ? n : {}), ...e };
             }
             return { value: e, source: o };
           }
@@ -13884,7 +13884,7 @@ var hl,
           async set(e, i, s = !1) {
             if (this.c === Bi.Closed) return;
             if (ui(i)) return this.delete(e, s);
-            const r = xt(i) || Array.isArray(i) ? oI(i) : String(i);
+            const r = isPlainObject(i) || Array.isArray(i) ? oI(i) : String(i);
             if (this.f.get(e) !== r)
               return (
                 this.f.set(e, r),
@@ -18247,7 +18247,7 @@ function V0(t, e, i) {
     for (const n of t) r.push(V0(n, e, i));
     return r;
   }
-  if (xt(t)) {
+  if (isPlainObject(t)) {
     if (i.has(t)) throw new Error("Cannot clone recursive data-structure");
     i.add(t);
     const r = {};
@@ -18258,10 +18258,10 @@ function V0(t, e, i) {
 }
 
 function Ld(t, e, i = !0) {
-  return xt(t)
-    ? (xt(e) &&
+  return isPlainObject(t)
+    ? (isPlainObject(e) &&
         Object.keys(e).forEach((s) => {
-          s in t ? i && (xt(t[s]) && xt(e[s]) ? Ld(t[s], e[s], i) : (t[s] = e[s])) : (t[s] = e[s]);
+          s in t ? i && (isPlainObject(t[s]) && isPlainObject(e[s]) ? Ld(t[s], e[s], i) : (t[s] = e[s])) : (t[s] = e[s]);
         }),
       t)
     : e;
@@ -27106,107 +27106,109 @@ var U9,
   Pn = v({
     "out-build/vs/base/common/iCube/userInfo.js"() {
       "use strict";
-      is(),
-        (U9 = "iCubeAuthInfo"),
-        (Gm = "iCubeNativeAppLocationRegion"),
-        (mf = "iCubeNativeAppStartSetup"),
-        (function (t) {
-          (t.USEast = "US-East"), (t.SG = "Singapore-Central"), (t.BOEI18N = "US-BOE"), (t.BOE = "China-BOE"), (t.CN = "China-North");
-        })(W9 || (W9 = {})),
-        (function (t) {
-          (t.BYTEDANCE = "bytedance"), (t.MARSCODE = "marscode");
-        })(wi || (wi = {})),
-        (function (t) {
-          (t.BYTEDANCE = "bytedance"), (t.DCAR = "dcar"), (t.MARSCODE_CN = "marscode_cn"), (t.MARSCODE_COM = "marscode_com"), (t.UNKNOWN = "unknown");
-        })(H9 || (H9 = {})),
-        (function (t) {
-          (t.CN = "cn"), (t.I18N = "i18n");
-        })(wf || (wf = {})),
-        (function (t) {
-          (t.CN = "CN"), (t.SG = "SG"), (t.US = "US"), (t.BOE = "BOE"), (t.BOEI18N = "BOEI18N");
-        })(oi || (oi = {})),
-        (function (t) {
-          (t.cn = "cn"), (t.sg = "sg"), (t.us = "us");
-        })(Jl || (Jl = {})),
-        (TF = {
-          [Jl.cn]: oi.CN,
-          [Jl.sg]: oi.SG,
-          [Jl.us]: oi.US,
-        }),
-        (z9 = new Map([
-          ["www.marscode.cn", "jn91924vxlq380"],
-          ["www.trae.ai", "ono9krqynydwx5"],
-        ])),
-        (Yl = new Map([
-          [
-            oi.SG,
-            {
-              url: "api.trae.ai",
-              region: "sg",
-              clientId: "ono9krqynydwx5",
-              path: "trae",
-            },
-          ],
-          [
-            oi.US,
-            {
-              url: "api.trae.ai",
-              region: "us",
-              clientId: "ono9krqynydwx5",
-              path: "trae",
-            },
-          ],
-          [
-            oi.CN,
-            {
-              url: "api.marscode.cn",
-              region: "cn",
-              clientId: "jn91924vxlq380",
-              path: "public",
-            },
-          ],
-        ])),
-        (Jm = new Map([
-          [
-            Jt.SPRING,
-            {
-              domain: "www.trae.ai",
-              authFrom: "trae",
-            },
-          ],
-          [Jt.YINLI, { domain: "www.marscode.cn", authFrom: "marscode" }],
-        ]));
+      is();
+      U9 = "iCubeAuthInfo";
+      Gm = "iCubeNativeAppLocationRegion";
+      mf = "iCubeNativeAppStartSetup";
+      (function (t) {
+        (t.USEast = "US-East"), (t.SG = "Singapore-Central"), (t.BOEI18N = "US-BOE"), (t.BOE = "China-BOE"), (t.CN = "China-North");
+      })(W9 || (W9 = {}));
+      (function (t) {
+        (t.BYTEDANCE = "bytedance"), (t.MARSCODE = "marscode");
+      })(wi || (wi = {}));
+      (function (t) {
+        (t.BYTEDANCE = "bytedance"), (t.DCAR = "dcar"), (t.MARSCODE_CN = "marscode_cn"), (t.MARSCODE_COM = "marscode_com"), (t.UNKNOWN = "unknown");
+      })(H9 || (H9 = {}));
+      (function (t) {
+        (t.CN = "cn"), (t.I18N = "i18n");
+      })(wf || (wf = {}));
+      (function (t) {
+        (t.CN = "CN"), (t.SG = "SG"), (t.US = "US"), (t.BOE = "BOE"), (t.BOEI18N = "BOEI18N");
+      })(oi || (oi = {}));
+      (function (t) {
+        (t.cn = "cn"), (t.sg = "sg"), (t.us = "us");
+      })(Jl || (Jl = {}));
+      TF = {
+        [Jl.cn]: oi.CN,
+        [Jl.sg]: oi.SG,
+        [Jl.us]: oi.US,
+      };
+      z9 = new Map([
+        ["www.marscode.cn", "jn91924vxlq380"],
+        ["www.trae.ai", "ono9krqynydwx5"],
+      ]);
+      Yl = new Map([
+        [
+          oi.SG,
+          {
+            url: "api.trae.ai",
+            region: "sg",
+            clientId: "ono9krqynydwx5",
+            path: "trae",
+          },
+        ],
+        [
+          oi.US,
+          {
+            url: "api.trae.ai",
+            region: "us",
+            clientId: "ono9krqynydwx5",
+            path: "trae",
+          },
+        ],
+        [
+          oi.CN,
+          {
+            url: "api.marscode.cn",
+            region: "cn",
+            clientId: "jn91924vxlq380",
+            path: "public",
+          },
+        ],
+      ]);
+      Jm = new Map([
+        [
+          Jt.SPRING,
+          {
+            domain: "www.trae.ai",
+            authFrom: "trae",
+          },
+        ],
+        [Jt.YINLI, { domain: "www.marscode.cn", authFrom: "marscode" }],
+      ]);
     },
   }),
-  Dt,
+  ipcChannels,
   bf = v({
     "out-build/vs/base/common/iCube/iCubeIPCChannel.js"() {
       "use strict";
       (function (t) {
-        (t.MAIN_TO_SANDBOX_BROADCAST_AUTH_FAILED = "vscode:main::sandbox-broadcast-authFailed"),
-          (t.SANDBOX_TO_MAIN_INVOKE_GET_USER_INFO = "vscode:sandbox::main-invoke-getUserInfo"),
-          (t.SANDBOX_TO_MAIN_SEND_NEED_REFRESH_USER_INFO = "vscode:sandbox::main-send-needRefreshUserInfo"),
-          (t.MAIN_TO_SANDBOX_SEND_USER_INFO = "vscode:main::sandbox-send-userInfo"),
-          (t.MAIN_TO_SANDBOX_SEND_APP_METADATA = "vscode:main::sandbox-send-appMetadata"),
-          (t.SANDBOX_TO_MAIN_INVOKE_GET_APP_METADATA = "vscode:sandbox::main-invoke-getAppMetadata"),
-          (t.SANDBOX_TO_MAIN_INVOKE_GET_REGION = "vscode:sandbox::main-invoke-getRegion"),
-          (t.SANDBOX_TO_MAIN_INVOKE_GET_AI_REGION = "vscode:sandbox::main-invoke-getAiRegion"),
-          (t.SANDBOX_TO_MAIN_SEND_OPEN_LOGIN_WINDOW = "vscode:sandbox::main-send-openLoginWindow"),
-          (t.MAIN_TO_SANDBOX_SEND_RELOAD_CURRENT_WINDOW = "vscode:main::sandbox-send-reloadCurrentWindow"),
-          (t.MAIN_TO_SANDBOX_SEND_RELOAD_CURRENT_EXTHOST = "vscode:main::sandbox-send-reloadCurrentExthost"),
-          (t.EVENT_MAIN_TO_SANDBOX_LOGIN = "vscode:main::sandbox-login-event"),
-          (t.EVENT_MAIN_TO_SANDBOX_LOGOUT = "vscode:main::sandbox-logout-event"),
-          (t.SANDBOX_TO_MAIN_SEND_LOGOUT = "vscode:sandbox::main-send-logout"),
-          (t.SANDBOX_TO_MAIN_INVOKE_LOGIN = "vscode:sandbox::main-invoke-login"),
-          (t.SANDBOX_TO_MAIN_INVOKE_CHECK_BYTEDANCE = "vscode:sandbox:main-check-bytedance"),
-          (t.MAIN_TO_SANDBOX_SEND_REGION = "vscode:main::sandbox-send-region"),
-          (t.MAIN_TO_SANDBOX_SEND_AI_REGION = "vscode:main::sandbox-send-ai-region"),
-          (t.SANDBOX_TO_MAIN_REFRESH_USERINFO = "vscode:sandbox::main-refresh-userinfo"),
-          (t.SANDBOX_TO_MAIN_INVOKE_GET_DEVICE_ID = "vscode:sandbox::main-invoke-getDeviceId"),
-          (t.MAIN_TO_SANDBOX_SEND_DEVICE_ID = "vscode:main::sandbox-send-deviceId"),
-          (t.SANDBOX_TO_MAIN_INVOKE_GET_INSTALL_ID = "vscode:sandbox::main-invoke-getInstallId"),
-          (t.MAIN_TO_SANDBOX_SEND_INSTALL_ID = "vscode:main::sandbox-send-installId");
-      })(Dt || (Dt = {}));
+        t.MAIN_TO_SANDBOX_BROADCAST_AUTH_FAILED = "vscode:main::sandbox-broadcast-authFailed";
+        t.MAIN_TO_SANDBOX_SEND_USER_INFO = "vscode:main::sandbox-send-userInfo";
+        t.MAIN_TO_SANDBOX_SEND_APP_METADATA = "vscode:main::sandbox-send-appMetadata";
+        t.MAIN_TO_SANDBOX_SEND_RELOAD_CURRENT_WINDOW = "vscode:main::sandbox-send-reloadCurrentWindow";
+        t.MAIN_TO_SANDBOX_SEND_RELOAD_CURRENT_EXTHOST = "vscode:main::sandbox-send-reloadCurrentExthost";
+        t.MAIN_TO_SANDBOX_SEND_REGION = "vscode:main::sandbox-send-region";
+        t.MAIN_TO_SANDBOX_SEND_AI_REGION = "vscode:main::sandbox-send-ai-region";
+        t.MAIN_TO_SANDBOX_SEND_DEVICE_ID = "vscode:main::sandbox-send-deviceId";
+        t.MAIN_TO_SANDBOX_SEND_INSTALL_ID = "vscode:main::sandbox-send-installId";
+
+        t.SANDBOX_TO_MAIN_SEND_NEED_REFRESH_USER_INFO = "vscode:sandbox::main-send-needRefreshUserInfo";
+        t.SANDBOX_TO_MAIN_SEND_OPEN_LOGIN_WINDOW = "vscode:sandbox::main-send-openLoginWindow";
+        t.SANDBOX_TO_MAIN_SEND_LOGOUT = "vscode:sandbox::main-send-logout";
+        t.SANDBOX_TO_MAIN_INVOKE_GET_USER_INFO = "vscode:sandbox::main-invoke-getUserInfo";
+        t.SANDBOX_TO_MAIN_INVOKE_GET_APP_METADATA = "vscode:sandbox::main-invoke-getAppMetadata";
+        t.SANDBOX_TO_MAIN_INVOKE_GET_REGION = "vscode:sandbox::main-invoke-getRegion";
+        t.SANDBOX_TO_MAIN_INVOKE_GET_AI_REGION = "vscode:sandbox::main-invoke-getAiRegion";
+        t.SANDBOX_TO_MAIN_INVOKE_LOGIN = "vscode:sandbox::main-invoke-login";
+        t.SANDBOX_TO_MAIN_INVOKE_CHECK_BYTEDANCE = "vscode:sandbox:main-check-bytedance";
+        t.SANDBOX_TO_MAIN_INVOKE_GET_DEVICE_ID = "vscode:sandbox::main-invoke-getDeviceId";
+        t.SANDBOX_TO_MAIN_INVOKE_GET_INSTALL_ID = "vscode:sandbox::main-invoke-getInstallId";
+        t.SANDBOX_TO_MAIN_REFRESH_USERINFO = "vscode:sandbox::main-refresh-userinfo";
+
+        t.EVENT_MAIN_TO_SANDBOX_LOGIN = "vscode:main::sandbox-login-event";
+        t.EVENT_MAIN_TO_SANDBOX_LOGOUT = "vscode:main::sandbox-logout-event";
+      })(ipcChannels || (ipcChannels = {}));
     },
   });
 
@@ -27261,7 +27263,7 @@ var xo,
           }
 
           t() {
-            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_REGION, this.handleGetRegion.bind(this)), De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_AI_REGION, this.handleGetAiRegion.bind(this));
+            De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_REGION, this.handleGetRegion.bind(this)), De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_AI_REGION, this.handleGetAiRegion.bind(this));
           }
 
           u() {
@@ -27285,7 +27287,11 @@ var xo,
           }
 
           w() {
-            this.r.info("[MainICubeRegionManagementService] refresh region", "userRegion: ", this.c, "aiRegion: ", this.f), this.a?.(Dt.MAIN_TO_SANDBOX_SEND_REGION, this.c, this.f), (this.b = !0), this.m.fire(this.c), this.n.fire(this.f);
+            this.r.info("[MainICubeRegionManagementService] refresh region", "userRegion: ", this.c, "aiRegion: ", this.f),
+              this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_REGION, this.c, this.f),
+              (this.b = !0),
+              this.m.fire(this.c),
+              this.n.fire(this.f);
           }
         }),
         (vf = __decorate([__param(0, K), __param(1, Je)], vf));
@@ -27734,57 +27740,57 @@ var xo,
   WF = v({
     "out-build/vs/code/electron-main/oauth/loginConfirmHtml.js"() {
       "use strict";
-      BF(),
-        jF(),
-        UF(),
-        (K9 = (t, e, i, s, r) => {
-          const n = {
-              zh: {
-                "Authorize to log in to MarsCode?": "\u6388\u6743\u767B\u5F55\u8C46\u5305 MarsCode ?",
-                "Please click the button to log in and authorize.": "\u8BF7\u70B9\u51FB\u6309\u94AE\u8FDB\u884C\u767B\u5F55\u6388\u6743\uFF0C",
-                "This page will expire in 5 minutes": "\u8BE5\u9875\u9762\u5C06\u57285\u5206\u949F\u540E\u5931\u6548",
-                "Authorize and open MarsCode": "\u6388\u6743\u5E76\u6253\u5F00\u8C46\u5305 MarsCode",
-                "MarsCode login successfully!": "\u8C46\u5305 MarsCode \u767B\u5F55\u6210\u529F!",
-                "MarsCode authorization login link has expired": "\u8C46\u5305 MarsCode \u6388\u6743\u767B\u5F55\u94FE\u63A5\u5DF2\u5931\u6548",
-                "MarsCode authorization login timeout. If you need to re-authorize the login, please open the MarsCode client":
-                  "\u62B1\u6B49\uFF0C\u767B\u5F55\u6388\u6743\u8D85\u65F6\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00 MarsCode IDE \u8FDB\u884C\u767B\u5F55",
-                "MarsCode authorization login failed": "\u8C46\u5305 MarsCode \u6388\u6743\u767B\u5F55\u5931\u8D25",
-                "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.": "",
-              },
-              en: {
-                "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.": "",
-              },
+      BF();
+      jF();
+      UF();
+      K9 = (t, e, i, s, r) => {
+        const n = {
+            zh: {
+              "Authorize to log in to MarsCode?": "\u6388\u6743\u767B\u5F55\u8C46\u5305 MarsCode ?",
+              "Please click the button to log in and authorize.": "\u8BF7\u70B9\u51FB\u6309\u94AE\u8FDB\u884C\u767B\u5F55\u6388\u6743\uFF0C",
+              "This page will expire in 5 minutes": "\u8BE5\u9875\u9762\u5C06\u57285\u5206\u949F\u540E\u5931\u6548",
+              "Authorize and open MarsCode": "\u6388\u6743\u5E76\u6253\u5F00\u8C46\u5305 MarsCode",
+              "MarsCode login successfully!": "\u8C46\u5305 MarsCode \u767B\u5F55\u6210\u529F!",
+              "MarsCode authorization login link has expired": "\u8C46\u5305 MarsCode \u6388\u6743\u767B\u5F55\u94FE\u63A5\u5DF2\u5931\u6548",
+              "MarsCode authorization login timeout. If you need to re-authorize the login, please open the MarsCode client":
+                "\u62B1\u6B49\uFF0C\u767B\u5F55\u6388\u6743\u8D85\u65F6\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00 MarsCode IDE \u8FDB\u884C\u767B\u5F55",
+              "MarsCode authorization login failed": "\u8C46\u5305 MarsCode \u6388\u6743\u767B\u5F55\u5931\u8D25",
+              "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.": "",
             },
-            o = {
-              zh: {
-                "Authorize to log in to MarsCode?": "\u6388\u6743\u767B\u5F55 Trae ?",
-                "Please click the button to log in and authorize.": "\u8BF7\u70B9\u51FB\u6309\u94AE\u8FDB\u884C\u767B\u5F55\u6388\u6743\uFF0C",
-                "This page will expire in 5 minutes": "\u8BE5\u9875\u9762\u5C06\u57285\u5206\u949F\u540E\u5931\u6548",
-                "Authorize and open MarsCode": "\u6388\u6743\u5E76\u6253\u5F00 Trae",
-                "MarsCode login successfully!": "Trae \u767B\u5F55\u6210\u529F!",
-                "MarsCode authorization login link has expired": "Trae \u6388\u6743\u767B\u5F55\u94FE\u63A5\u5DF2\u5931\u6548",
-                "MarsCode authorization login timeout. If you need to re-authorize the login, please open the MarsCode client":
-                  "\u62B1\u6B49\uFF0C\u767B\u5F55\u6388\u6743\u8D85\u65F6\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00 Trae IDE \u8FDB\u884C\u767B\u5F55",
-                "MarsCode authorization login failed": "Trae \u6388\u6743\u767B\u5F55\u5931\u8D25",
-                "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.":
-                  "\u6839\u636E\u5408\u89C4\u8981\u6C42\uFF0CCN \u5458\u5DE5\u8BF7\u4F7F\u7528\u56FD\u5185\u7248\u672C\uFF0C\u65E0\u6CD5\u4F7F\u7528\u6D77\u5916\u7248\u3002\u5982\u6709\u6D77\u5916\u7248\u4F7F\u7528\u9700\u6C42\uFF0C\u8BF7\u8054\u7CFB\u5E73\u53F0\u3002",
-              },
-              en: {
-                "Authorize to log in to MarsCode?": "Authorize to log in to Trae?",
-                "Authorize and open MarsCode": "Authorize and open Trae",
-                "MarsCode login successfully!": "Trae login successfully!",
-                "MarsCode authorization login link has expired": "Trae authorization login link has expired",
-                "MarsCode authorization login timeout. If you need to re-authorize the login, please open the MarsCode client": "Sorry, the login authorization has timed out. Please reopen Trae IDE to login.",
-                "MarsCode authorization login failed": "Trae authorization login failed",
-              },
-            };
+            en: {
+              "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.": "",
+            },
+          },
+          o = {
+            zh: {
+              "Authorize to log in to MarsCode?": "\u6388\u6743\u767B\u5F55 Trae ?",
+              "Please click the button to log in and authorize.": "\u8BF7\u70B9\u51FB\u6309\u94AE\u8FDB\u884C\u767B\u5F55\u6388\u6743\uFF0C",
+              "This page will expire in 5 minutes": "\u8BE5\u9875\u9762\u5C06\u57285\u5206\u949F\u540E\u5931\u6548",
+              "Authorize and open MarsCode": "\u6388\u6743\u5E76\u6253\u5F00 Trae",
+              "MarsCode login successfully!": "Trae \u767B\u5F55\u6210\u529F!",
+              "MarsCode authorization login link has expired": "Trae \u6388\u6743\u767B\u5F55\u94FE\u63A5\u5DF2\u5931\u6548",
+              "MarsCode authorization login timeout. If you need to re-authorize the login, please open the MarsCode client":
+                "\u62B1\u6B49\uFF0C\u767B\u5F55\u6388\u6743\u8D85\u65F6\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00 Trae IDE \u8FDB\u884C\u767B\u5F55",
+              "MarsCode authorization login failed": "Trae \u6388\u6743\u767B\u5F55\u5931\u8D25",
+              "According to compliance requirements, employees in China cannot use the overseas version. Please use the domestic version. If you need to use the overseas version, please contact the platform.":
+                "\u6839\u636E\u5408\u89C4\u8981\u6C42\uFF0CCN \u5458\u5DE5\u8BF7\u4F7F\u7528\u56FD\u5185\u7248\u672C\uFF0C\u65E0\u6CD5\u4F7F\u7528\u6D77\u5916\u7248\u3002\u5982\u6709\u6D77\u5916\u7248\u4F7F\u7528\u9700\u6C42\uFF0C\u8BF7\u8054\u7CFB\u5E73\u53F0\u3002",
+            },
+            en: {
+              "Authorize to log in to MarsCode?": "Authorize to log in to Trae?",
+              "Authorize and open MarsCode": "Authorize and open Trae",
+              "MarsCode login successfully!": "Trae login successfully!",
+              "MarsCode authorization login link has expired": "Trae authorization login link has expired",
+              "MarsCode authorization login timeout. If you need to re-authorize the login, please open the MarsCode client": "Sorry, the login authorization has timed out. Please reopen Trae IDE to login.",
+              "MarsCode authorization login failed": "Trae authorization login failed",
+            },
+          };
 
-          function a(c) {
-            const l = r === "Spring" ? o : n;
-            return i === "en" ? l.en[c] || c : l.zh[c] || c;
-          }
+        function a(c) {
+          const l = r === "Spring" ? o : n;
+          return i === "en" ? l.en[c] || c : l.zh[c] || c;
+        }
 
-          return `
+        return `
 		<!DOCTYPE html>
 		<html lang="${i}" provider="${r}">
 		<head>
@@ -28001,8 +28007,8 @@ var xo,
 		</script>
 		</html>
 	`;
-        }),
-        (Z9 = K9);
+      };
+      Z9 = K9;
     },
   });
 
@@ -34628,7 +34634,7 @@ var hk,
           setCustomColors(e) {
             (this.m = {}), this.w(e);
             const i = this.getThemeSpecificColors(e);
-            xt(i) && this.w(i), (this.u = void 0), (this.t = void 0), (this.s = void 0);
+            isPlainObject(i) && this.w(i), (this.u = void 0), (this.t = void 0), (this.s = void 0);
           }
 
           w(e) {
@@ -34641,14 +34647,14 @@ var hk,
           setCustomTokenColors(e) {
             (this.j = []), (this.g = void 0), this.y(e);
             const i = this.getThemeSpecificColors(e);
-            xt(i) && this.y(i), (this.u = void 0), (this.t = void 0), (this.s = void 0);
+            isPlainObject(i) && this.y(i), (this.u = void 0), (this.t = void 0), (this.s = void 0);
           }
 
           setCustomSemanticTokenColors(e) {
             if (((this.o = []), (this.c = void 0), e)) {
               (this.c = e.enabled), e.rules && this.x(e.rules);
               const i = this.getThemeSpecificColors(e);
-              xt(i) && (i.enabled !== void 0 && (this.c = i.enabled), i.rules && this.x(i.rules));
+              isPlainObject(i) && (i.enabled !== void 0 && (this.c = i.enabled), i.rules && this.x(i.rules));
             }
             (this.u = void 0), (this.t = void 0);
           }
@@ -37792,41 +37798,44 @@ var ob,
       rt();
       vS = ["ide.byted.org", "ide-us.byted.org"];
       br = U("IMainICubeAuthManagementService");
+
       (function (t) {
         t.CREATE_TOKEN = "CREATE_TOKEN";
         t.REFRESH_TOKEN = "REFRESH_TOKEN";
       })(Gr || (Gr = {}));
+
       CubeAuthManagement = class extends N {
         static {
           ob = this;
         }
         static {
-          this.REFRESH_TOKEN_DURATION = 24 * 60 * 60 * 1e3;
+          this.REFRESH_TOKEN_DURATION = 24 * 60 * 60 * 1000;
         }
 
-        constructor(e, i, s, r, n, o) {
-          super(),
-            (this.n = e),
-            (this.r = i),
-            (this.s = s),
-            (this.t = r),
-            (this.u = n),
-            (this.w = o),
-            (this.a = void 0),
-            (this.f = new Map()),
-            (this.g = void 0),
-            (this.h = void 0),
-            (this.m = new di()),
-            (this.z = this.B(new $())),
-            (this.onDidChangeUserInfo = this.z.event),
-            (this.C = this.B(new $())),
-            (this.onDidChangeAppMetadata = this.C.event),
-            (this.D = void 0),
-            (this.J = 60 * 60 * 1e3),
-            (this.jb = !1),
-            (this.D = this.ib()),
-            this.U(),
-            this.M();
+        constructor(productConfig, i, s, r, n, o) {
+          debugger;
+          super();
+          this.n = productConfig;
+          this.r = i;
+          this.s = s;
+          this.t = r;
+          this.u = n;
+          this.w = o;
+          this.a = void 0;
+          this.f = new Map();
+          this.g = void 0;
+          this.h = void 0;
+          this.m = new di();
+          this.z = this.B(new $());
+          this.onDidChangeUserInfo = this.z.event;
+          this.C = this.B(new $());
+          this.onDidChangeAppMetadata = this.C.event;
+          this.D = void 0;
+          this.J = 60 * 60 * 1e3;
+          this.jb = !1;
+          this.D = this.ib();
+          this.U();
+          this.M();
         }
 
         y(e, i) {
@@ -37835,8 +37844,11 @@ var ob,
           });
         }
 
-        async login(e) {
-          return await this.mb(void 0, { forceLogin: !0, provider: e || wi.BYTEDANCE });
+        async login(provider) {
+          return await this.mb(void 0, {
+            forceLogin: true,
+            provider: provider || wi.BYTEDANCE,
+          });
         }
 
         get userInfo() {
@@ -37868,10 +37880,10 @@ var ob,
         }
 
         M() {
-          this.N(),
-            (this.L = setInterval(() => {
-              this.s.info("[MainICubeAuthManagementService] Performing scheduled token validity check"), this.P(this.D);
-            }, this.J));
+          this.N();
+          this.L = setInterval(() => {
+            this.s.info("[MainICubeAuthManagementService] Performing scheduled token validity check"), this.P(this.D);
+          }, this.J);
         }
 
         N() {
@@ -37879,320 +37891,378 @@ var ob,
         }
 
         dispose() {
-          super.dispose(), (this.eb = void 0), (this.eb = void 0), this.N();
+          super.dispose();
+          this.eb = void 0;
+          this.eb = void 0;
+          this.N();
         }
 
-        async O(e) {
-          const i = e.account.scope;
+        async O(userinfo) {
+          const provider = userinfo.account.scope;
           if (this.hb) {
             this.s.info("[MainICubeAuthManagementService] verify strick token already run");
             return;
           }
           this.hb = new di();
-          const s = await this.kb(i);
+          const s = await this.kb(provider);
           if (!s) {
             this.s.info("[MainICubeAuthManagementService] no login provider");
             return;
           }
-          let r = !0;
+          let r = true;
           try {
-            r = await s.checkToken(e.token, e.region, e.host);
-          } catch (n) {
-            this.s.info("[MainICubeAuthManagementService] verifyStrickTokenInBackground error", n);
+            r = await s.checkToken(userinfo.token, userinfo.region, userinfo.host);
+          } catch (err) {
+            this.s.info("[MainICubeAuthManagementService] verifyStrickTokenInBackground error", err);
           }
-          r || this.R(void 0, !0), this.hb.complete(), (this.hb = void 0);
+          r || this.R(void 0, true);
+          this.hb.complete();
+          this.hb = void 0;
         }
 
+        // verifyTokenInBackground
         P(e) {
           const i = this.db(e),
-            s = e?.account.scope || wi.BYTEDANCE;
+            provider = e?.account.scope || wi.BYTEDANCE;
           if (i === "need-login") {
-            if ((this.s.info("[MainICubeAuthManagementService#verifyTokenInBackground] need login according to existed state#auth_info"), !e)) {
+            this.s.info("[MainICubeAuthManagementService#verifyTokenInBackground] need login according to existed state#auth_info");
+            if (!e) {
               this.R(void 0);
               return;
             }
-            this.mb(e.refreshToken, { forceLogin: !!e.refreshToken, provider: s });
+            this.mb(e.refreshToken, { forceLogin: !!e.refreshToken, provider: provider });
             return;
-          } else return i === "need-refresh" ? (this.lb(e?.refreshToken, Gr.REFRESH_TOKEN, s), e) : (this.O(e), e);
-        }
-
-        Q() {
-          this.g &&
-            (this.f.set(wi.BYTEDANCE, new ByteDanceOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)),
-            this.f.set(wi.MARSCODE, new MarsCodeOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j)));
-        }
-
-        async initialize(e) {
-          (this.g = e.nativeHostMainService),
-            (this.h = e.telemetryService),
-            (this.a = e.broadcastToCodeWindows),
-            (this.b = e.onLoginSuccess),
-            (this.c = e.onLogout),
-            (this.j = e.iCubeEventReportService),
-            this.Q(),
-            this.m.complete("initialize");
-          let i;
-          try {
-            (i = await this.getAuthUserInfo({ forceLogin: !1 })), this.s.info("[MainICubeAuthManagementService] initialize success");
-          } catch (s) {
-            this.s.error("[MainICubeAuthManagementService] initialize failed due to %s", s);
-          } finally {
-            this.R(i);
+          } else {
+            return i === "need-refresh" ? (this.lb(e?.refreshToken, Gr.REFRESH_TOKEN, provider), e) : (this.O(e), e);
           }
         }
 
-        R(e, i) {
-          (this.D = e),
-            this.z.fire(e),
-            this.C.fire(this.nativeAppMetadata),
-            this.a?.(Dt.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D),
-            this.a?.(Dt.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata),
-            this.s.info("[persistUserInfoWithNotify]", this.S, wr(e)),
-            this.S && (e ? this.r.setItem(this.S, JSON.stringify(e)) : i && this.r.removeItem(this.S));
+        Q() {
+          if (this.g) {
+            this.f.set(wi.BYTEDANCE, new ByteDanceOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j));
+            this.f.set(wi.MARSCODE, new MarsCodeOAuthService(this.s, this.n, this.t, this.u, this.g, this.h, this.w, this.j));
+          }
+        }
+
+        async initialize(e) {
+          this.g = e.nativeHostMainService;
+          this.h = e.telemetryService;
+          this.a = e.broadcastToCodeWindows;
+          this.b = e.onLoginSuccess;
+          this.c = e.onLogout;
+          this.j = e.iCubeEventReportService;
+          this.Q();
+          this.m.complete("initialize");
+          let userInfo;
+          try {
+            userInfo = await this.getAuthUserInfo({ forceLogin: false });
+            this.s.info("[MainICubeAuthManagementService] initialize success");
+          } catch (s) {
+            this.s.error("[MainICubeAuthManagementService] initialize failed due to %s", s);
+          } finally {
+            this.R(userInfo);
+          }
+        }
+
+        R(userInfo, remove) {
+          this.D = userInfo;
+          this.z.fire(userInfo);
+          this.C.fire(this.nativeAppMetadata);
+          this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D);
+          this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata);
+          this.s.info("[persistUserInfoWithNotify]", this.S, wr(userInfo));
+          if (this.S) {
+            userInfo ? this.r.setItem(this.S, JSON.stringify(userInfo)) : remove && this.r.removeItem(this.S);
+          }
         }
 
         get S() {
-          const { authProviderId: e } = this.n.iCubeApp?.nativeAppConfig || {};
-          if (e) return `${U9}://${e}`;
+          const { authProviderId } = this.n.iCubeApp?.nativeAppConfig || {};
+          if (authProviderId) {
+            return `${U9}://${authProviderId}`;
+          }
         }
 
         U() {
-          this.s.info("[MainICubeAuthManagementService] registerListeners"),
-            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_APP_METADATA, this.$.bind(this)),
-            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_USER_INFO, this.ab.bind(this)),
-            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_LOGIN, this.Z.bind(this)),
-            De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_CHECK_BYTEDANCE, this.nb.bind(this)),
-            De.on(Dt.SANDBOX_TO_MAIN_SEND_OPEN_LOGIN_WINDOW, this.Z.bind(this)),
-            De.on(Dt.SANDBOX_TO_MAIN_SEND_NEED_REFRESH_USER_INFO, this.Y.bind(this)),
-            De.handle(Dt.SANDBOX_TO_MAIN_SEND_LOGOUT, this.X.bind(this)),
-            De.handle(Dt.SANDBOX_TO_MAIN_REFRESH_USERINFO, this.W.bind(this));
+          this.s.info("[MainICubeAuthManagementService] registerListeners");
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_APP_METADATA, this.$.bind(this));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_USER_INFO, this.ab.bind(this));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_LOGIN, this.Z.bind(this));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_CHECK_BYTEDANCE, this.nb.bind(this));
+          De.on(ipcChannels.SANDBOX_TO_MAIN_SEND_OPEN_LOGIN_WINDOW, this.Z.bind(this));
+          De.on(ipcChannels.SANDBOX_TO_MAIN_SEND_NEED_REFRESH_USER_INFO, this.Y.bind(this));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_SEND_LOGOUT, this.X.bind(this));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_REFRESH_USERINFO, this.W.bind(this));
         }
 
+        // refresh userinfo
         async W() {
           if (!this.D) return;
           if (this.db(this.D) === "valid-token") {
-            const i = this.D?.account.scope || wi.BYTEDANCE,
-              s = await this.kb(i);
+            const provider = this.D?.account.scope || wi.BYTEDANCE,
+              s = await this.kb(provider);
             if (!s) {
               this.s.info("[MainICubeAuthManagementService] no login provider");
               return;
             }
             if (s.refreshUserInfo) {
-              const r = await s.refreshUserInfo(this.D.token, this.D.region, this.D.host),
-                n = JSON.stringify(this.D.account || {}) !== JSON.stringify(r || {});
-              n &&
-                (this.s.info("[MainICubeAuthManagementService] get account info", r, n),
+              const account = await s.refreshUserInfo(this.D.token, this.D.region, this.D.host),
+                n = JSON.stringify(this.D.account || {}) !== JSON.stringify(account || {});
+              if (n) {
+                this.s.info("[MainICubeAuthManagementService] get account info", account, n);
                 this.R({
                   ...this.D,
-                  account: r,
-                }));
+                  account: account,
+                });
+              }
             }
           }
         }
 
+        // logout
         X() {
-          return (
-            this.S &&
-              ((this.D = void 0),
-              this.z.fire(void 0),
-              this.C.fire(this.nativeAppMetadata),
-              this.a?.(Dt.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D),
-              this.a?.(Dt.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata),
-              this.r.removeItem(this.S),
-              this.c && this.c()),
-            Promise.resolve(!0)
-          );
+          debugger;
+          if (this.S) {
+            this.D = void 0;
+            this.z.fire(void 0);
+            this.C.fire(this.nativeAppMetadata);
+            this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_USER_INFO, this.D);
+            this.a?.(ipcChannels.MAIN_TO_SANDBOX_SEND_APP_METADATA, this.nativeAppMetadata);
+            this.r.removeItem(this.S);
+            this.c && this.c();
+          }
+          return Promise.resolve(true);
         }
 
+        // need refresh userinfo
         Y(e) {
           this.getAuthUserInfo();
         }
 
-        async Z(e, i = wi.BYTEDANCE) {
+        // login
+        async Z(e, provider = wi.BYTEDANCE) {
           this.s.info("[MainICubeAuthManagementService]", "handleOpenLoginWindow");
-          const s = await this.mb(void 0, { forceLogin: !0, provider: i }),
-            n = BrowserWindow.getAllWindows().find((o) => o.webContents.mainFrame.processId === e.processId);
-          return this.s.info("[MainICubeAuthManagementService]", "show window", n), n && (n.isMinimized() && n.restore(), n.focus(), n.show()), this.b && this.b(s), s;
+          const s = await this.mb(void 0, { forceLogin: true, provider: provider }),
+            loginWindow = BrowserWindow.getAllWindows().find((win) => win.webContents.mainFrame.processId === e.processId);
+          this.s.info("[MainICubeAuthManagementService]", "show window", loginWindow);
+          if (loginWindow) {
+            loginWindow.isMinimized() && loginWindow.restore();
+            loginWindow.focus();
+            loginWindow.show();
+          }
+          this.b && this.b(s);
+          return s;
         }
 
+        // get app metadata
         async $(e) {
           return this.nativeAppMetadata;
         }
 
-        async ab(e, i = !1) {
-          return this.s.info("[MainICubeAuthManagementService] invoke getUserInfo from codeWindow %s", e.sender.id), this.getAuthUserInfo({ forceLogin: !1 });
+        // get userinfo
+        async ab(e, i = false) {
+          this.s.info("[MainICubeAuthManagementService] invoke getUserInfo from codeWindow %s", e.sender.id);
+          return this.getAuthUserInfo({ forceLogin: false });
         }
 
-        bb(e, i) {
-          (e === Gr.CREATE_TOKEN || i) && this.R(void 0, i), this.fb && (this.fb.error(new Error("Login Failed")), (this.fb = void 0), (this.gb = void 0)), this.eb && (this.eb = void 0);
+        bb(type, i) {
+          (type === Gr.CREATE_TOKEN || i) && this.R(void 0, i);
+          this.fb && (this.fb.error(new Error("Login Failed")), (this.fb = void 0), (this.gb = void 0));
+          this.eb && (this.eb = void 0);
         }
 
-        cb(e, i) {
-          if ((this.s.info("[MainICubeAuthManagementService] get userInfo by action %s", i), !e)) {
+        cb(userInfo, i) {
+          this.s.info("[MainICubeAuthManagementService] get userInfo by action %s", i);
+          if (!userInfo) {
             this.s.warn("[MainICubeAuthManagementService] userInfo is empty");
             return;
           }
-          this.R(e), e.refreshToken && (this.jb = !1), this.fb && (this.fb.complete(e), (this.fb = void 0), (this.gb = void 0)), this.eb && (this.eb = void 0);
+          this.R(userInfo);
+          userInfo.refreshToken && (this.jb = false);
+          this.fb && (this.fb.complete(userInfo), (this.fb = void 0), (this.gb = void 0));
+          this.eb && (this.eb = void 0);
         }
 
-        db(e) {
-          if (xt(e) && e.token && e.expiredAt) {
-            const i = Date.parse(e.expiredAt) - Date.now();
+        db(userInfo) {
+          if (isPlainObject(userInfo) && userInfo.token && userInfo.expiredAt) {
+            const i = Date.parse(userInfo.expiredAt) - Date.now();
             return i <= 0 ? "need-login" : i <= ob.REFRESH_TOKEN_DURATION ? "need-refresh" : "valid-token";
           }
           return "need-login";
         }
 
+        // restore userinfo
         ib() {
           if (!this.S) return;
-          const e = this.r.getItem(this.S);
-          if (!e) {
+          const userInfoStr = this.r.getItem(this.S);
+          if (!userInfoStr) {
             this.s.info("[MainICubeAuthManagementService] no available persist userInfo to restore.");
             return;
           }
           try {
-            const i = JSON.parse(e),
-              s = i.account.scope || wi.BYTEDANCE;
-            if (this.db(i) === "need-login") {
-              this.mb(i?.refreshToken, { forceLogin: !!i?.refreshToken, provider: s });
+            const userInfo = JSON.parse(userInfoStr),
+              provider = userInfo.account.scope || wi.BYTEDANCE;
+            if (this.db(userInfo) === "need-login") {
+              this.mb(userInfo?.refreshToken, { forceLogin: !!userInfo?.refreshToken, provider: provider });
               return;
-            } else return this.s.info("[MainICubeAuthManagementService] restore userInfoStr success"), i;
+            } else {
+              this.s.info("[MainICubeAuthManagementService] restore userInfoStr success");
+              return userInfo;
+            }
           } catch {
-            this.s.warn("[MainICubeAuthManagementService] restore userInfoStr failed %s", e);
+            this.s.warn("[MainICubeAuthManagementService] restore userInfoStr failed %s", userInfoStr);
             return;
           }
         }
 
-        async getAuthUserInfo(e = { forceLogin: !1 }) {
+        async getAuthUserInfo(e = { forceLogin: false }) {
           if (!this.S) return;
-          const i = this.r.getItem(this.S);
-          if (!i) {
+          const userInfoStr = this.r.getItem(this.S);
+          if (!userInfoStr) {
             this.R(void 0);
             return;
           }
           try {
-            const s = JSON.parse(i),
-              r = s.account.scope || wi.BYTEDANCE,
-              n = this.db(s);
-            return n === "need-login"
+            const userInfo = JSON.parse(userInfoStr),
+              provider = userInfo.account.scope || wi.BYTEDANCE,
+              status = this.db(userInfo);
+            return status === "need-login"
               ? (this.s.info("[MainICubeAuthManagementService#getAuthUserInfo] need login according to existed state#auth_info"),
-                this.mb(s?.refreshToken, {
+                this.mb(userInfo?.refreshToken, {
                   ...e,
-                  provider: r,
+                  provider: provider,
                 }))
-              : (n === "need-refresh" && this.lb(s.refreshToken, Gr.REFRESH_TOKEN, r), s);
+              : (status === "need-refresh" && this.lb(userInfo.refreshToken, Gr.REFRESH_TOKEN, provider), userInfo);
           } catch {
-            this.s.warn("[MainICubeAuthManagementService] invalid userInfoStr %s", i), this.R(void 0);
+            this.s.warn("[MainICubeAuthManagementService] invalid userInfoStr %s", userInfoStr);
+            this.R(void 0);
             return;
           }
         }
 
-        async kb(e) {
-          return await this.m.p, this.f.get(e);
+        async kb(provider) {
+          await this.m.p;
+          return this.f.get(provider);
         }
 
-        async lb(e, i = Gr.REFRESH_TOKEN, s = wi.BYTEDANCE) {
+        async lb(refreshToken, i = Gr.REFRESH_TOKEN, provider = wi.BYTEDANCE) {
           if (this.jb) {
             this.s.info("[MainICubeAuthManagementService] skip refreshToken due to v1 token has no refresh_token");
             return;
           }
-          let r, n;
+          let region, host;
           if (!this.D && this.S) {
-            const a = this.r.getItem(this.S);
-            if (!a) {
+            const userInfoStr = this.r.getItem(this.S);
+            if (!userInfoStr) {
               this.s.info("[MainICubeAuthManagementService] no available persist userInfo to restore.");
               return;
             }
             try {
-              const c = JSON.parse(a);
-              (r = c.region), (n = c.host);
-            } catch (c) {
-              this.s.error("[refreshTokenInBackground] parse userInfoStr failed %s", c);
+              const userInfo = JSON.parse(userInfoStr);
+              region = userInfo.region;
+              host = userInfo.host;
+            } catch (err) {
+              this.s.error("[refreshTokenInBackground] parse userInfoStr failed %s", err);
             }
-          } else (r = this.D?.region), (n = this.D?.host);
-          let o = await this.kb(s);
+          } else {
+            region = this.D?.region;
+            host = this.D?.host;
+          }
+          let o = await this.kb(provider);
           if (!o) {
             this.s.info("[MainICubeAuthManagementService] no login provider");
             return;
           }
-          if (this.eb) this.s.info("[MainICubeAuthManagementService] refreshToken is already in background");
-          else {
-            const a = Date.now();
-            this.y("icube_refresh_token_start", {}),
-              (this.eb = o.refreshToken(e, r, n)),
-              this.eb
-                .then((c) => {
-                  this.cb(c, i), this.y("icube_refresh_token_success", { duration: Date.now() - a });
-                })
-                .catch(async (c) => {
-                  this.s.error("[MainICubeAuthManagementService] refreshToken failed %s", c);
-                  let l = !1;
-                  c.message === "RefreshTokenError:TokenVersionError:1.0" || c.message === "RefreshTokenError:TokenNullError" ? (this.jb = !0) : c.message === Sf.RefreshTokenInvalid && (l = !0),
-                    this.bb(i, l),
-                    this.y("icube_refresh_token_failure", {
-                      duration: Date.now() - a,
-                      message: c.message,
-                    });
+          if (this.eb) {
+            this.s.info("[MainICubeAuthManagementService] refreshToken is already in background");
+          } else {
+            const now = Date.now();
+            this.y("icube_refresh_token_start", {});
+            this.eb = o.refreshToken(refreshToken, region, host);
+            this.eb
+              .then((c) => {
+                this.cb(c, i);
+                this.y("icube_refresh_token_success", { duration: Date.now() - now });
+              })
+              .catch(async (err) => {
+                this.s.error("[MainICubeAuthManagementService] refreshToken failed %s", err);
+                let l = false;
+                err.message === "RefreshTokenError:TokenVersionError:1.0" || err.message === "RefreshTokenError:TokenNullError" ? (this.jb = true) : err.message === Sf.RefreshTokenInvalid && (l = true);
+                this.bb(i, l);
+                this.y("icube_refresh_token_failure", {
+                  duration: Date.now() - now,
+                  message: err.message,
                 });
+              });
           }
           return this.eb;
         }
 
         async mb(e, i) {
-          if (((e = e || this.D?.refreshToken), !i?.forceLogin)) {
+          e = e || this.D?.refreshToken;
+          if (!i?.forceLogin) {
             this.R(void 0);
             return;
           }
-          const s = i?.provider || wi.BYTEDANCE,
-            r = Date.now();
-          if ((this.y("icube_login_start", { provider: s }), e)) return this.s.info("[MainICubeAuthManagementService] login via refreshToken started"), (this.jb = !1), this.lb(e, Gr.CREATE_TOKEN, i.provider);
-          this.fb && (this.s.info("[MainICubeAuthManagementService] login in progress already"), this.fb.cancel(), (this.fb = void 0), (this.gb = void 0)), (this.fb = new di());
+          const provider = i?.provider || wi.BYTEDANCE,
+            now = Date.now();
+          this.y("icube_login_start", { provider: provider });
+          if (e) {
+            this.s.info("[MainICubeAuthManagementService] login via refreshToken started");
+            this.jb = false;
+            return this.lb(e, Gr.CREATE_TOKEN, i.provider);
+          }
+          if (this.fb) {
+            this.s.info("[MainICubeAuthManagementService] login in progress already");
+            this.fb.cancel();
+            this.fb = void 0;
+            this.gb = void 0;
+          }
+          this.fb = new di();
           const n = $uuid();
           this.gb = n;
-          const o = await this.kb(s);
+          const o = await this.kb(provider);
           if (!o) {
-            this.s.info("[MainICubeAuthManagementService] no login provider"),
-              this.y("icube_login_failure", {
-                provider: s,
-                duration: Date.now() - r,
-                message: `no login provider: ${i?.provider}`,
-              });
+            this.s.info("[MainICubeAuthManagementService] no login provider");
+            this.y("icube_login_failure", {
+              provider: provider,
+              duration: Date.now() - now,
+              message: `no login provider: ${i?.provider}`,
+            });
             return;
           }
-          return (
-            o
-              .login()
-              .then(
-                (a) => (
-                  this.cb(a, Gr.CREATE_TOKEN),
-                  this.y("icube_login_success", {
-                    provider: s,
-                    duration: Date.now() - r,
-                  }),
-                  a
-                ),
-              )
-              .catch((a) => {
-                if (n !== this.gb) {
-                  this.s.info("[MainICubeAuthManagementService] login operate is expired");
-                  return;
-                }
-                this.s.error("[MainICubeAuthManagementService] login failed %s", a),
-                  this.y("icube_login_failure", {
-                    provider: s,
-                    duration: Date.now() - r,
-                    message: a.message,
-                  }),
-                  this.bb(Gr.CREATE_TOKEN);
-              }),
-            await this.fb.p
-          );
+          o.login()
+            .then(
+              (a) => (
+                this.cb(a, Gr.CREATE_TOKEN),
+                this.y("icube_login_success", {
+                  provider: provider,
+                  duration: Date.now() - now,
+                }),
+                a
+              ),
+            )
+            .catch((a) => {
+              if (n !== this.gb) {
+                this.s.info("[MainICubeAuthManagementService] login operate is expired");
+                return;
+              }
+              this.s.error("[MainICubeAuthManagementService] login failed %s", a);
+              this.y("icube_login_failure", {
+                provider: provider,
+                duration: Date.now() - now,
+                message: a.message,
+              });
+              this.bb(Gr.CREATE_TOKEN);
+            });
+          return await this.fb.p;
         }
 
+        // check bytedance
         async nb() {
           try {
             return this.n.provider === Jt.SPRING
-              ? !1
+              ? false
               : (await Promise.race([
                   Promise.any(
                     vS.map(
@@ -38210,12 +38280,14 @@ var ob,
                     }, 3e3);
                   }),
                 ]),
-                !0);
+                true);
           } catch (e) {
-            return this.s.info("[handleCheckBytedance]", e), !1;
+            this.s.info("[handleCheckBytedance]", e);
+            return false;
           }
         }
       };
+
       __decorate([nI(300)], CubeAuthManagement.prototype, "Y", null);
       CubeAuthManagement = ob = __decorate([__param(0, Je), __param(1, Ot), __param(2, K), __param(3, ct), __param(4, yt), __param(5, st)], CubeAuthManagement);
     },
@@ -41679,7 +41751,7 @@ var FS,
   });
 
 function MS(t) {
-  return xt(t) && dB(t.identifier) && (kU(t.location) || (it(t.location) && t.location)) && (Ir(t.relativeLocation) || it(t.relativeLocation)) && t.version && it(t.version);
+  return isPlainObject(t) && dB(t.identifier) && (kU(t.location) || (it(t.location) && t.location)) && (Ir(t.relativeLocation) || it(t.relativeLocation)) && t.version && it(t.version);
 }
 
 function kU(t) {
@@ -43108,7 +43180,7 @@ function lW(t, e, i, s) {
           n[o] = S;
         } else n[o] = g;
       }
-    } else if (xt(c)) for (const l in c) c.hasOwnProperty(l) && (l === "commands" ? r(c, l, !0) : r(c, l, a));
+    } else if (isPlainObject(c)) for (const l in c) c.hasOwnProperty(l) && (l === "commands" ? r(c, l, !0) : r(c, l, a));
     else if (Array.isArray(c)) for (let l = 0; l < c.length; l++) r(c, l, a);
   };
   for (const n in e) e.hasOwnProperty(n) && r(e, n);
@@ -46908,14 +46980,14 @@ var Ab,
         // registerListeners
         Q() {
           this.D.info("[MainICubeDeviceRegisterService] (registerListeners) start registerListeners");
-          De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_DEVICE_ID, () => Promise.resolve(this.n));
-          De.handle(Dt.SANDBOX_TO_MAIN_INVOKE_GET_INSTALL_ID, () => Promise.resolve(this.r));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_DEVICE_ID, () => Promise.resolve(this.n));
+          De.handle(ipcChannels.SANDBOX_TO_MAIN_INVOKE_GET_INSTALL_ID, () => Promise.resolve(this.r));
           this.onDidChangeDeviceId((deviceId) => {
-            this.I?.(Dt.MAIN_TO_SANDBOX_SEND_DEVICE_ID, this.n);
+            this.I?.(ipcChannels.MAIN_TO_SANDBOX_SEND_DEVICE_ID, this.n);
             this.F.setItem("device_id", deviceId);
           });
           this.onDidChangeInstallId((installId) => {
-            this.I?.(Dt.MAIN_TO_SANDBOX_SEND_INSTALL_ID, this.r);
+            this.I?.(ipcChannels.MAIN_TO_SANDBOX_SEND_INSTALL_ID, this.r);
             this.F.setItem("install_id", installId);
           });
         }
@@ -47943,10 +48015,10 @@ var Mb,
                 nativeHostMainService: d,
                 telemetryService: g,
                 onLogout: () => {
-                  this.M(Dt.EVENT_MAIN_TO_SANDBOX_LOGOUT), D.refreshRegion();
+                  this.M(ipcChannels.EVENT_MAIN_TO_SANDBOX_LOGOUT), D.refreshRegion();
                 },
                 onLoginSuccess: (F) => {
-                  this.M(Dt.EVENT_MAIN_TO_SANDBOX_LOGIN, F), D.refreshRegion();
+                  this.M(ipcChannels.EVENT_MAIN_TO_SANDBOX_LOGIN, F), D.refreshRegion();
                 },
                 iCubeEventReportService: S,
               }),
@@ -48695,7 +48767,7 @@ var Lt,
 
           i(e, i) {
             for (const s of Object.keys(i)) {
-              if (s in e && xt(e[s]) && xt(i[s])) {
+              if (s in e && isPlainObject(e[s]) && isPlainObject(i[s])) {
                 this.i(e[s], i[s]);
                 continue;
               }
@@ -53004,7 +53076,7 @@ var FilePolicyService,
           try {
             const i = await this.n.readFile(this.m),
               s = JSON.parse(i.value.toString());
-            if (!xt(s)) throw new Error("Policy file isn't a JSON object");
+            if (!isPlainObject(s)) throw new Error("Policy file isn't a JSON object");
             for (const r of Object.keys(s)) this.f[r] && e.set(r, s[r]);
           } catch (i) {
             i.fileOperationResult !== 1 && this.s.error("[FilePolicyService] Failed to read policies", i);
