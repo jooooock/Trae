@@ -1,3 +1,32 @@
-"use strict";(function(){const{ipcRenderer:o,webFrame:n,contextBridge:s}=require("electron");function t(e){if(!e||!e.startsWith("vscode:"))throw new Error(`Unsupported event IPC channel '${e}'`);return!0}const i={ipcRenderer:{send(e,...r){t(e)&&o.send(e,...r)},invoke(e,...r){return t(e),o.invoke(e,...r)}},webFrame:{setZoomLevel(e){typeof e=="number"&&n.setZoomLevel(e)}}};try{s.exposeInMainWorld("vscode",i)}catch(e){console.error(e)}})();
+"use strict";
+(function () {
+  const { ipcRenderer, webFrame, contextBridge } = require("electron");
+  function checkIpcChannel(channel) {
+    if (!channel || !channel.startsWith("vscode:")) {
+      throw new Error(`Unsupported event IPC channel '${channel}'`);
+    }
+    return true;
+  }
 
-//# sourceMappingURL=https://trae.private/sourcemaps/424b4bd987c6c6a4cadf1a08da420593cc6bf75a/vs/base/parts/sandbox/electron-sandbox/preload-aux.js.map
+  const vscode = {
+    ipcRenderer: {
+      send(event, ...args) {
+        checkIpcChannel(event) && ipcRenderer.send(event, ...args);
+      },
+      invoke(event, ...args) {
+        checkIpcChannel(event);
+        return ipcRenderer.invoke(event, ...args);
+      },
+    },
+    webFrame: {
+      setZoomLevel(zoomLevel) {
+        typeof zoomLevel == "number" && webFrame.setZoomLevel(zoomLevel);
+      },
+    },
+  };
+  try {
+    contextBridge.exposeInMainWorld("vscode", vscode);
+  } catch (err) {
+    console.error(err);
+  }
+})();

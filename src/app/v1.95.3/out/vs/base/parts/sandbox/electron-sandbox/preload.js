@@ -1,3 +1,150 @@
-"use strict";(function(){const{ipcRenderer:o,webFrame:t,contextBridge:n,webUtils:i}=require("electron");if(!process.isMainFrame){const e={webUtils:{getPathForFile(r){return i.getPathForFile(r)}}};if(process.contextIsolated)try{n.exposeInMainWorld("vscode",e)}catch(r){console.error(r)}else window.vscode=e;return}function s(e){if(!e||!e.startsWith("vscode:"))throw new Error(`Unsupported event IPC channel '${e}'`);return!0}function l(e){for(const r of process.argv)if(r.indexOf(`--${e}=`)===0)return r.split("=")[1]}let c;const a=(async()=>{const e=l("vscode-window-config");if(!e)throw new Error("Preload: did not find expected vscode-window-config in renderer process arguments list.");try{s(e);const r=c=await o.invoke(e);return Object.assign(process.env,r.userEnv),t.setZoomLevel(r.zoomLevel??0),r}catch(r){throw new Error(`Preload: unable to fetch vscode-window-config: ${r}`)}})(),f=(async()=>{const[e,r]=await Promise.all([(async()=>(await a).userEnv)(),o.invoke("vscode:fetchShellEnv")]);return{...process.env,...r,...e}})(),u={ipcRenderer:{send(e,...r){s(e)&&o.send(e,...r)},invoke(e,...r){return s(e),o.invoke(e,...r)},on(e,r){return s(e),o.on(e,r),this},once(e,r){return s(e),o.once(e,r),this},removeListener(e,r){return s(e),o.removeListener(e,r),this}},ipcMessagePort:{acquire(e,r){if(s(e)){const d=(v,p)=>{r===p&&(o.off(e,d),window.postMessage(r,"*",v.ports))};o.on(e,d)}}},webFrame:{setZoomLevel(e){typeof e=="number"&&t.setZoomLevel(e)}},webUtils:{getPathForFile(e){return i.getPathForFile(e)}},process:{get platform(){return process.platform},get arch(){return process.arch},get env(){return{...process.env}},get versions(){return process.versions},get type(){return"renderer"},get execPath(){return process.execPath},cwd(){return process.env.VSCODE_CWD||process.execPath.substr(0,process.execPath.lastIndexOf(process.platform==="win32"?"\\":"/"))},shellEnv(){return f},getProcessMemoryInfo(){return process.getProcessMemoryInfo()},on(e,r){process.on(e,r)}},context:{configuration(){return c},async resolveConfiguration(){const e=await a;return e.cssModulesUpdateIpc&&(e.cssModules=await o.invoke(e.cssModulesUpdateIpc)),e}}};if(process.contextIsolated)try{n.exposeInMainWorld("vscode",u)}catch(e){console.error(e)}else window.vscode=u})();
+"use strict";
+(function () {
+  const { ipcRenderer, webFrame, contextBridge, webUtils } = require("electron");
+  if (!process.isMainFrame) {
+    const vscode = {
+      webUtils: {
+        getPathForFile(file) {
+          return webUtils.getPathForFile(file);
+        },
+      },
+    };
+    if (process.contextIsolated) {
+      try {
+        contextBridge.exposeInMainWorld("vscode", vscode);
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      window.vscode = vscode;
+    }
+    return;
+  }
 
-//# sourceMappingURL=https://trae.private/sourcemaps/424b4bd987c6c6a4cadf1a08da420593cc6bf75a/vs/base/parts/sandbox/electron-sandbox/preload.js.map
+  function checkIpcChannel(channel) {
+    if (!channel || !channel.startsWith("vscode:")) {
+      throw new Error(`Unsupported event IPC channel '${channel}'`);
+    }
+    return true;
+  }
+  function getCliArgValue(name) {
+    for (const arg of process.argv) {
+      if (arg.indexOf(`--${name}=`) === 0) {
+        return arg.split("=")[1];
+      }
+    }
+  }
+
+  let configuration;
+  const a = (async () => {
+      const vscodeWindowConfig = getCliArgValue("vscode-window-config");
+      if (!vscodeWindowConfig) {
+        throw new Error("Preload: did not find expected vscode-window-config in renderer process arguments list.");
+      }
+      try {
+        checkIpcChannel(vscodeWindowConfig);
+        const r = (configuration = await ipcRenderer.invoke(vscodeWindowConfig));
+        Object.assign(process.env, r.userEnv);
+        webFrame.setZoomLevel(r.zoomLevel ?? 0);
+        return r;
+      } catch (err) {
+        throw new Error(`Preload: unable to fetch vscode-window-config: ${err}`);
+      }
+    })(),
+    shellEnv = (async () => {
+      const [e, r] = await Promise.all([(async () => (await a).userEnv)(), ipcRenderer.invoke("vscode:fetchShellEnv")]);
+      return { ...process.env, ...r, ...e };
+    })(),
+    vscode = {
+      ipcRenderer: {
+        send(e, ...r) {
+          checkIpcChannel(e) && ipcRenderer.send(e, ...r);
+        },
+        invoke(e, ...r) {
+          return checkIpcChannel(e), ipcRenderer.invoke(e, ...r);
+        },
+        on(e, r) {
+          return checkIpcChannel(e), ipcRenderer.on(e, r), this;
+        },
+        once(e, r) {
+          return checkIpcChannel(e), ipcRenderer.once(e, r), this;
+        },
+        removeListener(e, r) {
+          return checkIpcChannel(e), ipcRenderer.removeListener(e, r), this;
+        },
+      },
+      ipcMessagePort: {
+        acquire(e, r) {
+          if (checkIpcChannel(e)) {
+            const d = (v, p) => {
+              r === p && (ipcRenderer.off(e, d), window.postMessage(r, "*", v.ports));
+            };
+            ipcRenderer.on(e, d);
+          }
+        },
+      },
+      webFrame: {
+        setZoomLevel(e) {
+          typeof e == "number" && webFrame.setZoomLevel(e);
+        },
+      },
+      webUtils: {
+        getPathForFile(e) {
+          return webUtils.getPathForFile(e);
+        },
+      },
+      process: {
+        get platform() {
+          return process.platform;
+        },
+        get arch() {
+          return process.arch;
+        },
+        get env() {
+          return { ...process.env };
+        },
+        get versions() {
+          return process.versions;
+        },
+        get type() {
+          return "renderer";
+        },
+        get execPath() {
+          return process.execPath;
+        },
+        cwd() {
+          return process.env.VSCODE_CWD || process.execPath.substr(0, process.execPath.lastIndexOf(process.platform === "win32" ? "\\" : "/"));
+        },
+        shellEnv() {
+          return shellEnv;
+        },
+        getProcessMemoryInfo() {
+          return process.getProcessMemoryInfo();
+        },
+        on(event, listener) {
+          process.on(event, listener);
+        },
+      },
+      context: {
+        configuration() {
+          return configuration;
+        },
+        async resolveConfiguration() {
+          const e = await a;
+          if (e.cssModulesUpdateIpc) {
+            e.cssModules = await ipcRenderer.invoke(e.cssModulesUpdateIpc);
+          }
+          return e;
+        },
+      },
+    };
+  if (process.contextIsolated) {
+    try {
+      contextBridge.exposeInMainWorld("vscode", vscode);
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    window.vscode = vscode;
+  }
+})();

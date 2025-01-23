@@ -6046,206 +6046,202 @@ var O,
   Re = v({
     "out-build/vs/base/common/network.js"() {
       "use strict";
-      We(),
-        Z(),
-        _t(),
-        ge(),
-        Ae(),
-        (function (t) {
-          (t.inMemory = "inmemory"),
-            (t.vscode = "vscode"),
-            (t.internal = "private"),
-            (t.walkThrough = "walkThrough"),
-            (t.walkThroughSnippet = "walkThroughSnippet"),
-            (t.http = "http"),
-            (t.https = "https"),
-            (t.file = "file"),
-            (t.mailto = "mailto"),
-            (t.untitled = "untitled"),
-            (t.data = "data"),
-            (t.command = "command"),
-            (t.vscodeRemote = "vscode-remote"),
-            (t.vscodeRemoteDownload = "vscode-remote-download"),
-            (t.vscodeRemoteResource = "vscode-remote-resource"),
-            (t.vscodeManagedRemoteResource = "vscode-managed-remote-resource"),
-            (t.vscodeUserData = "vscode-userdata"),
-            (t.vscodeCustomEditor = "vscode-custom-editor"),
-            (t.vscodeNotebookCell = "vscode-notebook-cell"),
-            (t.vscodeNotebookCellMetadata = "vscode-notebook-cell-metadata"),
-            (t.vscodeNotebookCellMetadataDiff = "vscode-notebook-cell-metadata-diff"),
-            (t.vscodeNotebookCellOutput = "vscode-notebook-cell-output"),
-            (t.vscodeNotebookCellOutputDiff = "vscode-notebook-cell-output-diff"),
-            (t.vscodeNotebookMetadata = "vscode-notebook-metadata"),
-            (t.vscodeInteractiveInput = "vscode-interactive-input"),
-            (t.vscodeSettings = "vscode-settings"),
-            (t.vscodeWorkspaceTrust = "vscode-workspace-trust"),
-            (t.vscodeTerminal = "vscode-terminal"),
-            (t.vscodeChatCodeBlock = "vscode-chat-code-block"),
-            (t.icubeChatCodeBlock = "icube-chat-code-block"),
-            (t.vscodeChatCodeCompareBlock = "vscode-chat-code-compare-block"),
-            (t.vscodeChatSesssion = "vscode-chat-editor"),
-            (t.vscodeComponent = "vscode-component-editor"),
-            (t.vscodeIcubeChatSession = "vscode-icube-chat-editor"),
-            (t.webviewPanel = "webview-panel"),
-            (t.vscodeWebview = "vscode-webview"),
-            (t.extension = "extension"),
-            (t.vscodeFileResource = "vscode-file"),
-            (t.tmp = "tmp"),
-            (t.vsls = "vsls"),
-            (t.vscodeSourceControl = "vscode-scm"),
-            (t.commentsInput = "comment"),
-            (t.codeSetting = "code-setting"),
-            (t.outputChannel = "output"),
-            (t.accessibleView = "accessible-view");
-        })(O || (O = {})),
-        ($2 = "tkn"),
-        (I2 = class {
-          constructor() {
-            (this.a = Object.create(null)), (this.b = Object.create(null)), (this.c = Object.create(null)), (this.d = "http"), (this.e = null), (this.f = "/");
-          }
+      We(), Z(), _t(), ge(), Ae();
+      (function (t) {
+        (t.inMemory = "inmemory"),
+          (t.vscode = "vscode"),
+          (t.internal = "private"),
+          (t.walkThrough = "walkThrough"),
+          (t.walkThroughSnippet = "walkThroughSnippet"),
+          (t.http = "http"),
+          (t.https = "https"),
+          (t.file = "file"),
+          (t.mailto = "mailto"),
+          (t.untitled = "untitled"),
+          (t.data = "data"),
+          (t.command = "command"),
+          (t.vscodeRemote = "vscode-remote"),
+          (t.vscodeRemoteDownload = "vscode-remote-download"),
+          (t.vscodeRemoteResource = "vscode-remote-resource"),
+          (t.vscodeManagedRemoteResource = "vscode-managed-remote-resource"),
+          (t.vscodeUserData = "vscode-userdata"),
+          (t.vscodeCustomEditor = "vscode-custom-editor"),
+          (t.vscodeNotebookCell = "vscode-notebook-cell"),
+          (t.vscodeNotebookCellMetadata = "vscode-notebook-cell-metadata"),
+          (t.vscodeNotebookCellMetadataDiff = "vscode-notebook-cell-metadata-diff"),
+          (t.vscodeNotebookCellOutput = "vscode-notebook-cell-output"),
+          (t.vscodeNotebookCellOutputDiff = "vscode-notebook-cell-output-diff"),
+          (t.vscodeNotebookMetadata = "vscode-notebook-metadata"),
+          (t.vscodeInteractiveInput = "vscode-interactive-input"),
+          (t.vscodeSettings = "vscode-settings"),
+          (t.vscodeWorkspaceTrust = "vscode-workspace-trust"),
+          (t.vscodeTerminal = "vscode-terminal"),
+          (t.vscodeChatCodeBlock = "vscode-chat-code-block"),
+          (t.icubeChatCodeBlock = "icube-chat-code-block"),
+          (t.vscodeChatCodeCompareBlock = "vscode-chat-code-compare-block"),
+          (t.vscodeChatSesssion = "vscode-chat-editor"),
+          (t.vscodeComponent = "vscode-component-editor"),
+          (t.vscodeIcubeChatSession = "vscode-icube-chat-editor"),
+          (t.webviewPanel = "webview-panel"),
+          (t.vscodeWebview = "vscode-webview"),
+          (t.extension = "extension"),
+          (t.vscodeFileResource = "vscode-file"),
+          (t.tmp = "tmp"),
+          (t.vsls = "vsls"),
+          (t.vscodeSourceControl = "vscode-scm"),
+          (t.commentsInput = "comment"),
+          (t.codeSetting = "code-setting"),
+          (t.outputChannel = "output"),
+          (t.accessibleView = "accessible-view");
+      })(O || (O = {}));
+      $2 = "tkn";
+      I2 = class {
+        constructor() {
+          (this.a = Object.create(null)), (this.b = Object.create(null)), (this.c = Object.create(null)), (this.d = "http"), (this.e = null), (this.f = "/");
+        }
 
-          setPreferredWebSchema(t) {
-            this.d = t;
-          }
+        setPreferredWebSchema(t) {
+          this.d = t;
+        }
 
-          setDelegate(t) {
-            this.e = t;
-          }
+        setDelegate(t) {
+          this.e = t;
+        }
 
-          setServerRootPath(t, e) {
-            this.f = u$(t, e);
-          }
+        setServerRootPath(t, e) {
+          this.f = u$(t, e);
+        }
 
-          getServerRootPath() {
-            return this.f;
-          }
+        getServerRootPath() {
+          return this.f;
+        }
 
-          get g() {
-            return ye.join(this.f, O.vscodeRemoteResource);
-          }
+        get g() {
+          return ye.join(this.f, O.vscodeRemoteResource);
+        }
 
-          set(t, e, i) {
-            (this.a[t] = e), (this.b[t] = i);
-          }
+        set(t, e, i) {
+          (this.a[t] = e), (this.b[t] = i);
+        }
 
-          setConnectionToken(t, e) {
-            this.c[t] = e;
-          }
+        setConnectionToken(t, e) {
+          this.c[t] = e;
+        }
 
-          getPreferredWebSchema() {
-            return this.d;
-          }
+        getPreferredWebSchema() {
+          return this.d;
+        }
 
-          rewrite(t) {
-            if (this.e)
-              try {
-                return this.e(t);
-              } catch (o) {
-                return Nt(o), t;
-              }
-            const e = t.authority;
-            let i = this.a[e];
-            i && i.indexOf(":") !== -1 && i.indexOf("[") === -1 && (i = `[${i}]`);
-            const s = this.b[e],
-              r = this.c[e];
-            let n = `path=${encodeURIComponent(t.path)}`;
-            return (
-              typeof r == "string" && (n += `&${$2}=${encodeURIComponent(r)}`),
-              L.from({
-                scheme: Yn ? this.d : O.vscodeRemoteResource,
-                authority: `${i}:${s}`,
-                path: this.g,
-                query: n,
-              })
-            );
-          }
-        }),
-        (yg = new I2()),
-        (A2 = "vs/../../extensions"),
-        (Yc = "vscode-app"),
-        (L2 = class m1 {
-          static {
-            this.a = Yc;
-          }
+        rewrite(t) {
+          if (this.e)
+            try {
+              return this.e(t);
+            } catch (o) {
+              return Nt(o), t;
+            }
+          const e = t.authority;
+          let i = this.a[e];
+          i && i.indexOf(":") !== -1 && i.indexOf("[") === -1 && (i = `[${i}]`);
+          const s = this.b[e],
+            r = this.c[e];
+          let n = `path=${encodeURIComponent(t.path)}`;
+          return (
+            typeof r == "string" && (n += `&${$2}=${encodeURIComponent(r)}`),
+            L.from({
+              scheme: Yn ? this.d : O.vscodeRemoteResource,
+              authority: `${i}:${s}`,
+              path: this.g,
+              query: n,
+            })
+          );
+        }
+      };
+      yg = new I2();
+      A2 = "vs/../../extensions";
+      Yc = "vscode-app";
+      L2 = class m1 {
+        static {
+          this.a = Yc;
+        }
 
-          asBrowserUri(e) {
-            const i = this.b(e);
-            return this.uriToBrowserUri(i);
-          }
+        asBrowserUri(e) {
+          const i = this.b(e);
+          return this.uriToBrowserUri(i);
+        }
 
-          uriToBrowserUri(e) {
-            return e.scheme === O.vscodeRemote
-              ? yg.rewrite(e)
-              : e.scheme === O.file && (G4 || K4 === `${O.vscodeFileResource}://${m1.a}`)
-                ? e.with({
-                    scheme: O.vscodeFileResource,
-                    authority: e.authority || m1.a,
-                    query: null,
-                    fragment: null,
-                  })
-                : e;
-          }
-
-          asFileUri(e) {
-            const i = this.b(e);
-            return this.uriToFileUri(i);
-          }
-
-          uriToFileUri(e) {
-            return e.scheme === O.vscodeFileResource
+        uriToBrowserUri(e) {
+          return e.scheme === O.vscodeRemote
+            ? yg.rewrite(e)
+            : e.scheme === O.file && (G4 || K4 === `${O.vscodeFileResource}://${m1.a}`)
               ? e.with({
-                  scheme: O.file,
-                  authority: e.authority !== m1.a ? e.authority : null,
+                  scheme: O.vscodeFileResource,
+                  authority: e.authority || m1.a,
                   query: null,
                   fragment: null,
                 })
               : e;
+        }
+
+        asFileUri(e) {
+          const i = this.b(e);
+          return this.uriToFileUri(i);
+        }
+
+        uriToFileUri(e) {
+          return e.scheme === O.vscodeFileResource
+            ? e.with({
+                scheme: O.file,
+                authority: e.authority !== m1.a ? e.authority : null,
+                query: null,
+                fragment: null,
+              })
+            : e;
+        }
+
+        b(e, i) {
+          if (L.isUri(e)) return e;
+          if (globalThis._VSCODE_FILE_ROOT) {
+            const s = globalThis._VSCODE_FILE_ROOT;
+            if (/^\w[\w\d+.-]*:\/\//.test(s)) return L.joinPath(L.parse(s, !0), e);
+            const r = R(s, e);
+            return L.file(r);
           }
+          return L.parse(i.toUrl(e));
+        }
+      };
+      It = new L2();
+      (function (t) {
+        const e = new Map([
+          ["1", { "Cross-Origin-Opener-Policy": "same-origin" }],
+          ["2", { "Cross-Origin-Embedder-Policy": "require-corp" }],
+          [
+            "3",
+            {
+              "Cross-Origin-Opener-Policy": "same-origin",
+              "Cross-Origin-Embedder-Policy": "require-corp",
+            },
+          ],
+        ]);
+        t.CoopAndCoep = Object.freeze(e.get("3"));
+        const i = "vscode-coi";
 
-          b(e, i) {
-            if (L.isUri(e)) return e;
-            if (globalThis._VSCODE_FILE_ROOT) {
-              const s = globalThis._VSCODE_FILE_ROOT;
-              if (/^\w[\w\d+.-]*:\/\//.test(s)) return L.joinPath(L.parse(s, !0), e);
-              const r = R(s, e);
-              return L.file(r);
-            }
-            return L.parse(i.toUrl(e));
-          }
-        }),
-        (It = new L2()),
-        (function (t) {
-          const e = new Map([
-            ["1", { "Cross-Origin-Opener-Policy": "same-origin" }],
-            ["2", { "Cross-Origin-Embedder-Policy": "require-corp" }],
-            [
-              "3",
-              {
-                "Cross-Origin-Opener-Policy": "same-origin",
-                "Cross-Origin-Embedder-Policy": "require-corp",
-              },
-            ],
-          ]);
-          t.CoopAndCoep = Object.freeze(e.get("3"));
-          const i = "vscode-coi";
+        function s(n) {
+          let o;
+          typeof n == "string" ? (o = new URL(n).searchParams) : n instanceof URL ? (o = n.searchParams) : L.isUri(n) && (o = new URL(n.toString(!0)).searchParams);
+          const a = o?.get(i);
+          if (a) return e.get(a);
+        }
 
-          function s(n) {
-            let o;
-            typeof n == "string" ? (o = new URL(n).searchParams) : n instanceof URL ? (o = n.searchParams) : L.isUri(n) && (o = new URL(n.toString(!0)).searchParams);
-            const a = o?.get(i);
-            if (a) return e.get(a);
-          }
+        t.getHeadersFromQuery = s;
 
-          t.getHeadersFromQuery = s;
+        function r(n, o, a) {
+          if (!globalThis.crossOriginIsolated) return;
+          const c = o && a ? "3" : a ? "2" : "1";
+          n instanceof URLSearchParams ? n.set(i, c) : (n[i] = c);
+        }
 
-          function r(n, o, a) {
-            if (!globalThis.crossOriginIsolated) return;
-            const c = o && a ? "3" : a ? "2" : "1";
-            n instanceof URLSearchParams ? n.set(i, c) : (n[i] = c);
-          }
-
-          t.addSearchParam = r;
-        })(Kc || (Kc = {}));
+        t.addSearchParam = r;
+      })(Kc || (Kc = {}));
     },
   });
 
@@ -9839,63 +9835,88 @@ var P5,
   Ci = v({
     "out-build/vs/base/parts/ipc/electron-main/ipcMain.js"() {
       "use strict";
-      We(),
-        Re(),
-        (P5 = class {
-          constructor() {
-            this.a = new WeakMap();
-          }
+      We();
+      Re();
+      P5 = class {
+        constructor() {
+          this.a = new WeakMap();
+        }
 
-          on(t, e) {
-            const i = (s, ...r) => {
-              this.b(t, s) && e(s, ...r);
-            };
-            return this.a.set(e, i), electron.ipcMain.on(t, i), this;
-          }
+        on(channel, callback) {
+          const listener = (event, ...args) => {
+            this.b(channel, event) && callback(event, ...args);
+          };
+          this.a.set(callback, listener);
+          electron.ipcMain.on(channel, listener);
+          return this;
+        }
 
-          once(t, e) {
-            return (
-              electron.ipcMain.once(t, (i, ...s) => {
-                this.b(t, i) && e(i, ...s);
-              }),
-              this
-            );
-          }
+        once(channel, callback) {
+          electron.ipcMain.once(channel, (event, ...args) => {
+            this.b(channel, event) && callback(event, ...args);
+          });
+          return this;
+        }
 
-          handle(t, e) {
-            return electron.ipcMain.handle(t, (i, ...s) => (this.b(t, i) ? e(i, ...s) : Promise.reject(`Invalid channel '${t}' or sender for ipcMain.handle() usage.`))), this;
-          }
+        handle(channel, callback) {
+          electron.ipcMain.handle(channel, (event, ...args) => {
+            return this.b(channel, event) ? callback(event, ...args) : Promise.reject(`Invalid channel '${channel}' or sender for ipcMain.handle() usage.`);
+          });
+          return this;
+        }
 
-          removeHandler(t) {
-            return electron.ipcMain.removeHandler(t), this;
-          }
+        removeHandler(channel) {
+          electron.ipcMain.removeHandler(channel);
+          return this;
+        }
 
-          removeListener(t, e) {
-            const i = this.a.get(e);
-            return i && (electron.ipcMain.removeListener(t, i), this.a.delete(e)), this;
+        removeListener(channel, callback) {
+          const listener = this.a.get(callback);
+          if (listener) {
+            electron.ipcMain.removeListener(channel, listener);
+            this.a.delete(callback);
           }
+          return this;
+        }
 
-          b(t, e) {
-            if (!t || !t.startsWith("vscode:")) return Nt(`Refused to handle ipcMain event for channel '${t}' because the channel is unknown.`), !1;
-            const i = e.senderFrame,
-              s = i.url;
-            if (!s || s === "about:blank") return !0;
-            let r = "unknown";
-            try {
-              const n = new URL(s);
-              if (n.pathname === "/ide/auth-callback/desktop") return !0;
-              r = n.host;
-            } catch {
-              return Nt(`Refused to handle ipcMain event for channel '${t}' because of a malformed URL '${s}'.`), !1;
+        b(channel, event) {
+          if (!["vscode:message"].includes(channel)) {
+            debugger;
+          }
+          if (!channel || !channel.startsWith("vscode:")) {
+            Nt(`Refused to handle ipcMain event for channel '${channel}' because the channel is unknown.`);
+            return false;
+          }
+          const senderFrame = event.senderFrame;
+          const url = senderFrame.url;
+          if (!url || url === "about:blank") {
+            return true;
+          }
+          let host = "unknown";
+          try {
+            const n = new URL(url);
+            if (n.pathname === "/ide/auth-callback/desktop") {
+              return true;
             }
-            return r !== Yc
-              ? (Nt(`Refused to handle ipcMain event for channel '${t}' because of a bad origin of '${r}'.`), !1)
-              : i.parent !== null
-                ? (Nt(`Refused to handle ipcMain event for channel '${t}' because sender of origin '${r}' is not a main frame.`), !1)
-                : !0;
+            host = n.host;
+          } catch {
+            Nt(`Refused to handle ipcMain event for channel '${channel}' because of a malformed URL '${url}'.`);
+            return false;
           }
-        }),
-        (De = new P5());
+
+          // vscode-app
+          if (host !== Yc) {
+            Nt(`Refused to handle ipcMain event for channel '${channel}' because of a bad origin of '${host}'.`);
+            return false;
+          } else if (senderFrame.parent !== null) {
+            Nt(`Refused to handle ipcMain event for channel '${channel}' because sender of origin '${host}' is not a main frame.`);
+            return false;
+          } else {
+            return true;
+          }
+        }
+      };
+      De = new P5();
     },
   }),
   F5,
@@ -13459,329 +13480,352 @@ var hl,
   Xe,
   R6,
   T6,
-  ad,
+  lifecycleMainService,
   kt = v({
     "out-build/vs/platform/lifecycle/electron-main/lifecycleMainService.js"() {
       "use strict";
-      Ci(),
-        de(),
-        H(),
-        T(),
-        Z(),
-        Ls(),
-        Me(),
-        G(),
-        Q(),
-        Ht(),
-        gt(),
-        (Xe = U("lifecycleMainService")),
-        (function (t) {
-          (t[(t.QUIT = 1)] = "QUIT"), (t[(t.KILL = 2)] = "KILL");
-        })(R6 || (R6 = {})),
-        (function (t) {
-          (t[(t.Starting = 1)] = "Starting"), (t[(t.Ready = 2)] = "Ready"), (t[(t.AfterWindowOpen = 3)] = "AfterWindowOpen"), (t[(t.Eventually = 4)] = "Eventually");
-        })(T6 || (T6 = {})),
-        (ad = class extends N {
-          static {
-            hl = this;
-          }
-          static {
-            this.b = "lifecycle.quitAndRestart";
-          }
+      Ci(), de(), H(), T(), Z(), Ls(), Me(), G(), Q(), Ht(), gt();
+      Xe = U("lifecycleMainService");
+      (function (t) {
+        t[(t.QUIT = 1)] = "QUIT";
+        t[(t.KILL = 2)] = "KILL";
+      })(R6 || (R6 = {}));
+      (function (t) {
+        t[(t.Starting = 1)] = "Starting";
+        t[(t.Ready = 2)] = "Ready";
+        t[(t.AfterWindowOpen = 3)] = "AfterWindowOpen";
+        t[(t.Eventually = 4)] = "Eventually";
+      })(T6 || (T6 = {}));
+      lifecycleMainService = class extends N {
+        static {
+          hl = this;
+        }
+        static {
+          this.b = "lifecycle.quitAndRestart";
+        }
 
-          get quitRequested() {
-            return this.j;
-          }
+        get quitRequested() {
+          return this.j;
+        }
 
-          get wasRestarted() {
-            return this.m;
-          }
+        get wasRestarted() {
+          return this.m;
+        }
 
-          get phase() {
-            return this.n;
-          }
+        get phase() {
+          return this.n;
+        }
 
-          constructor(e, i, s) {
-            super(),
-              (this.F = e),
-              (this.G = i),
-              (this.H = s),
-              (this.c = this.B(new $())),
-              (this.onBeforeShutdown = this.c.event),
-              (this.f = this.B(new $())),
-              (this.onWillShutdown = this.f.event),
-              (this.g = this.B(new $())),
-              (this.onWillLoadWindow = this.g.event),
-              (this.h = this.B(new $())),
-              (this.onBeforeCloseWindow = this.h.event),
-              (this.j = !1),
-              (this.m = !1),
-              (this.n = 1),
-              (this.r = new Set()),
-              (this.s = 0),
-              (this.t = 0),
-              (this.u = void 0),
-              (this.w = void 0),
-              (this.y = void 0),
-              (this.z = new Map()),
-              (this.C = new Map()),
-              (this.D = void 0),
-              this.I(),
-              this.when(2).then(() => this.J());
-          }
+        constructor(e, i, s) {
+          super();
+          this.F = e;
+          this.G = i;
+          this.H = s;
+          this.c = this.B(new $());
+          this.onBeforeShutdown = this.c.event;
+          this.f = this.B(new $());
+          this.onWillShutdown = this.f.event;
+          this.g = this.B(new $());
+          this.onWillLoadWindow = this.g.event;
+          this.h = this.B(new $());
+          this.onBeforeCloseWindow = this.h.event;
+          this.j = !1;
+          this.m = !1;
+          this.n = 1;
+          this.r = new Set();
+          this.s = 0;
+          this.t = 0;
+          this.u = void 0;
+          this.w = void 0;
+          this.y = void 0;
+          this.z = new Map();
+          this.C = new Map();
+          this.D = void 0;
+          this.I();
+          this.when(2).then(() => this.J());
+        }
 
-          I() {
-            (this.m = !!this.G.getItem(hl.b)), this.m && this.G.removeItem(hl.b);
-          }
+        I() {
+          this.m = !!this.G.getItem(hl.b);
+          this.m && this.G.removeItem(hl.b);
+        }
 
-          J() {
-            const e = () => {
-              this.j || (this.S("Lifecycle#app.on(before-quit)"), (this.j = !0), this.S("Lifecycle#onBeforeShutdown.fire()"), this.c.fire(), q && this.t === 0 && this.L(1));
-            };
-            electron.app.addListener("before-quit", e);
-            const i = () => {
-              this.S("Lifecycle#app.on(window-all-closed)"), (this.j || !q) && electron.app.quit();
-            };
-            electron.app.addListener("window-all-closed", i),
-              electron.app.once("will-quit", (s) => {
-                this.S("Lifecycle#app.on(will-quit) - begin"),
-                  s.preventDefault(),
-                  this.L(1).finally(() => {
-                    this.S("Lifecycle#app.on(will-quit) - after fireOnWillShutdown"),
-                      this.O(!1),
-                      electron.app.removeListener("before-quit", e),
-                      electron.app.removeListener("window-all-closed", i),
-                      this.S("Lifecycle#app.on(will-quit) - calling app.quit()"),
-                      electron.app.quit();
-                  });
-              });
-          }
+        J() {
+          const beforeQuit = () => {
+            if (!this.j) {
+              this.S("Lifecycle#app.on(before-quit)");
+              this.j = !0;
+              this.S("Lifecycle#onBeforeShutdown.fire()");
+              this.c.fire();
+              q && this.t === 0 && this.L(1);
+            }
+          };
+          electron.app.addListener("before-quit", beforeQuit);
+          const windowAllClosed = () => {
+            this.S("Lifecycle#app.on(window-all-closed)");
+            (this.j || !q) && electron.app.quit();
+          };
+          electron.app.addListener("window-all-closed", windowAllClosed);
+          electron.app.once("will-quit", (evt) => {
+            this.S("Lifecycle#app.on(will-quit) - begin");
+            evt.preventDefault();
+            this.L(1).finally(() => {
+              this.S("Lifecycle#app.on(will-quit) - after fireOnWillShutdown");
+              this.O(false);
+              electron.app.removeListener("before-quit", beforeQuit);
+              electron.app.removeListener("window-all-closed", windowAllClosed);
+              this.S("Lifecycle#app.on(will-quit) - calling app.quit()");
+              electron.app.quit();
+            });
+          });
+        }
 
-          L(e) {
-            if (this.y) return this.y;
-            const i = this.F;
-            this.S("Lifecycle#onWillShutdown.fire()");
-            const s = [];
-            return (
-              this.f.fire({
-                reason: e,
-                join(r, n) {
-                  i.trace(`Lifecycle#onWillShutdown - begin '${r}'`),
-                    s.push(
-                      n.finally(() => {
-                        i.trace(`Lifecycle#onWillShutdown - end '${r}'`);
-                      }),
-                    );
-                },
-              }),
-              (this.y = (async () => {
-                try {
-                  await si.settled(s);
-                } catch (r) {
-                  this.F.error(r);
-                }
-                try {
-                  await this.G.close();
-                } catch (r) {
-                  this.F.error(r);
-                }
-              })()),
-              this.y
-            );
-          }
-
-          set phase(e) {
-            if (e < this.phase) throw new Error("Lifecycle cannot go backwards");
-            if (this.n === e) return;
-            this.S(`lifecycle (main): phase changed (value: ${e})`), (this.n = e);
-            const i = this.C.get(this.n);
-            i && (i.open(), this.C.delete(this.n));
-          }
-
-          async when(e) {
-            if (e <= this.n) return;
-            let i = this.C.get(e);
-            i || ((i = new Xc()), this.C.set(e, i)), await i.wait();
-          }
-
-          registerWindow(e) {
-            const i = new Ne();
-            this.t++, i.add(e.onWillLoad((r) => this.g.fire({ window: e, workspace: r.workspace, reason: r.reason })));
-            const s = _c(e.win);
-            i.add(
-              I.fromNodeEventEmitter(
-                s,
-                "close",
-              )((r) => {
-                const n = e.id;
-                if (this.r.has(n)) {
-                  this.r.delete(n);
-                  return;
-                }
-                this.S(`Lifecycle#window.on('close') - window ID ${e.id}`),
-                  r.preventDefault(),
-                  this.unload(e, 1).then((o) => {
-                    if (o) {
-                      this.r.delete(n);
-                      return;
-                    }
-                    this.r.add(n), this.S(`Lifecycle#onBeforeCloseWindow.fire() - window ID ${n}`), this.h.fire(e), e.close();
-                  });
-              }),
-            ),
-              i.add(
-                I.fromNodeEventEmitter(
-                  s,
-                  "closed",
-                )(() => {
-                  this.S(`Lifecycle#window.on('closed') - window ID ${e.id}`), this.t--, i.dispose(), this.t === 0 && (!q || this.j) && this.L(1);
+        L(reason) {
+          if (this.y) return this.y;
+          const i = this.F;
+          this.S("Lifecycle#onWillShutdown.fire()");
+          const s = [];
+          this.f.fire({
+            reason: reason,
+            join(r, n) {
+              i.trace(`Lifecycle#onWillShutdown - begin '${r}'`);
+              s.push(
+                n.finally(() => {
+                  i.trace(`Lifecycle#onWillShutdown - end '${r}'`);
                 }),
               );
-          }
+            },
+          });
+          this.y = (async () => {
+            try {
+              await si.settled(s);
+            } catch (r) {
+              this.F.error(r);
+            }
+            try {
+              await this.G.close();
+            } catch (r) {
+              this.F.error(r);
+            }
+          })();
+          return this.y;
+        }
 
-          registerAuxWindow(e) {
-            const i = _c(e.win),
-              s = new Ne();
+        set phase(e) {
+          if (e < this.phase) throw new Error("Lifecycle cannot go backwards");
+          if (this.n === e) return;
+          this.S(`lifecycle (main): phase changed (value: ${e})`);
+          this.n = e;
+          const i = this.C.get(this.n);
+          if (i) {
+            i.open();
+            this.C.delete(this.n);
+          }
+        }
+
+        async when(e) {
+          if (e <= this.n) return;
+          let i = this.C.get(e);
+          i || ((i = new Xc()), this.C.set(e, i));
+          await i.wait();
+        }
+
+        registerWindow(win) {
+          const i = new Ne();
+          this.t++;
+          i.add(win.onWillLoad((r) => this.g.fire({ window: win, workspace: r.workspace, reason: r.reason })));
+          const s = _c(win.win);
+          i.add(
+            I.fromNodeEventEmitter(
+              s,
+              "close",
+            )((evt) => {
+              const winId = win.id;
+              if (this.r.has(winId)) {
+                this.r.delete(winId);
+                return;
+              }
+              this.S(`Lifecycle#window.on('close') - window ID ${win.id}`);
+              evt.preventDefault();
+              this.unload(win, 1).then((o) => {
+                if (o) {
+                  this.r.delete(winId);
+                  return;
+                }
+                this.r.add(winId);
+                this.S(`Lifecycle#onBeforeCloseWindow.fire() - window ID ${winId}`);
+                this.h.fire(win);
+                win.close();
+              });
+            }),
+          );
+          i.add(
+            I.fromNodeEventEmitter(
+              s,
+              "closed",
+            )(() => {
+              this.S(`Lifecycle#window.on('closed') - window ID ${win.id}`);
+              this.t--;
+              i.dispose();
+              this.t === 0 && (!q || this.j) && this.L(1);
+            }),
+          );
+        }
+
+        registerAuxWindow(e) {
+          const i = _c(e.win),
+            s = new Ne();
+          s.add(
+            I.fromNodeEventEmitter(
+              i,
+              "close",
+            )((r) => {
+              this.S(`Lifecycle#auxWindow.on('close') - window ID ${e.id}`), this.j && (this.S("Lifecycle#auxWindow.on('close') - preventDefault() because quit requested"), r.preventDefault());
+            }),
+          ),
             s.add(
               I.fromNodeEventEmitter(
                 i,
-                "close",
-              )((r) => {
-                this.S(`Lifecycle#auxWindow.on('close') - window ID ${e.id}`), this.j && (this.S("Lifecycle#auxWindow.on('close') - preventDefault() because quit requested"), r.preventDefault());
+                "closed",
+              )(() => {
+                this.S(`Lifecycle#auxWindow.on('closed') - window ID ${e.id}`), s.dispose();
               }),
-            ),
-              s.add(
-                I.fromNodeEventEmitter(
-                  i,
-                  "closed",
-                )(() => {
-                  this.S(`Lifecycle#auxWindow.on('closed') - window ID ${e.id}`), s.dispose();
-                }),
-              );
-          }
-
-          async reload(e, i) {
-            (await this.unload(e, 3)) || e.reload(i);
-          }
-
-          unload(e, i) {
-            const s = this.z.get(e.id);
-            if (s) return s;
-            const r = this.M(e, i).finally(() => {
-              this.z.delete(e.id);
-            });
-            return this.z.set(e.id, r), r;
-          }
-
-          async M(e, i) {
-            if (!e.isReady) return !1;
-            this.S(`Lifecycle#unload() - window ID ${e.id}`);
-            const s = this.j ? 2 : i,
-              r = await this.P(e, s);
-            return r ? (this.S(`Lifecycle#unload() - veto in renderer (window ID ${e.id})`), this.N(r)) : (await this.Q(e, s), !1);
-          }
-
-          N(e) {
-            return e ? (this.O(!0), (this.j = !1), !0) : !1;
-          }
-
-          O(e) {
-            this.w && (this.w(e), (this.w = void 0), (this.u = void 0));
-          }
-
-          P(e, i) {
-            return new Promise((s) => {
-              const r = this.s++,
-                n = `vscode:ok${r}`,
-                o = `vscode:cancel${r}`;
-              De.once(n, () => {
-                s(!1);
-              }),
-                De.once(o, () => {
-                  s(!0);
-                }),
-                e.send("vscode:onBeforeUnload", { okChannel: n, cancelChannel: o, reason: i });
-            });
-          }
-
-          Q(e, i) {
-            return new Promise((s) => {
-              const n = `vscode:reply${this.s++}`;
-              De.once(n, () => s()), e.send("vscode:onWillUnload", { replyChannel: n, reason: i });
-            });
-          }
-
-          quit(e) {
-            return this.R(e).then((i) => {
-              if (!i && e)
-                try {
-                  if (J) {
-                    const s = Zs();
-                    s !== process.cwd() && process.chdir(s);
-                  }
-                } catch (s) {
-                  this.F.error(s);
-                }
-              return i;
-            });
-          }
-
-          R(e) {
-            return (
-              this.S(`Lifecycle#quit() - begin (willRestart: ${e})`),
-              this.u
-                ? (this.S("Lifecycle#quit() - returning pending quit promise"), this.u)
-                : (e && this.G.setItem(hl.b, !0),
-                  (this.u = new Promise((i) => {
-                    (this.w = i), this.S("Lifecycle#quit() - calling app.quit()"), electron.app.quit();
-                  })),
-                  this.u)
             );
-          }
+        }
 
-          S(e) {
-            this.H.args["enable-smoke-test-driver"] ? this.F.info(e) : this.F.info(e);
-          }
+        async reload(e, i) {
+          (await this.unload(e, 3)) || e.reload(i);
+        }
 
-          setRelaunchHandler(e) {
-            this.D = e;
-          }
+        unload(win, i) {
+          const s = this.z.get(win.id);
+          if (s) return s;
+          const r = this.M(win, i).finally(() => {
+            this.z.delete(win.id);
+          });
+          this.z.set(win.id, r);
+          return r;
+        }
 
-          async relaunch(e) {
-            this.S("Lifecycle#relaunch()");
-            const i = process.argv.slice(1);
-            if ((e?.addArgs && i.push(...e.addArgs), e?.removeArgs))
-              for (const n of e.removeArgs) {
-                const o = i.indexOf(n);
-                o >= 0 && i.splice(o, 1);
-              }
-            const s = async () => {
+        async M(win, i) {
+          if (!win.isReady) return false;
+          this.S(`Lifecycle#unload() - window ID ${win.id}`);
+          const reason = this.j ? 2 : i,
+            r = await this.P(win, reason);
+          return r ? (this.S(`Lifecycle#unload() - veto in renderer (window ID ${win.id})`), this.N(r)) : (await this.Q(win, reason), !1);
+        }
+
+        N(e) {
+          return e ? (this.O(!0), (this.j = !1), !0) : !1;
+        }
+
+        O(e) {
+          this.w && (this.w(e), (this.w = void 0), (this.u = void 0));
+        }
+
+        P(win, reason) {
+          return new Promise((resolve) => {
+            const r = this.s++,
+              okChannel = `vscode:ok${r}`,
+              cancelChannel = `vscode:cancel${r}`;
+            De.once(okChannel, () => {
+              resolve(false);
+            });
+            De.once(cancelChannel, () => {
+              resolve(true);
+            });
+            win.send("vscode:onBeforeUnload", { okChannel, cancelChannel, reason });
+          });
+        }
+
+        Q(win, reason) {
+          return new Promise((resolve) => {
+            const replyChannel = `vscode:reply${this.s++}`;
+            De.once(replyChannel, () => resolve());
+            win.send("vscode:onWillUnload", { replyChannel, reason });
+          });
+        }
+
+        quit(e) {
+          return this.R(e).then((i) => {
+            if (!i && e)
               try {
-                (await this.D?.handleRelaunch(e)) || (this.S("Lifecycle#relaunch() - calling app.relaunch()"), electron.app.relaunch({ args: i }));
-              } catch (n) {
-                this.S("Lifecycle#relaunch() - error calling app.relaunch()"), this.F.error(n);
+                if (J) {
+                  const s = Zs();
+                  s !== process.cwd() && process.chdir(s);
+                }
+              } catch (s) {
+                this.F.error(s);
               }
-            };
-            electron.app.once("quit", s), (await this.quit(!0)) && electron.app.removeListener("quit", s);
-          }
+            return i;
+          });
+        }
 
-          async kill(e) {
-            this.S("Lifecycle#kill()"),
-              await this.L(2),
-              await Promise.race([
-                Ti(1e3),
-                (async () => {
-                  for (const i of electron.BrowserWindow.getAllWindows())
-                    if (i && !i.isDestroyed()) {
-                      let s;
-                      i.webContents && !i.webContents.isDestroyed() ? (s = new Promise((r) => i.once("closed", r))) : (s = Promise.resolve()), i.destroy(), await s;
-                    }
-                })(),
-              ]),
-              electron.app.exit(e);
+        R(e) {
+          this.S(`Lifecycle#quit() - begin (willRestart: ${e})`);
+          if (this.u) {
+            this.S("Lifecycle#quit() - returning pending quit promise");
+            return this.u;
+          } else {
+            e && this.G.setItem(hl.b, !0);
+            this.u = new Promise((resolve) => {
+              this.w = resolve;
+              this.S("Lifecycle#quit() - calling app.quit()");
+              electron.app.quit();
+            });
+            return this.u;
           }
-        }),
-        (ad = hl = __decorate([__param(0, K), __param(1, Ot), __param(2, ct)], ad));
+        }
+
+        S(msg) {
+          this.H.args["enable-smoke-test-driver"] ? this.F.info(msg) : this.F.info(msg);
+        }
+
+        setRelaunchHandler(handler) {
+          this.D = handler;
+        }
+
+        async relaunch(e) {
+          this.S("Lifecycle#relaunch()");
+          const i = process.argv.slice(1);
+          e?.addArgs && i.push(...e.addArgs);
+          if (e?.removeArgs) {
+            for (const n of e.removeArgs) {
+              const o = i.indexOf(n);
+              o >= 0 && i.splice(o, 1);
+            }
+          }
+          const quit = async () => {
+            try {
+              (await this.D?.handleRelaunch(e)) || (this.S("Lifecycle#relaunch() - calling app.relaunch()"), electron.app.relaunch({ args: i }));
+            } catch (n) {
+              this.S("Lifecycle#relaunch() - error calling app.relaunch()");
+              this.F.error(n);
+            }
+          };
+          electron.app.once("quit", quit);
+          if (await this.quit(true)) {
+            electron.app.removeListener("quit", quit);
+          }
+        }
+
+        async kill(e) {
+          this.S("Lifecycle#kill()");
+          await this.L(2);
+          await Promise.race([
+            Ti(1e3),
+            (async () => {
+              for (const i of electron.BrowserWindow.getAllWindows())
+                if (i && !i.isDestroyed()) {
+                  let s;
+                  i.webContents && !i.webContents.isDestroyed() ? (s = new Promise((r) => i.once("closed", r))) : (s = Promise.resolve()), i.destroy(), await s;
+                }
+            })(),
+          ]);
+          electron.app.exit(e);
+        }
+      };
+      lifecycleMainService = hl = __decorate([__param(0, K), __param(1, Ot), __param(2, ct)], lifecycleMainService);
     },
   }),
   rr,
@@ -37185,7 +37229,6 @@ var Xa,
         }
 
         async C(req, res) {
-          debugger;
           const { url } = req;
           this.r.info(`OAuthLocalServer#[Server] Received url request: ${url?.split("?")[0]}. ${this.t.argvResource}`);
           res.setHeader("Access-Control-Allow-Origin", "*");
@@ -37396,7 +37439,6 @@ var errCodes,
 
       MarsCodeOAuthService = class extends N {
         constructor(t, e, i, s, r, n, o, a) {
-          // debugger;
           super();
           this.j = t;
           this.m = e;
@@ -37414,6 +37456,7 @@ var errCodes,
 
         // 获取登录链接
         async login() {
+          debugger;
           this.a || (this.a = new di());
           this.j.info("OAuthenticator#start a server to listen for oauth result");
           await this.c.getServer();
@@ -37521,7 +37564,6 @@ var errCodes,
 
         // getJwtToken
         async D(refreshToken, region, host) {
-          // debugger;
           const s = Yl.get(region);
           if (!s) {
             throw new Error(`failed:!regionInfo, regionInfo:${s}`);
@@ -37554,7 +37596,6 @@ var errCodes,
 
         // getUserInfo
         async F(token, region, host) {
-          // debugger;
           const s = Yl.get(region);
           if (!s) {
             throw new Error(`failed:!providerInfo, region:${region}`);
@@ -37590,7 +37631,6 @@ var errCodes,
         }
 
         G(port, redirect, code, msg) {
-          // debugger;
           const callbackUrl = "http://127.0.0.1:" + port + "/authorize",
             clientId = z9.get(this.f),
             a = this.m.tronBuildVersion || "local",
@@ -37605,7 +37645,6 @@ var errCodes,
         }
 
         H(port) {
-          // debugger;
           const e = this.G(port);
           if (!this.s) {
             this.j.error("OAuthenticator# this.nativeHostMainService is undefined");
@@ -37620,7 +37659,6 @@ var errCodes,
         }
 
         async checkToken(token, region, host) {
-          // debugger;
           const s = Yl.get(region);
           if (!s) {
             throw new Error(`failed:!providerInfo, region:${region}`);
@@ -37671,6 +37709,7 @@ var errCodes,
         }
 
         async login() {
+          debugger;
           this.a || (this.a = new di());
           this.h.info("OAuthenticator#start a server to listen for oauth result");
           await this.c.getServer();
@@ -37897,6 +37936,7 @@ var ob,
         }
 
         async login(provider) {
+          debugger;
           return await this.mb(void 0, {
             forceLogin: true,
             provider: provider || wi.BYTEDANCE,
@@ -38092,9 +38132,10 @@ var ob,
 
         // login
         async Z(e, provider = wi.BYTEDANCE) {
+          debugger;
           this.s.info("[MainICubeAuthManagementService]", "handleOpenLoginWindow");
-          const s = await this.mb(void 0, { forceLogin: true, provider: provider }),
-            loginWindow = BrowserWindow.getAllWindows().find((win) => win.webContents.mainFrame.processId === e.processId);
+          const s = await this.mb(void 0, { forceLogin: true, provider: provider });
+          const loginWindow = BrowserWindow.getAllWindows().find((win) => win.webContents.mainFrame.processId === e.processId);
           this.s.info("[MainICubeAuthManagementService]", "show window", loginWindow);
           if (loginWindow) {
             loginWindow.isMinimized() && loginWindow.restore();
@@ -46919,8 +46960,6 @@ var Ab,
       cc = jE;
       _p = class extends UE {
         constructor(e, i, s, r, n) {
-          // debugger;
-
           super();
           this.D = e;
           this.F = i;
@@ -46990,7 +47029,6 @@ var Ab,
 
         // init
         async O() {
-          // debugger;
           this.D.info(`[MainICubeDeviceRegisterService] (init) start init, retryCount: ${this.y}`);
           try {
             const { deviceId, installId, isActiveSuccess } = await this.u.registryAndActive();
@@ -47999,7 +48037,9 @@ var Mb,
         }
 
         async startup() {
-          this.t.debug("Starting VS Code"), this.t.debug(`from: ${this.w.appRoot}`), this.t.debug("args:", this.w.args);
+          this.t.debug("Starting VS Code");
+          this.t.debug(`from: ${this.w.appRoot}`);
+          this.t.debug("args:", this.w.args);
           const e = this.F.win32AppUserModelId;
           J && e && app.setAppUserModelId(e);
           try {
@@ -48009,92 +48049,94 @@ var Mb,
           const i = new T5();
           I.once(this.y.onWillShutdown)((h) => {
             h.reason === 2 && i.dispose();
-          }),
-            this.t.trace("Resolving machine identifier...");
+          });
+
+          this.t.trace("Resolving machine identifier...");
           const [s, r, n] = await Promise.all([bW(this.C, this.t), vW(this.C, this.t), yW(this.C, this.t)]);
           this.t.trace(`Resolved machine identifier: ${s}`);
-          const { sharedProcessReady: o, sharedProcessClient: a } = this.U(s, r, n),
-            c = await this.W(s, r, n, o);
-          this.B(c.createInstance(kf)),
-            this.B(c.createInstance(Lp)),
-            this.B(c.createInstance(Wp, s)),
-            c.invokeFunction((h) => h.get(Ed)),
-            this.B(c.createInstance(wp)),
-            this.B(c.createInstance(Tp)),
-            c.invokeFunction((h) => this.X(h, i, a)),
-            (this.a = await c.invokeFunction((h) => this.N(h, i))),
-            this.O(i),
-            (this.y.phase = 2),
-            this.C.setItem(Ib, !0),
-            this.cb(),
-            await c.invokeFunction(async (h) => {
-              (this.f = h.get(zt)), (this.g = h.get(Ea)), (this.c = h.get(Ob));
-              const d = h.get(fr),
-                p = h.get(op),
-                g = h.get(St),
-                m = h.get(fo),
-                b = h.get(cc),
-                S = h.get(Wi),
-                k = h.get(br);
-              De.handle("vscode:installMarscodeCli", async (F) => {
-                this.t.info("installMarscodeCli");
-                try {
-                  await d.installShellCommand(void 0);
-                } catch (z) {
-                  this.t.info(z);
-                }
-              }),
-                De.handle("vscode:setupTheme", async (F, z) => {
-                  this.t.info("setup page getTheme", z);
-                  const ne = await new ib(this.D).getColorTheme(z);
-                  if (ne)
-                    return (
-                      m.applicationStorage.init(),
-                      m.applicationStorage.set(Uf.STORAGE_KEY, Uf.getToStorageData(ne.currentTheme)),
-                      JSON.stringify({
-                        id: ne.currentTheme.id,
-                        css: ne.css,
-                      })
-                    );
-                }),
-                De.handle("vscode:login", async (F, z) => {
-                  this.t.info("login"), await k.login(z);
-                });
-              const D = h.get(xo);
-              await k.initialize({
-                broadcastToCodeWindows: this.M.bind(this),
-                nativeHostMainService: d,
-                telemetryService: g,
-                onLogout: () => {
-                  this.M(ipcChannels.EVENT_MAIN_TO_SANDBOX_LOGOUT), D.refreshRegion();
-                },
-                onLoginSuccess: (F) => {
-                  this.M(ipcChannels.EVENT_MAIN_TO_SANDBOX_LOGIN, F), D.refreshRegion();
-                },
-                iCubeEventReportService: S,
-              }),
-                D.initialize({
-                  broadcastToCodeWindows: this.M.bind(this),
-                  mainICubeAuthManagementService: k,
-                }),
-                D.refreshRegion();
-              const x = await k.getAuthUserInfo({ forceLogin: !1 }),
-                C = await p.get();
-              if ((this.t.info("[Startup]", "check setup state", C), C !== ic.DONE))
-                return this.c.openSetup({
-                  skipLogin: !!x,
-                  machineId: g.machineId,
-                  deviceId: b.n,
-                });
-              this.Y();
+
+          const { sharedProcessReady, sharedProcessClient } = this.U(s, r, n),
+            c = await this.W(s, r, n, sharedProcessReady);
+          this.B(c.createInstance(kf));
+          this.B(c.createInstance(Lp));
+          this.B(c.createInstance(Wp, s));
+          c.invokeFunction((h) => h.get(Ed));
+          this.B(c.createInstance(wp));
+          this.B(c.createInstance(Tp));
+          c.invokeFunction((h) => this.X(h, i, sharedProcessClient));
+          this.a = await c.invokeFunction((h) => this.N(h, i));
+          this.O(i);
+          this.y.phase = 2;
+          this.C.setItem(Ib, !0);
+          this.cb();
+          await c.invokeFunction(async (h) => {
+            (this.f = h.get(zt)), (this.g = h.get(Ea)), (this.c = h.get(Ob));
+            const d = h.get(fr),
+              p = h.get(op),
+              g = h.get(St),
+              m = h.get(fo),
+              b = h.get(cc),
+              S = h.get(Wi),
+              k = h.get(br);
+            De.handle("vscode:installMarscodeCli", async (F) => {
+              this.t.info("installMarscodeCli");
+              try {
+                await d.installShellCommand(void 0);
+              } catch (z) {
+                this.t.info(z);
+              }
             }),
-            (this.y.phase = 3),
-            this.Z(),
-            this.B(
-              new gs(() => {
-                this.B(Lg(() => (this.y.phase = 4), 2500));
-              }, 2500),
-            ).schedule();
+              De.handle("vscode:setupTheme", async (F, z) => {
+                this.t.info("setup page getTheme", z);
+                const ne = await new ib(this.D).getColorTheme(z);
+                if (ne)
+                  return (
+                    m.applicationStorage.init(),
+                    m.applicationStorage.set(Uf.STORAGE_KEY, Uf.getToStorageData(ne.currentTheme)),
+                    JSON.stringify({
+                      id: ne.currentTheme.id,
+                      css: ne.css,
+                    })
+                  );
+              }),
+              De.handle("vscode:login", async (F, z) => {
+                this.t.info("login"), await k.login(z);
+              });
+            const D = h.get(xo);
+            await k.initialize({
+              broadcastToCodeWindows: this.M.bind(this),
+              nativeHostMainService: d,
+              telemetryService: g,
+              onLogout: () => {
+                this.M(ipcChannels.EVENT_MAIN_TO_SANDBOX_LOGOUT), D.refreshRegion();
+              },
+              onLoginSuccess: (F) => {
+                this.M(ipcChannels.EVENT_MAIN_TO_SANDBOX_LOGIN, F), D.refreshRegion();
+              },
+              iCubeEventReportService: S,
+            }),
+              D.initialize({
+                broadcastToCodeWindows: this.M.bind(this),
+                mainICubeAuthManagementService: k,
+              }),
+              D.refreshRegion();
+            const x = await k.getAuthUserInfo({ forceLogin: !1 }),
+              C = await p.get();
+            if ((this.t.info("[Startup]", "check setup state", C), C !== ic.DONE))
+              return this.c.openSetup({
+                skipLogin: !!x,
+                machineId: g.machineId,
+                deviceId: b.n,
+              });
+            this.Y();
+          });
+          this.y.phase = 3;
+          this.Z();
+          this.B(
+            new gs(() => {
+              this.B(Lg(() => (this.y.phase = 4), 2500));
+            }, 2500),
+          ).schedule();
         }
 
         M(e, ...i) {
@@ -53674,7 +53716,7 @@ var electron_main = v({
         const m = new oD(p.defaultProfile.settingsResource, c, g, a);
 
         services.set(st, m);
-        services.set(Xe, new Descriptors(ad, void 0, !1));
+        services.set(Xe, new Descriptors(lifecycleMainService, void 0, !1));
         services.set($n, new Descriptors(RequestService, void 0, !0));
         services.set(ya, new Descriptors(yd));
         services.set(Ua, new Descriptors(SignService, void 0, !1));
