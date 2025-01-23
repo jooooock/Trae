@@ -9881,7 +9881,7 @@ var P5,
 
         b(channel, event) {
           if (!["vscode:message"].includes(channel)) {
-            debugger;
+            // debugger;
           }
           if (!channel || !channel.startsWith("vscode:")) {
             Nt(`Refused to handle ipcMain event for channel '${channel}' because the channel is unknown.`);
@@ -24135,6 +24135,7 @@ var fr,
               if (typeof this.J != "number") {
                 const s = this.w.invokeFunction(kd, En(), { forceNativeTitlebar: !0 });
                 s.backgroundColor = void 0;
+                debugger;
                 const r = new BrowserWindow(s);
                 r.setMenuBarVisibility(!1),
                   r.loadURL("chrome://gpu"),
@@ -24479,6 +24480,7 @@ var Fm,
           }
 
           m(e, i, s, r) {
+            debugger;
             const n = {
                 fullscreen: !1,
                 skipTaskbar: !1,
@@ -24888,33 +24890,35 @@ var Mm,
           }
 
           s(e, i, s, r) {
-            const n = {
-                fullscreen: !1,
-                skipTaskbar: !1,
-                resizable: !0,
-                width: e.width,
-                height: e.height,
-                minWidth: 300,
-                minHeight: 200,
-                x: e.x,
-                y: e.y,
-                title: s.title,
-                backgroundColor: s.backgroundColor || Mm.a,
-                webPreferences: {
-                  preload: It.asFileUri("vs/base/parts/sandbox/electron-sandbox/preload.js").fsPath,
-                  additionalArguments: [`--vscode-window-config=${i.resource.toString()}`],
-                  v8CacheOptions: this.f.useCodeCache ? "bypassHeatCheck" : "none",
-                  enableWebSQL: !1,
-                  spellcheck: !1,
-                  zoomFactor: _0(s.zoomLevel),
-                  sandbox: !0,
-                  nodeIntegrationInSubFrames: !0,
-                },
-                alwaysOnTop: s.alwaysOnTop,
-                experimentalDarkMode: !0,
+            const options = {
+              fullscreen: false,
+              skipTaskbar: false,
+              resizable: true,
+              width: e.width,
+              height: e.height,
+              minWidth: 300,
+              minHeight: 200,
+              x: e.x,
+              y: e.y,
+              title: s.title,
+              backgroundColor: s.backgroundColor || Mm.a,
+              webPreferences: {
+                preload: It.asFileUri("vs/base/parts/sandbox/electron-sandbox/preload.js").fsPath,
+                additionalArguments: [`--vscode-window-config=${i.resource.toString()}`],
+                v8CacheOptions: this.f.useCodeCache ? "bypassHeatCheck" : "none",
+                enableWebSQL: false,
+                spellcheck: false,
+                zoomFactor: _0(s.zoomLevel),
+                sandbox: true,
+                nodeIntegrationInSubFrames: true,
               },
-              o = new BrowserWindow(n);
-            return o.setMenuBarVisibility(!1), o;
+              alwaysOnTop: s.alwaysOnTop,
+              experimentalDarkMode: true,
+            };
+            debugger;
+            const win = new BrowserWindow(options);
+            win.setMenuBarVisibility(false);
+            return win;
           }
 
           t(e, i, ...s) {
@@ -37709,7 +37713,6 @@ var errCodes,
         }
 
         async login() {
-          debugger;
           this.a || (this.a = new di());
           this.h.info("OAuthenticator#start a server to listen for oauth result");
           await this.c.getServer();
@@ -37936,7 +37939,6 @@ var ob,
         }
 
         async login(provider) {
-          debugger;
           return await this.mb(void 0, {
             forceLogin: true,
             provider: provider || wi.BYTEDANCE,
@@ -39767,20 +39769,22 @@ var IS,
               (this.wb = 0);
             {
               const [ne, B] = this.Ib(e.state);
-              (this.U = ne), this.u.trace("window#ctor: using window state", ne);
-              const pe = F.invokeFunction(kd, this.U, void 0, {
+              this.U = ne;
+              this.u.trace("window#ctor: using window state", ne);
+              const options = F.invokeFunction(kd, this.U, void 0, {
                 preload: It.asFileUri("vs/base/parts/sandbox/electron-sandbox/preload.js").fsPath,
                 additionalArguments: [`--vscode-window-config=${this.bb.resource.toString()}`],
                 v8CacheOptions: this.t.useCodeCache ? "bypassHeatCheck" : "none",
               });
-              performance_mark("code/willCreateCodeBrowserWindow"),
-                (this.m = new electron.BrowserWindow(pe)),
-                (process.env.VSCODE_DEV || process.env.ICUBE_DEBUG_OPEN_DEVTOOLS) && this.m.webContents.openDevTools({ mode: "right" }),
-                performance_mark("code/didCreateCodeBrowserWindow"),
-                (this.Q = this.m.id),
-                this.n(this.m, pe),
-                this.w(this.U, B),
-                (this.j = Date.now());
+              debugger;
+              performance_mark("code/willCreateCodeBrowserWindow");
+              this.m = new electron.BrowserWindow(options);
+              (process.env.VSCODE_DEV || process.env.ICUBE_DEBUG_OPEN_DEVTOOLS || true) && this.m.webContents.openDevTools({ mode: "right" });
+              performance_mark("code/didCreateCodeBrowserWindow");
+              this.Q = this.m.id;
+              this.n(this.m, options);
+              this.w(this.U, B);
+              this.j = Date.now();
             }
             this.Fb(), this.Ob(), this.xb();
           }
@@ -47786,7 +47790,7 @@ var Ob,
         }
 
         async openSetupWindow(e) {
-          const i = this.h.invokeFunction(
+          const options = this.h.invokeFunction(
             kd,
             {
               ...En(),
@@ -47799,48 +47803,48 @@ var Ob,
               additionalArguments: [`--vscode-window-config=${this.a.resource.toString()}`],
             },
           );
-          (i.minWidth = 1e3), (i.minHeight = 680);
+          options.minWidth = 1e3;
+          options.minHeight = 680;
+          debugger;
           const s = await this.g.checkVSCode(Ss.VSCode),
             r = await this.g.checkVSCode(Ss.Cursor);
-          this.c = new BrowserWindow(i);
-          let n = "zh-cn";
+          this.c = new BrowserWindow(options);
+          let locale = "zh-cn";
           try {
-            n = await this.getSystemLocale();
+            locale = await this.getSystemLocale();
           } catch {
-            n = "zh-cn";
+            locale = "zh-cn";
           }
           const o = !this.r.getItem(Ib);
-          return (
-            this.a.update({
-              appRoot: this.n.appRoot,
-              windowId: this.c.id,
-              userEnv: {},
-              product: this.s,
-              iCubeApp: this.s.iCubeApp,
-              skipLogin: e?.skipLogin,
-              lang: n,
-              appName: this.s.applicationName.toLowerCase(),
-              isVscodeExisted: s,
-              isCursorExisted: r,
-              isFirstInstall: o,
-              currentInstallVersion: this.s.tronBuildVersion,
-              provider: this.s.provider,
-              machineId: e?.machineId,
-              deviceId: e?.deviceId,
-              quality: this.s.quality,
-              nls: { messages: kc(), language: Vo() },
-            }),
-            this.m.info("[MainICubeSetupManagementService] new window to load setupMain.html"),
-            await this.c.loadURL(It.asBrowserUri(`vs/code/electron-sandbox/setup/setup${this.n.isBuilt ? "" : "-dev"}.html`).toString(!0)),
-            (process.env.VSCODE_DEV || process.env.ICUBE_DEBUG_OPEN_DEVTOOLS) && this.c.webContents.openDevTools(),
-            this.c.once("close", () => {
-              this.m.info("[MainICubeSetupManagementService] login window closed by user");
-            }),
-            this.c.once("closed", () => {
-              this.m.info("[MainICubeSetupManagementService] login window closed"), this.f ? (this.c = void 0) : (this.b && this.b.cancel(), (this.b = void 0), this.t.quit(), (this.c = void 0));
-            }),
-            this.c
-          );
+          this.a.update({
+            appRoot: this.n.appRoot,
+            windowId: this.c.id,
+            userEnv: {},
+            product: this.s,
+            iCubeApp: this.s.iCubeApp,
+            skipLogin: e?.skipLogin,
+            lang: locale,
+            appName: this.s.applicationName.toLowerCase(),
+            isVscodeExisted: s,
+            isCursorExisted: r,
+            isFirstInstall: o,
+            currentInstallVersion: this.s.tronBuildVersion,
+            provider: this.s.provider,
+            machineId: e?.machineId,
+            deviceId: e?.deviceId,
+            quality: this.s.quality,
+            nls: { messages: kc(), language: Vo() },
+          });
+          this.m.info("[MainICubeSetupManagementService] new window to load setupMain.html");
+          await this.c.loadURL(It.asBrowserUri(`vs/code/electron-sandbox/setup/setup${this.n.isBuilt ? "" : "-dev"}.html`).toString(!0));
+          (process.env.VSCODE_DEV || process.env.ICUBE_DEBUG_OPEN_DEVTOOLS) && this.c.webContents.openDevTools();
+          this.c.once("close", () => {
+            this.m.info("[MainICubeSetupManagementService] login window closed by user");
+          });
+          this.c.once("closed", () => {
+            this.m.info("[MainICubeSetupManagementService] login window closed"), this.f ? (this.c = void 0) : (this.b && this.b.cancel(), (this.b = void 0), this.t.quit(), (this.c = void 0));
+          });
+          return this.c;
         }
 
         getWindow() {
