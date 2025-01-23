@@ -2,7 +2,7 @@
 
 ## 目的
 
-分析`Trae`程序内部某些功能的具体过程。
+分析`Trae`程序内部某些功能的具体实现过程。
 
 ## 版本
 
@@ -15,3 +15,7 @@ yarn install
 yarn dev
 ```
 将以非打包模式启动`Trae`。
+
+## 分析结果
+
+`AI`模块位于`src/app/v1.95.3/node_modules/@byted-icube/ai-modules-agent`
