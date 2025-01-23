@@ -38131,11 +38131,11 @@ var ob,
         }
 
         // login
-        async Z(e, provider = wi.BYTEDANCE) {
+        async Z(event, provider = wi.BYTEDANCE) {
           debugger;
           this.s.info("[MainICubeAuthManagementService]", "handleOpenLoginWindow");
           const s = await this.mb(void 0, { forceLogin: true, provider: provider });
-          const loginWindow = BrowserWindow.getAllWindows().find((win) => win.webContents.mainFrame.processId === e.processId);
+          const loginWindow = BrowserWindow.getAllWindows().find((win) => win.webContents.mainFrame.processId === event.processId);
           this.s.info("[MainICubeAuthManagementService]", "show window", loginWindow);
           if (loginWindow) {
             loginWindow.isMinimized() && loginWindow.restore();
