@@ -18,4 +18,6 @@ yarn dev
 
 ## 分析结果
 
-`AI`模块位于`src/app/v1.95.3/node_modules/@byted-icube/ai-modules-agent`
+`AI Builder`模块位于`src/app/v1.95.3/node_modules/@byted-icube/ai-modules-agent`
+
+`AI Chat`模块位于`src/app/v1.95.3/node_modules/@byted-icube/ai-modules-ng`
