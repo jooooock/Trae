@@ -21,3 +21,7 @@ yarn dev
 `AI Builder`模块位于`src/app/v1.95.3/node_modules/@byted-icube/ai-modules-agent`
 
 `AI Chat`模块位于`src/app/v1.95.3/node_modules/@byted-icube/ai-modules-ng`
+
+### 1. 设备注册与激活
+
+> 代码位于`src/app/v1.95.3/node_modules/@byted/device-register/dist/index.mjs`，暴露一个`DeviceRegister`供外部使用。
