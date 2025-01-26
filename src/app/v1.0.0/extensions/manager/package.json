@@ -1,0 +1,24 @@
+{
+  "name": "icube-manager",
+  "displayName": "icube-manager",
+  "publisher": "trae",
+  "description": "icube-manager",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "browser": "./dist/web/extension.js",
+  "types": "./sdk/rpcclient.d.ts",
+  "files": [
+    "sdk"
+  ],
+  "enabledApiProposals": [
+    "icube"
+  ]
+}

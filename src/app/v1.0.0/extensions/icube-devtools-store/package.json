@@ -1,0 +1,151 @@
+{
+  "name": "icube-devtool-store",
+  "description": "Cat Coding - A Webview API Sample",
+  "version": "0.0.41",
+  "publisher": "cloudide",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/vscode-extension-samples"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:icube-devtool-store-left-panel",
+    "onView:icube-devtool-store-main-panel"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "icube-devtool-store-left-panel",
+          "title": "%store.activitybar.title%",
+          "icon": "assets/icon.svg",
+          "iCubeOrder": -99999999
+        }
+      ]
+    },
+    "views": {
+      "icube-devtool-store-left-panel": [
+        {
+          "id": "icube-devtool-store-left-panel",
+          "type": "webview",
+          "name": ""
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "icube.devtool-store.update",
+          "group": "navigation@1",
+          "when": "view =~ /icube-devtool-store-left-panel/"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "icube.devtool-store.update",
+        "title": "%store.commands.update.title%",
+        "icon": "$(refresh)"
+      }
+    ]
+  },
+  "scripts": {
+    "watch": "npx cross-env NODE_ENV=development ts-node --files ./build",
+    "compile": "npx cross-env NODE_ENV=production ts-node --files ./build",
+    "build": "npx cross-env NODE_ENV=production ts-node --files ./build",
+    "vscode:prepublish": "pnpm build",
+    "package": "yes | vsce package --no-dependencies",
+    "lint": "eslint . --ext .ts,.tsx --cache --fix --quiet --color",
+    "lint-staged": "lint-staged --allow-empty"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "./node_modules/.bin/eslint --fix --color --cache --quiet"
+    ]
+  },
+  "devDependencies": {
+    "@types/friendly-errors-webpack-plugin": "^0.1.7",
+    "@types/node": "~20.11.0",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.6",
+    "@types/speed-measure-webpack-plugin": "~1.3.4",
+    "@types/vscode": "^1.74.0",
+    "@types/vscode-webview": "~1.57.4",
+    "@types/webpack-bundle-analyzer": "~4.6.0",
+    "@types/yargs": "~17.0.24",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "~6.18.1",
+    "css-loader": "~6.8.1",
+    "eslint": "~8.57.0",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "less-loader": "~11.1.3",
+    "mini-css-extract-plugin": "^2.7.7",
+    "sass": "^1.69.7",
+    "@vscode/vsce": "^2.23.0",
+    "sass-loader": "~13.3.3",
+    "speed-measure-webpack-plugin": "~1.5.0",
+    "style-loader": "~3.3.4",
+    "terser-webpack-plugin": "^5.3.10",
+    "ts-loader": "^9.5.1",
+    "file-loader": "^4.1.1",
+    "typescript": "~5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-bundle-analyzer": "~4.9.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "~5.9.0",
+    "yargs": "~17.7.2",
+    "@types/uuid": "~9.0.8",
+    "@types/fs-extra": "~11.0.4",
+    "@types/lodash": "~4.14.202",
+    "@types/proper-lockfile": "^4.1.4",
+    "@types/semver": "^7.5.6",
+    "@types/yauzl": "^2.10.3",
+    "html-webpack-plugin": "~5.6.0",
+    "lint-staged": "~15.2.2",
+    "copy-webpack-plugin": "~12.0.2",
+    "@rushstack/eslint-patch": "~1.8.0",
+    "@gulu/style": "~2.0.0",
+    "@byted-icube/devtools-eslint-config": "workspace:*",
+    "@slardar/webpack-plugin": "~1.7.5",
+    "cross-env": "~7.0.3",
+    "@svgr/webpack": "~8.1.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "marked": "^11.1.1",
+    "xss": "^1.0.14",
+    "@byted-icube/authentication": "workspace:*",
+    "@byted-icube/devtools-bridge": "workspace:*",
+    "@byted-icube/devtools-base": "workspace:*",
+    "@byted-icube/devtools-i18n": "workspace:*",
+    "@byted-icube/devtools-constants": "workspace:*",
+    "@ies/intl-react-plugin": "~0.4.9",
+    "fs-extra": "~11.2.0",
+    "lodash": "~4.17.21",
+    "node-fetch": "^3.3.2",
+    "copy-to-clipboard": "~3.3.3",
+    "resize-observer-polyfill": "^1.5.1",
+    "@arco-design/web-react": "^2.58.3",
+    "react-json-view": "^1.21.3",
+    "@radix-ui/themes": "~2.0.3",
+    "@arco-design/iconbox-react-newide": "0.0.16",
+    "yauzl": "^2.10.0",
+    "semver": "^7.3.7",
+    "p-limit": "^4.0.0",
+    "classnames": "~2.5.1",
+    "proper-lockfile": "^4.1.2",
+    "immer": "~10.0.3",
+    "highlight.js": "^11.9.0",
+    "xml-js": "^1.6.11",
+    "crossorigin-webpack-plugin": "~1.0.0"
+  }
+}

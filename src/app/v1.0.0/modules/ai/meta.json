@@ -1,0 +1,26 @@
+{
+  "name": "ai",
+  "version": "1.0.0-alpha.0",
+  "entry": "start.sh",
+  "args": [],
+  "activationEvents": ["*"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "icube.ai.sayHello"
+      }
+    ]
+  },
+  "connections": [
+    {
+      "socket": {
+        "port": 40001
+      }
+    },
+    {
+      "socket": {
+        "port": 40002
+      }
+    }
+  ]
+}

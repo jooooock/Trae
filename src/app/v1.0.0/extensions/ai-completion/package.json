@@ -1,0 +1,81 @@
+{
+  "name": "ai-code-completion",
+  "displayName": "Trae: AI Code Completion",
+  "description": "%description%",
+  "version": "1.0.0",
+  "versionCode": 1,
+  "icon": "resource/images/marscode/codelogo.png",
+  "publisher": "trae",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Machine Learning",
+    "Programming Languages",
+    "Education",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:python",
+    "onLanguage:go",
+    "onLanguage:java",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:cpp",
+    "*"
+  ],
+  "browser": "./dist/extension.js",
+  "enabledApiProposals": [
+    "inlineCompletionsAdditions",
+    "icube"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "trae.acceptAllEdits",
+        "title": "Accept All Edits",
+        "category": "Trae",
+        "enablement": "trae.hasEditOfCurrentEditor"
+      },
+      {
+        "command": "trae.buildEditRequest",
+        "title": "Perform an Edit Request",
+        "category": "Trae"
+      },
+      {
+        "command": "trae.clearRecommendedEdits",
+        "title": "Clear Recommended Edits",
+        "category": "Trae",
+        "enablement": "trae.hasEditOfCurrentEditor"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "editor.action.inlineSuggest.acceptNextLine",
+        "when": "inlineSuggestionVisible && !editorTabMovesFocus",
+        "key": "shift+tab",
+        "mac": "shift+tab"
+      },
+      {
+        "command": "trae.acceptAllEdits",
+        "when": "!editorReadonly && !inlineSuggestionVisible",
+        "key": "tab",
+        "mac": "tab"
+      },
+      {
+        "command": "trae.buildEditRequest",
+        "when": "!editorReadonly && !inlineSuggestionVisible",
+        "key": "ctrl+shift+enter",
+        "mac": "ctrl+shift+enter"
+      },
+      {
+        "command": "trae.clearRecommendedEdits",
+        "when": "!editorReadonly && !inlineSuggestionVisible",
+        "key": "escape",
+        "mac": "escape"
+      }
+    ]
+  }
+}

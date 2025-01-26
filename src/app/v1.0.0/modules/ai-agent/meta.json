@@ -1,0 +1,15 @@
+{
+  "name": "ai-agent",
+  "version": "1.0.0-alpha.0",
+  "entry": "start.sh",
+  "args": [],
+  "activationEvents": ["*"],
+  "contributes": {},
+  "connections": [
+    {
+      "socket": {
+        "port": 40005
+      }
+    }
+  ]
+}

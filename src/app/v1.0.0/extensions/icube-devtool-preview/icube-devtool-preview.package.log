@@ -1,0 +1,456 @@
+Invoking: yes | vsce package --no-dependencies --out ../../output/
+Executing prepublish script 'npm run vscode:prepublish'...
+
+> icube-devtool-preview@0.0.34 vscode:prepublish
+> npm run build
+
+
+> icube-devtool-preview@0.0.34 build
+> npx cross-env NODE_ENV=production ts-node --files ./build
+
+(node:7092) [DEP_WEBPACK_TEMPLATE_PATH_PLUGIN_REPLACE_PATH_VARIABLES_HASH] DeprecationWarning: [hash] is now [fullhash] (also consider using [chunkhash] or [contenthash], see documentation for details)
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ DONE  Compiled successfully in 52181ms4:48:17 PM
+
+
+Upload sourcemaps
+> Uploading source maps
+Upload Destination: http://apm-open.bytedance.net/api_v2/browser/jserr/upload_sourcemap
+
+logid for debugging:
+
+You did not specify release.
+Source Map Upload Report
+
+Start deleting Sourcemap files!
+All Sourcemap files had been successfully deleted!
+ WARNING  Compiled with 6 warnings4:48:17 PM
+
+ warning  in ./src/webview/component/iframe/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  in ./src/webview/component/toast/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  in ./src/webview/entries/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.9aa4c8c2a0b9f7abc3db.js (3.27 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (3.27 MiB)
+      index.9aa4c8c2a0b9f7abc3db.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+
+Upload sourcemaps
+> Uploading source maps
+Upload Destination: http://apm-open.bytedance.net/api_v2/browser/jserr/upload_sourcemap
+
+logid for debugging:
+
+You did not specify release.
+Source Map Upload Report
+
+Start deleting Sourcemap files!
+All Sourcemap files had been successfully deleted!
+ WARNING  Compiled with 6 warnings4:48:18 PM
+
+ warning  in ./src/webview/component/iframe/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  in ./src/webview/component/toast/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  in ./src/webview/entries/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.57356c6810ec0c9a50f4.js (3.27 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (3.27 MiB)
+      index.57356c6810ec0c9a50f4.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+
+Upload sourcemaps
+> Uploading source maps
+Upload Destination: http://apm-open.bytedance.net/api_v2/browser/jserr/upload_sourcemap
+
+logid for debugging:
+
+You did not specify release.
+Source Map Upload Report
+
+Start deleting Sourcemap files!
+All Sourcemap files had been successfully deleted!
+ WARNING  Compiled with 6 warnings4:48:19 PM
+
+ warning  in ./src/webview/component/iframe/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  in ./src/webview/component/toast/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  in ./src/webview/entries/index.scss
+
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+ warning  
+
+asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.9aa4c8c2a0b9f7abc3db.js (3.27 MiB)
+
+ warning  
+
+entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (3.27 MiB)
+      index.9aa4c8c2a0b9f7abc3db.js
+
+
+ warning  
+
+webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+asset extension.js 2.53 MiB [emitted] [minimized] (name: main)
+orphan modules 3.44 MiB [orphan] 930 modules
+runtime modules 2.18 KiB 7 modules
+built modules 4.92 MiB [built]
+  modules by path ../../common/temp/node_modules/.pnpm/ 4.46 MiB 297 modules
+  modules by path ../../packages/ 407 KiB 44 modules
+  modules by path ./ 46.2 KiB
+    modules by path ./src/*.ts 28.1 KiB
+      ./src/extension.ts 14.2 KiB [built] [code generated]
+      + 3 modules
+    ./src/common/utils.ts 206 bytes [built] [code generated]
+    ./src/webview/component/domain-select/index.tsx 13.1 KiB [built] [code generated]
+    ./package.json 4.75 KiB [built] [code generated]
+  + 21 modules
+webpack 5.97.1 compiled successfully in 52181 ms
+
+assets by path *.svg 3.35 KiB
+  asset icon-light.svg 949 bytes [emitted] [from: assets/icon-light.svg] [copied]
+  + 4 assets
+assets by path *.png 98.1 KiB
+  asset deploy-empty.png 87.6 KiB [emitted] [from: assets/deploy-empty.png] [copied]
+  + 3 assets
+assets by path *.js 3.27 MiB
+  asset index.57356c6810ec0c9a50f4.js 3.27 MiB [emitted] [immutable] [minimized] [big] (name: index)
+  asset service-worker.js 358 bytes [emitted] [from: assets/service-worker.js] [copied] [minimized]
+assets by path *.css 2.18 KiB
+  asset vscode.css 1.91 KiB [emitted] [from: assets/vscode.css] [copied]
+  asset reset.css 278 bytes [emitted] [from: assets/reset.css] [copied]
+assets by path *.html 2.82 KiB
+  asset index.html 1.43 KiB [emitted]
+  asset template.html 1.38 KiB [emitted] [from: assets/template.html] [copied]
+orphan modules 3.43 MiB [orphan] 914 modules
+runtime modules 2.81 KiB 9 modules
+cacheable modules 5.51 MiB
+  modules by path ../../common/temp/node_modules/.pnpm/ 4.64 MiB 239 modules
+  modules by path ../../packages/ 447 KiB 41 modules
+  modules by path ./ 353 KiB
+    modules by path ./src/webview/ 345 KiB 18 modules
+    modules by path ./src/*.ts 3.27 KiB
+      ./src/utils.ts 1.27 KiB [built] [code generated]
+      ./src/type.ts 2 KiB [built] [code generated]
+    ./package.json 4.75 KiB [built] [code generated]
+  data:font/ttf;base64,AAEAAAALAIAAAwAw.. 92.9 KiB [built] [code generated]
+
+WARNING in ./src/webview/component/iframe/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/component/iframe/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/component/iframe/index.scss 8:6-310 22:17-24 26:0-280 26:0-280 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/component/iframe/index.tsx 48:0-23
+ @ ./src/webview/entries/index.tsx 8:33-63
+
+WARNING in ./src/webview/component/toast/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/component/toast/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/component/toast/index.scss 8:6-310 22:17-24 26:0-280 26:0-280 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/component/toast/index.tsx 9:0-23
+ @ ./src/webview/component/iframe/index.tsx 41:16-35
+ @ ./src/webview/entries/index.tsx 8:33-63
+
+WARNING in ./src/webview/entries/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/entries/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/entries/index.scss 8:6-304 22:17-24 26:0-274 26:0-274 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/entries/index.tsx 9:0-23
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.57356c6810ec0c9a50f4.js (3.27 MiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (3.27 MiB)
+      index.57356c6810ec0c9a50f4.js
+
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.97.1 compiled with 6 warnings in 53311 ms
+
+assets by path *.svg 3.35 KiB
+  asset icon-light.svg 949 bytes [emitted] [from: assets/icon-light.svg] [copied]
+  + 4 assets
+assets by path *.png 98.1 KiB
+  asset deploy-empty.png 87.6 KiB [emitted] [from: assets/deploy-empty.png] [copied]
+  + 3 assets
+assets by path *.js 3.27 MiB
+  asset index.9aa4c8c2a0b9f7abc3db.js 3.27 MiB [emitted] [immutable] [minimized] [big] (name: index)
+  asset service-worker.js 358 bytes [emitted] [from: assets/service-worker.js] [copied] [minimized]
+assets by path *.css 2.18 KiB
+  asset vscode.css 1.91 KiB [emitted] [from: assets/vscode.css] [copied]
+  asset reset.css 278 bytes [emitted] [from: assets/reset.css] [copied]
+assets by path *.html 2.82 KiB
+  asset index.html 1.43 KiB [emitted]
+  asset template.html 1.38 KiB [emitted] [from: assets/template.html] [copied]
+orphan modules 3.43 MiB [orphan] 914 modules
+runtime modules 2.81 KiB 9 modules
+cacheable modules 5.51 MiB
+  modules by path ../../common/temp/node_modules/.pnpm/ 4.64 MiB 239 modules
+  modules by path ../../packages/ 447 KiB 41 modules
+  modules by path ./ 353 KiB
+    modules by path ./src/webview/ 345 KiB 18 modules
+    modules by path ./src/*.ts 3.27 KiB
+      ./src/utils.ts 1.27 KiB [built] [code generated]
+      ./src/type.ts 2 KiB [built] [code generated]
+    ./package.json 4.75 KiB [built] [code generated]
+  data:font/ttf;base64,AAEAAAALAIAAAwAw.. 92.9 KiB [built] [code generated]
+
+WARNING in ./src/webview/component/iframe/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/component/iframe/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/component/iframe/index.scss 8:6-310 22:17-24 26:0-280 26:0-280 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/component/iframe/index.tsx 48:0-23
+ @ ./src/webview/entries/index.tsx 8:33-63
+
+WARNING in ./src/webview/component/toast/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/component/toast/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/component/toast/index.scss 8:6-310 22:17-24 26:0-280 26:0-280 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/component/toast/index.tsx 9:0-23
+ @ ./src/webview/component/iframe/index.tsx 41:16-35
+ @ ./src/webview/entries/index.tsx 8:33-63
+
+WARNING in ./src/webview/entries/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/entries/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/entries/index.scss 8:6-304 22:17-24 26:0-274 26:0-274 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/entries/index.tsx 9:0-23
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.9aa4c8c2a0b9f7abc3db.js (3.27 MiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (3.27 MiB)
+      index.9aa4c8c2a0b9f7abc3db.js
+
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.97.1 compiled with 6 warnings in 52687 ms
+
+assets by path *.svg 3.35 KiB
+  asset icon-light.svg 949 bytes [emitted] [from: assets/icon-light.svg] [copied]
+  + 4 assets
+assets by path *.png 98.1 KiB
+  asset deploy-empty.png 87.6 KiB [emitted] [from: assets/deploy-empty.png] [copied]
+  + 3 assets
+assets by path *.js 3.27 MiB
+  asset index.9aa4c8c2a0b9f7abc3db.js 3.27 MiB [emitted] [immutable] [minimized] [big] (name: index)
+  asset service-worker.js 358 bytes [emitted] [from: assets/service-worker.js] [copied] [minimized]
+assets by path *.css 2.18 KiB
+  asset vscode.css 1.91 KiB [emitted] [from: assets/vscode.css] [copied]
+  asset reset.css 278 bytes [emitted] [from: assets/reset.css] [copied]
+assets by path *.html 2.82 KiB
+  asset index.html 1.43 KiB [emitted]
+  asset template.html 1.38 KiB [emitted] [from: assets/template.html] [copied]
+orphan modules 3.43 MiB [orphan] 914 modules
+runtime modules 2.81 KiB 9 modules
+cacheable modules 5.51 MiB
+  modules by path ../../common/temp/node_modules/.pnpm/ 4.64 MiB 239 modules
+  modules by path ../../packages/ 447 KiB 41 modules
+  modules by path ./ 353 KiB
+    modules by path ./src/webview/ 345 KiB 18 modules
+    modules by path ./src/*.ts 3.27 KiB
+      ./src/utils.ts 1.27 KiB [built] [code generated]
+      ./src/type.ts 2 KiB [built] [code generated]
+    ./package.json 4.75 KiB [built] [code generated]
+  data:font/ttf;base64,AAEAAAALAIAAAwAw.. 92.9 KiB [built] [code generated]
+
+WARNING in ./src/webview/component/iframe/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/component/iframe/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/component/iframe/index.scss 8:6-310 22:17-24 26:0-280 26:0-280 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/component/iframe/index.tsx 48:0-23
+ @ ./src/webview/entries/index.tsx 8:33-63
+
+WARNING in ./src/webview/component/toast/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/component/toast/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/component/toast/index.scss 8:6-310 22:17-24 26:0-280 26:0-280 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/component/toast/index.tsx 9:0-23
+ @ ./src/webview/component/iframe/index.tsx 41:16-35
+ @ ./src/webview/entries/index.tsx 8:33-63
+
+WARNING in ./src/webview/entries/index.scss (../../common/temp/node_modules/.pnpm/css-loader@6.8.1_webpack@5.97.1/node_modules/css-loader/dist/cjs.js!../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js!./src/webview/entries/index.scss)
+Module Warning (from ../../common/temp/node_modules/.pnpm/sass-loader@13.3.3_sass@1.83.1+webpack@5.97.1/node_modules/sass-loader/dist/cjs.js):
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+ @ ./src/webview/entries/index.scss 8:6-304 22:17-24 26:0-274 26:0-274 27:22-29 27:33-47 27:50-64
+ @ ./src/webview/entries/index.tsx 9:0-23
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.9aa4c8c2a0b9f7abc3db.js (3.27 MiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (3.27 MiB)
+      index.9aa4c8c2a0b9f7abc3db.js
+
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.97.1 compiled with 6 warnings in 54772 ms
+ WARNING  Using '*' activation is usually a bad idea as it impacts performance.
+More info: https://code.visualstudio.com/api/references/activation-events#Start-up
+Use --allow-star-activation to bypass.
+ WARNING  LICENSE, LICENSE.md, or LICENSE.txt not found
+ INFO  Files included in the VSIX:
+icube-devtool-preview-0.0.34.vsix
+├─ [Content_Types].xml 
+├─ extension.vsixmanifest 
+└─ extension/
+   ├─ README.md [0.13 KB]
+   ├─ icube-devtool-preview.package.error.log [0.52 KB]
+   ├─ icube-devtool-preview.package.log [20.46 KB]
+   ├─ package.json [6.25 KB]
+   ├─ package.nls.json [0.09 KB]
+   ├─ package.nls.zh-cn.json [0.1 KB]
+   ├─ tsconfig.json [0.46 KB]
+   ├─ assets/
+   │  ├─ browser.png [3.77 KB]
+   │  ├─ browser.svg [0.89 KB]
+   │  ├─ deploy-empty.png [87.56 KB]
+   │  ├─ icon-light.svg [0.93 KB]
+   │  ├─ icon.png [3.51 KB]
+   │  ├─ icon.svg [0.92 KB]
+   │  ├─ preview-dark.svg [0.3 KB]
+   │  ├─ preview-light.svg [0.3 KB]
+   │  ├─ reset.css [0.27 KB]
+   │  ├─ retry.png [3.21 KB]
+   │  ├─ service-worker.js [0.51 KB]
+   │  ├─ template.html [1.38 KB]
+   │  └─ vscode.css [1.91 KB]
+   ├─ dist/
+   │  └─ extension.js [2.53 MB]
+   ├─ preview-src/
+   │  ├─ events.ts [0.57 KB]
+   │  ├─ index.ts [3.2 KB]
+   │  └─ tsconfig.json [0.16 KB]
+   └─ public/
+      ├─ cn/ (15 files) [3.38 MB]
+      ├─ sg/ (15 files) [3.38 MB]
+      └─ va/ (15 files) [3.38 MB]
+
+=> Run vsce ls --tree to see all included files.
+
