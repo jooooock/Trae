@@ -1,3 +1,0 @@
-(node:7171) [DEP_WEBPACK_TEMPLATE_PATH_PLUGIN_REPLACE_PATH_VARIABLES_HASH] DeprecationWarning: [hash] is now [fullhash] (also consider using [chunkhash] or [contenthash], see documentation for details)
-(Use `node --trace-deprecation ...` to show where the warning was created)
- WARNING  LICENSE, LICENSE.md, or LICENSE.txt not found

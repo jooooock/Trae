@@ -5,8 +5,8 @@
   "author": "Jock",
   "license": "MIT",
   "scripts": {
-    "dev": "electron src/app/v1.95.3",
-    "debug": "electron --inspect-brk=9090 src/app/v1.95.3"
+    "dev": "electron src/app/v1.0.0",
+    "debug": "electron --inspect-brk=9090 src/app/v1.0.0"
   },
   "dependencies": {
     "@electron/remote": "2.0.11",

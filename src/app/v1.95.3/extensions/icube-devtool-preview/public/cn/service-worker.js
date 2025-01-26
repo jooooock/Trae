@@ -1,1 +1,0 @@
-self.addEventListener("install",(e=>{console.log("Service Worker 安装成功")})),self.addEventListener("fetch",(e=>{const s=e.request,o=new Headers(s.headers);o.set("x-my-custom-header","The Most Amazing Header Ever");const r=new Request(s,{headers:o});console.log(r);o.keys();console.log("service worker代理",location.search),e.respondWith(fetch(r))}));
